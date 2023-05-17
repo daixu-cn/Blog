@@ -1,0 +1,23 @@
+@import "@/assets/style/scss/reset";
+@import "@/assets/style/scss/nprogress";
+@import "@/assets/style/scss/elementPlus.scss";
+@import "element-plus/theme-chalk/index.css";
+@import "element-plus/theme-chalk/dark/css-vars.css";
+
+body {
+  color: $font-color;
+  font-size: $font-size;
+  font-family: $font-family;
+
+  a {
+    &:active {
+      color: $font-color;
+    }
+  }
+}
+
+/*文档中被用户高亮的部分*/
+::selection {
+  background-color: $color-primary;
+  color: $font-color;
+}

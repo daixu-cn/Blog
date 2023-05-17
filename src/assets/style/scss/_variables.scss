@@ -1,0 +1,44 @@
+// 主题色
+$color-primary: var(--el-color-primary);
+// 成功颜色
+$color-success: var(--el-color-success);
+// 警告颜色
+$color-warning: var(-el-color-warning);
+// 失败颜色
+$color-danger: var(--el-color-danger);
+// 信息颜色
+$color-error: var(--el-color-error);
+// 信息颜色
+$color-info: var(--el-color-info);
+
+// 主要宽度
+$main-width: 1200px;
+// 背景色
+$bg-color: var(--el-bg-color);
+// 覆盖层背景色
+$bg-color-overlay: var(--el-bg-color-overlay);
+// 最外层背景色
+$bg-color-wrap: var(--bg-color-wrap);
+
+// 字体
+$font-family: var(--el-font-family);
+// 字体颜色
+$font-color: var(--el-text-color-primary);
+// 字体大小
+$font-size: var(--el-font-size-base);
+
+// 边距
+$space: 12px;
+// 圆角大小
+$border-radius: var(--el-border-radius-base);
+// 过渡持续时间
+$duration: var(--el-transition-duration);
+
+// 边框
+$border: var(--el-border);
+// 边框宽度
+$border-width: var(--el-border-width);
+// 边框样式
+$border-style: var(--el-border-style);
+// 边框颜色
+$border-color: var(--el-border-color);

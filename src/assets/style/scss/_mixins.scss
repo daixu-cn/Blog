@@ -1,0 +1,32 @@
+//单行超出隐藏
+@mixin text-ellipsis($type: ellipsis) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: $type;
+}
+
+//多行超出隐藏
+@mixin more-text-ellipsis($rowNum: 1) {
+  // $rowNum设定多少行
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $rowNum;
+  overflow: hidden;
+}
+
+//行内元素垂直居中
+@mixin vertical-middle {
+  &::after {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
+}
+
+//使用 flex 水平、垂直居中
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
