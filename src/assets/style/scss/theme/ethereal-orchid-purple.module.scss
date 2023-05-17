@@ -1,0 +1,17 @@
+:export {
+  --el-color-primary: #9191fe;
+  --el-color-success: #6cc23a;
+  --el-color-warning: #e6a23c;
+  --el-color-danger: #f56c6c;
+  --el-color-error: #f56c6c;
+  --el-color-info: #909399;
+
+  --el-font-family: "JetBrains Mono", "Helvetica Neue", Helvetica, "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  --el-font-size-base: 14px;
+  --el-border-radius-base: 4px;
+  --el-border-width: 1px;
+  --el-border-style: solid;
+
+  --el-transition-duration: 0.3s;
+}
