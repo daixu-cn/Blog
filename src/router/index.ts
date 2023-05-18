@@ -48,9 +48,27 @@ const router = createRouter({
       ]
     },
     {
-      path: "/login",
-      name: "Login",
-      component: () => import("@/views/User/Login.vue")
+      path: "/loginFrame",
+      name: "LoginFrame",
+      component: () => import("@/views/User/Login/Frame.vue"),
+      redirect: "/login",
+      children: [
+        {
+          path: "/login",
+          name: "Login",
+          component: () => import("@/views/User/Login/Login.vue")
+        },
+        {
+          path: "/forget",
+          name: "Forget",
+          component: () => import("@/views/User/Login/Forget.vue")
+        },
+        {
+          path: "/register",
+          name: "Register",
+          component: () => import("@/views/User/Login/Register.vue")
+        }
+      ]
     },
     {
       path: "/OAuth",
