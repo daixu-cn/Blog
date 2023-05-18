@@ -89,7 +89,7 @@ class HTTP {
     data: any = {},
     config: AxiosRequestConfig = {}
   ): Promise<T> {
-    return this.request<T>({ url, data, ...config, method: "PATCH" })
+    return this.request<T>({ url, data, ...config, method: "PUT" })
   }
 }
 export default HTTP
