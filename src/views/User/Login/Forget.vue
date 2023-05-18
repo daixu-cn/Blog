@@ -48,7 +48,7 @@ const loading = ref(false)
 const captcha = ref("获取验证码")
 let timer: number
 const form = reactive({
-  email: "",
+  email: localStorage.getItem("email") ?? "",
   sms: "",
   password: "",
   confirmPassword: ""
