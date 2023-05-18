@@ -24,6 +24,12 @@ $bg-color-wrap: var(--bg-color-wrap);
 $font-family: var(--el-font-family);
 // 字体颜色
 $font-color: var(--el-text-color-primary);
+// 次要字体颜色
+$font-color-secondary: var(--el-text-color-secondary);
+// 占位字体颜色
+$font-color-placeholder: var(--el-text-color-placeholder);
+// 禁用字体颜色
+$font-color-disabled: var(--el-text-color-disabled);
 // 字体大小
 $font-size: var(--el-font-size-base);
 
