@@ -1,4 +1,7 @@
 export default {
+  site: {
+    signature: "挣钱娶媳妇儿"
+  },
   theme: {
     "clear-spring-green": "清泉翠",
     "ethereal-orchid-purple": "薰衣草紫"
@@ -14,7 +17,8 @@ export default {
     links: "友情链接",
     magic: "魔法空间",
     updates: "站点动态",
-    account: "账户中心"
+    account: "账户中心",
+    system: "后台系统"
   },
   category: {
     code: "实验室",
@@ -54,5 +58,11 @@ export default {
       successfullyModified: "修改成功",
       successfullyRegister: "注册成功"
     }
+  },
+  search: {
+    articleTitle: "文章标题",
+    popularArticles: "热门文章",
+    searchResults: "搜索结果",
+    noArticles: "未搜索到相关文章"
   }
 }

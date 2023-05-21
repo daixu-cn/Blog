@@ -21,7 +21,7 @@
           />
           <div class="signature">
             <p>daixu</p>
-            <p>赚钱娶媳妇儿</p>
+            <p>{{ $t("site.signature") }}</p>
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
       </el-menu>
       <ul class="footer">
         <li v-if="!userStore.info" class="login" @click="goToPage('/login')">
-          登录
+          {{ $t("login.login") }}
         </li>
         <User v-else @router="drawer = false">
           <li>

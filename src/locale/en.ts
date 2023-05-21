@@ -1,4 +1,7 @@
 export default {
+  site: {
+    signature: "Earn money to get a daughter-in-law"
+  },
   theme: {
     "clear-spring-green": "Clear Spring Green",
     "ethereal-orchid-purple": "Lavender Purple"
@@ -14,7 +17,8 @@ export default {
     links: "Links",
     magic: "Magic",
     updates: "Updates",
-    account: "Account"
+    account: "Account",
+    system: "System"
   },
   category: {
     code: "Laboratory",
@@ -54,5 +58,11 @@ export default {
       successfullyModified: "Modification successful",
       successfullyRegister: "Registration successful"
     }
+  },
+  search: {
+    articleTitle: "Article Title",
+    popularArticles: "Popular Articles",
+    searchResults: "Search Results",
+    noArticles: "No articles found"
   }
 }

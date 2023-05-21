@@ -1,4 +1,7 @@
 export default {
+  site: {
+    signature: "嫁入り道具を稼ぐ"
+  },
   theme: {
     "clear-spring-green": "ラベンダーパープル",
     "ethereal-orchid-purple": "ラベンダーパープル"
@@ -14,7 +17,8 @@ export default {
     links: "リンク",
     magic: "マジック",
     updates: "アップデート",
-    account: "アカウント"
+    account: "アカウント",
+    system: "システム"
   },
   category: {
     code: "研究室",
@@ -54,5 +58,11 @@ export default {
       successfullyModified: "変更に成功しました。",
       successfullyRegister: "登録に成功しました。"
     }
+  },
+  search: {
+    articleTitle: "記事のタイトル",
+    popularArticles: "人気の記事",
+    searchResults: "検索結果",
+    noArticles: "関連する記事が見つかりませんでした"
   }
 }

@@ -5,14 +5,18 @@
       <el-input
         ref="input"
         v-model="keyword"
-        placeholder="文章标题"
+        :placeholder="$t('search.articleTitle')"
         @input="getList"
       />
       <i-ep-close class="clearIcon" @click="keyword = ''" />
     </div>
     <div class="result">
       <ul>
-        <p>{{ !keyword ? "热门文章" : "搜索结果" }}</p>
+        <p>
+          {{
+            !keyword ? $t("search.popularArticles") : $t("search.searchResults")
+          }}
+        </p>
         <ul v-if="!keyword">
           <li
             v-for="item of hotList"
@@ -35,7 +39,7 @@
         </el-scrollbar>
         <el-empty
           v-if="keyword && !searchList.length && !loading"
-          description="未搜索到相关文章"
+          :description="$t('search.noArticles')"
         />
       </ul>
     </div>
