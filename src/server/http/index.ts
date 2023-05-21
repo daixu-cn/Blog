@@ -27,8 +27,13 @@ class HTTP {
     // 响应拦截器
     this.instance.interceptors.response.use(
       (response) => {
-        if (response.data.code !== 0) {
+        const code = response.data?.code
+
+        if (code !== 0) {
           ElMessage.error(response.data.msg)
+        }
+        if (code === 401 || code === 403) {
+          localStorage.removeItem("token")
         }
         return response.data
       },
