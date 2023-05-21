@@ -1,4 +1,5 @@
 import { defineStore } from "pinia"
+import http from "@/server"
 
 interface Info {
   userId: number
@@ -23,6 +24,7 @@ export default defineStore("user", {
   actions: {
     setToken(token: string) {
       this.token = token
+      localStorage.setItem("token", token)
     },
     setUser(info: Info) {
       this.info = info
@@ -31,6 +33,14 @@ export default defineStore("user", {
       this.info = null
       this.token = null
       localStorage.removeItem("token")
+    },
+    async getUser() {
+      if (localStorage.getItem("token")) {
+        const res = await http.get("/user/info")
+        if (res.code === 0) {
+          this.info = res.data
+        }
+      }
     }
   }
 })

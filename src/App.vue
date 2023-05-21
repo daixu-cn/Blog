@@ -13,6 +13,7 @@
 import { reactive, ref } from "vue"
 import { addListener, launch } from "devtools-detector"
 import NotFound from "@/views/Error/NotFound.vue"
+import useUserStore from "@/store/user"
 import useThemeStore from "@/store/theme"
 import useLocaleStore from "@/store/locale"
 import type { ConfigProviderProps } from "element-plus"
@@ -25,16 +26,19 @@ if (import.meta.env.MODE !== "development") {
   launch()
 }
 
-const theme = useThemeStore()
-const locale = useLocaleStore()
+const userStore = useUserStore()
+const themeStore = useThemeStore()
+const localeStore = useLocaleStore()
 
+// 初始化用户信息
+userStore.getUser()
 // 初始化主题
-theme.setTheme()
+themeStore.setTheme()
 // 初始化语言
-locale.setLocale()
+localeStore.setLocale()
 
 const ElConfigProviderConfig = reactive({
-  locale: locale.element,
+  locale: localeStore.element,
   size: "default",
   zIndex: 0,
   button: {
