@@ -1,19 +1,27 @@
 <template>
   <div id="Login" class="module">
-    <h1 class="title">登录</h1>
+    <h1 class="title">{{ $t("login.login") }}</h1>
     <div class="form">
-      <input v-model="form.email" type="text" placeholder="邮箱" />
+      <input
+        v-model="form.email"
+        type="text"
+        :placeholder="$t('login.placeholder.email')"
+      />
       <input
         v-model="form.password"
         type="password"
-        placeholder="密码"
+        :placeholder="$t('login.placeholder.password')"
         @keyup.enter="login"
       />
     </div>
-    <el-button class="action" :loading="loading" @click="login">登录</el-button>
+    <el-button class="action" :loading="loading" @click="login">{{
+      $t("login.login")
+    }}</el-button>
     <div class="auth">
-      <span @click="goToPage('Forget')">忘记密码</span>
-      <p @click="goToPage('Register')">没有账号?<span>去注册</span></p>
+      <span @click="goToPage('Forget')">{{ $t("login.forget") }}</span>
+      <p @click="goToPage('Register')">
+        {{ $t("login.noAccount") }}<span>{{ $t("login.goRegister") }}</span>
+      </p>
     </div>
     <div class="OAuth">
       <Icon class="icon-qq" />
@@ -29,6 +37,7 @@ import { useRouter } from "vue-router"
 import http from "@/server"
 import { ElMessage } from "element-plus"
 import useUserStore from "@/store/user"
+import i18n from "@/locale"
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -43,11 +52,11 @@ function goToPage(name: string) {
 }
 async function login() {
   if (!form.email.trim()) {
-    ElMessage.warning("请输入邮箱")
+    ElMessage.warning(i18n.global.t("login.message.verifyEmail"))
     return
   }
   if (!form.password.trim()) {
-    ElMessage.warning("请输入密码")
+    ElMessage.warning(i18n.global.t("login.message.verifyPassword"))
     return
   }
 
@@ -55,7 +64,7 @@ async function login() {
     loading.value = true
     const res = await http.post("/user/login", form)
     if (res.code === 0) {
-      ElMessage.success("登录成功")
+      ElMessage.success(i18n.global.t("login.message.successfullyLogin"))
       userStore.setUser(res.data.user)
       userStore.setToken(res.data.token)
       localStorage.setItem("email", form.email)
