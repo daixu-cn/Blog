@@ -57,7 +57,7 @@ function goToPage(name: string) {
   background-image: radial-gradient(transparent 1px, $bg-color 1px);
   background-size: 4px 4px;
   backdrop-filter: saturate(50%) blur(4px);
-  transition: all 0.5s;
+  transition: transform 0.5s, opacity 0.5s;
   &.hidden {
     transform: scale(0);
     opacity: 0;
