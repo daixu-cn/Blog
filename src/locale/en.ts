@@ -18,7 +18,13 @@ export default {
     magic: "Magic",
     updates: "Updates",
     account: "Account",
-    system: "System"
+    system: {
+      system: "System",
+      article: "Article",
+      comments: "Comments",
+      links: "Links",
+      users: "User"
+    }
   },
   category: {
     code: "Laboratory",

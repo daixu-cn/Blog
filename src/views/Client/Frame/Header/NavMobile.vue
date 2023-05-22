@@ -27,7 +27,7 @@
       </div>
       <el-menu :default-active="path">
         <el-menu-item
-          v-for="item of menus"
+          v-for="item of path === '/system' ? adminMenus : menus"
           :key="item.path"
           :index="item.path"
           @click="goToPage(item.path)"
@@ -57,7 +57,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue"
-import menus from "@/global/menus"
+import menus, { adminMenus } from "@/global/menus"
 import { useRoute, useRouter } from "vue-router"
 import useUserStore from "@/store/user"
 import User from "./User.vue"

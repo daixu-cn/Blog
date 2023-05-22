@@ -48,6 +48,40 @@ const router = createRouter({
       ]
     },
     {
+      path: "/system",
+      name: "SystemFrame",
+      component: () => import("@/views/Admin/Frame/Frame.vue"),
+      redirect: "/system/article",
+      children: [
+        {
+          path: "/system/article",
+          name: "SystemArticle",
+          component: () => import("@/views/Admin/Article/Article.vue")
+        },
+        {
+          path: "/system/article/md",
+          name: "SystemArticleMD",
+          component: () =>
+            import("@/views/Admin/Article/ArticleMD/ArticleMD.vue")
+        },
+        {
+          path: "/system/comments",
+          name: "SystemComments",
+          component: () => import("@/views/Admin/Comments/Comments.vue")
+        },
+        {
+          path: "/system/links",
+          name: "SystemLinks",
+          component: () => import("@/views/Admin/Links/Links.vue")
+        },
+        {
+          path: "/system/users",
+          name: "SystemUsers",
+          component: () => import("@/views/Admin/Users/Users.vue")
+        }
+      ]
+    },
+    {
       path: "/loginFrame",
       name: "LoginFrame",
       component: () => import("@/views/User/Login/Frame.vue"),

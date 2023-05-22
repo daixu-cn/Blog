@@ -18,7 +18,13 @@ export default {
     magic: "魔法空间",
     updates: "站点动态",
     account: "账户中心",
-    system: "后台系统"
+    system: {
+      system: "后台系统",
+      article: "文章管理",
+      comments: "评论/回复",
+      links: "友情链接",
+      users: "用户管理"
+    }
   },
   category: {
     code: "实验室",

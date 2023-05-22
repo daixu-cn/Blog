@@ -10,10 +10,13 @@
       <template #dropdown>
         <el-dropdown-menu v-if="userStore.info">
           <el-dropdown-item
-            v-if="userStore?.info.role === 0"
+            v-if="
+              userStore?.info.role === 0 &&
+              !route.fullPath.startsWith('/system')
+            "
             @click="goToPage('/system')"
           >
-            {{ $t("menu.system") }}</el-dropdown-item
+            {{ $t("menu.system.system") }}</el-dropdown-item
           >
           <el-dropdown-item @click="goToPage('/account')">
             {{ $t("menu.account") }}</el-dropdown-item
@@ -31,9 +34,10 @@
 <script lang="ts" setup>
 import { useSlots } from "vue"
 import useUserStore from "@/store/user"
-import { useRouter } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 
 const slots = useSlots()
+const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
 const emits = defineEmits(["router"])

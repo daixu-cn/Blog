@@ -18,7 +18,13 @@ export default {
     magic: "マジック",
     updates: "アップデート",
     account: "アカウント",
-    system: "システム"
+    system: {
+      system: "システム",
+      article: "記事管理",
+      comments: "コメント/返信",
+      links: "友情リンク",
+      users: "ユーザー管理"
+    }
   },
   category: {
     code: "研究室",
