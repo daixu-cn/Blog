@@ -1,5 +1,8 @@
 <template>
-  <el-config-provider v-bind="(ElConfigProviderConfig as ConfigProviderProps)">
+  <el-config-provider
+    :locale="localeStore.element"
+    v-bind="(ElConfigProviderConfig as ConfigProviderProps)"
+  >
     <NotFound v-if="isPeep" />
     <router-view v-else v-slot="{ Component }">
       <transition name="route" mode="out-in">
@@ -38,7 +41,6 @@ themeStore.setTheme()
 localeStore.setLocale()
 
 const ElConfigProviderConfig = reactive({
-  locale: localeStore.element,
   size: "default",
   zIndex: 0,
   button: {
