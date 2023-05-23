@@ -59,7 +59,7 @@ const router = createRouter({
           component: () => import("@/views/Admin/Article/Article.vue")
         },
         {
-          path: "/system/article/md",
+          path: "/system/article/md/:articleId",
           name: "SystemArticleMD",
           component: () =>
             import("@/views/Admin/Article/ArticleMD/ArticleMD.vue")

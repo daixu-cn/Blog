@@ -24,7 +24,7 @@ import { adminMenus } from "@/global/menus"
 
 const route = useRoute()
 
-const active = ref(route.fullPath)
+const active = ref(route.fullPath.split("/").slice(0, 3).join("/"))
 </script>
 
 <style lang="scss">

@@ -36,6 +36,63 @@ import Menu from "./Menu/Menu.vue"
         box-sizing: border-box;
         border-radius: $border-radius;
         background-color: $bg-color;
+        .form-search {
+          width: 100%;
+          display: inline-flex;
+          flex-wrap: wrap;
+          user-select: none;
+          border-bottom: 1px solid #eee;
+          margin-bottom: 18px;
+          .el-input {
+            width: 190px;
+            .el-input__wrapper {
+              width: 100%;
+              box-sizing: border-box;
+              .el-input__prefix {
+                display: none;
+              }
+            }
+          }
+          .operator {
+            margin-left: auto;
+            margin-right: 0;
+          }
+        }
+        .table {
+          .el-table {
+            border: var(--el-table-border);
+            border-bottom: 0;
+            .el-table__header-wrapper {
+              thead {
+                tr {
+                  th {
+                    background-color: var(--el-table-row-hover-bg-color);
+                    padding: 16px 0;
+                  }
+                }
+              }
+            }
+            .el-table__body-wrapper {
+              tbody {
+                tr {
+                  td {
+                    padding: 16px 0;
+                  }
+                }
+              }
+            }
+            .image-slot {
+              width: 100%;
+              height: 100%;
+              @include flex-center;
+            }
+          }
+
+          .el-pagination {
+            margin-top: 20px;
+            justify-content: end;
+          }
+        }
       }
     }
   }
@@ -43,6 +100,27 @@ import Menu from "./Menu/Menu.vue"
     .SystemFrame-container {
       .SystemFrame-page {
         width: 100%;
+        padding: 0;
+        .system-page {
+          .form-search {
+            .el-form-item {
+              width: 100%;
+              margin-right: 0;
+              .el-input,
+              .el-select {
+                width: 100%;
+              }
+              .query-reset {
+                flex: 1;
+              }
+            }
+            .operator {
+              .el-button {
+                flex: 1;
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -52,6 +130,11 @@ html.dark {
     .SystemFrame-container {
       .SystemFrame-page {
         background-color: #1e1e1e;
+        .system-page {
+          .form-search {
+            border-bottom-color: $border-color;
+          }
+        }
       }
     }
   }

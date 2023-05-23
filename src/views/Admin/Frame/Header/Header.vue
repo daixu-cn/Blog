@@ -43,7 +43,7 @@ function goToPage(name: string) {
 #SystemHeader {
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 10;
   height: 60px;
   box-sizing: border-box;
   border-bottom: 1px solid rgba(5, 5, 5, 0.06);
