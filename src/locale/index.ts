@@ -1,4 +1,5 @@
 import { createI18n } from "vue-i18n"
+import { DEFAULE_LOCALE } from "@/global/env"
 
 interface Locales {
   [key: string]: {
@@ -17,6 +18,6 @@ for (const path in modules) {
 
 export default createI18n({
   allowComposition: true,
-  locale: import.meta.env.VITE_APP_DEFAULE_LOCALE,
+  locale: DEFAULE_LOCALE,
   messages
 })

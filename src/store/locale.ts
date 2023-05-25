@@ -2,6 +2,7 @@ import { defineStore } from "pinia"
 import dayjs from "dayjs"
 import locales, { LocaleType } from "@/global/locale"
 import i18n from "@/locale"
+import { DEFAULE_LOCALE } from "@/global/env"
 
 const dayjs_modules = import.meta.glob("/node_modules/dayjs/esm/locale/*.js")
 const element_modules = import.meta.glob(
@@ -12,7 +13,7 @@ export default defineStore("locale", {
   state: () => ({
     current: (localStorage.getItem("locale") ??
       navigator.language.toLocaleLowerCase() ??
-      import.meta.env.VITE_APP_DEFAULE_LOCALE) as LocaleType,
+      DEFAULE_LOCALE) as LocaleType,
     element: undefined
   }),
   actions: {

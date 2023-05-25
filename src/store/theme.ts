@@ -2,6 +2,7 @@ import { defineStore } from "pinia"
 import { useCssVar, useDark, useToggle } from "@vueuse/core"
 import tinycolor from "tinycolor2"
 import themes, { ThemeType } from "@/global/theme"
+import { DEFAULE_THEME } from "@/global/env"
 
 interface ThemeColors {
   [key: string]: string
@@ -39,8 +40,7 @@ function generateDerivedColors(prefix: string, baseColor: string): ThemeColors {
 
 export default defineStore("theme", {
   state: () => ({
-    current: (localStorage.getItem("theme") ??
-      import.meta.env.VITE_APP_DEFAULE_THEME) as ThemeType,
+    current: (localStorage.getItem("theme") ?? DEFAULE_THEME) as ThemeType,
     isDarkMode: useDark()
   }),
   actions: {
