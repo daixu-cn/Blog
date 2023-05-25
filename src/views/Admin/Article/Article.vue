@@ -61,11 +61,6 @@
           >重置</el-button
         >
       </el-form-item>
-      <el-form-item class="operator">
-        <el-button type="danger" :icon="Plus" @click="goToActionMD(0)"
-          >创建文章</el-button
-        >
-      </el-form-item>
     </el-form>
     <div v-loading="loading" class="table">
       <el-table :data="table.list">
@@ -135,6 +130,15 @@
           show-overflow-tooltip
         />
         <el-table-column label="操作" align="center" width="165">
+          <template #header>
+            <el-button
+              type="primary"
+              :icon="Plus"
+              class="operator"
+              @click="goToActionMD(0)"
+              >创建文章</el-button
+            >
+          </template>
           <template #default="scope">
             <el-button
               link

@@ -40,9 +40,6 @@ import Menu from "./Menu/Menu.vue"
           margin-bottom: 20px;
         }
         .form-search {
-          width: 100%;
-          display: inline-flex;
-          flex-wrap: wrap;
           user-select: none;
           border-bottom: 1px solid #eee;
           margin-bottom: 18px;
@@ -56,10 +53,6 @@ import Menu from "./Menu/Menu.vue"
               }
             }
           }
-          .operator {
-            margin-left: auto;
-            margin-right: 0;
-          }
         }
         .table {
           .el-table {
@@ -71,6 +64,9 @@ import Menu from "./Menu/Menu.vue"
                   th {
                     background-color: var(--el-table-row-hover-bg-color);
                     padding: 16px 0;
+                    .operator {
+                      width: 100%;
+                    }
                   }
                 }
               }
