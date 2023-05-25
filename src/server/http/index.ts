@@ -2,6 +2,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from "axios"
 
 import { ElMessage } from "element-plus"
 import ErrorStatus from "@/server/http/ErrorStatus"
+import responseFormat from "./responseFormat"
 
 class HTTP {
   instance: AxiosInstance
@@ -27,15 +28,7 @@ class HTTP {
     // 响应拦截器
     this.instance.interceptors.response.use(
       (response) => {
-        const code = response.data?.code
-
-        if (code !== 0) {
-          ElMessage.error(response.data.msg)
-        }
-        if (code === 401 || code === 403) {
-          localStorage.removeItem("token")
-        }
-        return response.data
+        return responseFormat(response)
       },
       (error) => {
         return Promise.reject(ErrorStatus(error))
