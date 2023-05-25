@@ -36,6 +36,9 @@ import Menu from "./Menu/Menu.vue"
         box-sizing: border-box;
         border-radius: $border-radius;
         background-color: $bg-color;
+        .el-breadcrumb {
+          margin-bottom: 20px;
+        }
         .form-search {
           width: 100%;
           display: inline-flex;
