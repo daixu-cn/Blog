@@ -90,6 +90,18 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="email"
+          label="站长邮箱"
+          align="center"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          prop="qq"
+          label="站长QQ"
+          align="center"
+          show-overflow-tooltip
+        />
+        <el-table-column
           prop="createdAt"
           label="申请时间"
           align="center"
@@ -107,18 +119,6 @@
             />
           </template>
         </el-table-column>
-        <el-table-column
-          prop="email"
-          label="站长邮箱"
-          align="center"
-          show-overflow-tooltip
-        />
-        <el-table-column
-          prop="qq"
-          label="站长QQ"
-          align="center"
-          show-overflow-tooltip
-        />
         <el-table-column label="操作" align="center" width="130">
           <template #default="scope">
             <el-button link type="primary" @click="editAction(scope.row)">
