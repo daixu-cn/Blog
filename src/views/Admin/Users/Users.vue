@@ -30,7 +30,7 @@
     </el-form>
     <div v-loading="loading" class="table">
       <el-table :data="table.list">
-        <el-table-column label="用户头像" align="center">
+        <el-table-column label="用户头像" align="center" width="80px">
           <template #default="scope">
             <el-image
               :src="scope.row.avatar"
@@ -64,8 +64,14 @@
           label="用户角色"
           align="center"
           show-overflow-tooltip
+          width="80px"
         />
-        <el-table-column prop="emailService" label="邮箱服务" align="center">
+        <el-table-column
+          prop="emailService"
+          label="邮箱服务"
+          align="center"
+          width="80px"
+        >
           <template #default="scope">
             <el-switch
               v-model="scope.row.emailService"
@@ -75,6 +81,46 @@
                 --el-switch-off-color: #ff4949;
               "
             />
+          </template>
+        </el-table-column>
+        <el-table-column prop="qq" label="QQ" align="center" width="75px">
+          <template #default="scope">
+            <el-text v-if="scope.row.qq" type="primary">
+              <i-ep-check />
+            </el-text>
+            <el-text v-else type="danger">
+              <i-ep-close />
+            </el-text>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="github"
+          label="GitHub"
+          align="center"
+          width="75px"
+        >
+          <template #default="scope">
+            <el-text v-if="scope.row.github" type="primary">
+              <i-ep-check />
+            </el-text>
+            <el-text v-else type="danger">
+              <i-ep-close />
+            </el-text>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="google"
+          label="Google"
+          align="center"
+          width="75px"
+        >
+          <template #default="scope">
+            <el-text v-if="scope.row.google" type="primary">
+              <i-ep-check />
+            </el-text>
+            <el-text v-else type="danger">
+              <i-ep-close />
+            </el-text>
           </template>
         </el-table-column>
         <el-table-column
