@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router"
 import NProgress from "nprogress"
+import useUserStore from "@/store/user"
 
 const router = createRouter({
   history: createWebHistory(),
@@ -114,11 +115,23 @@ const router = createRouter({
       name: "NotFound",
       component: () => import("@/views/Error/NotFound.vue")
     }
-  ]
+  ],
+  scrollBehavior() {
+    return { top: 0, left: 0 }
+  }
 })
 
-router.beforeEach(() => {
+router.beforeEach((to, _, next) => {
   NProgress.start()
+
+  if (to.path.startsWith("/system")) {
+    if (useUserStore()?.info?.role === 0) {
+      next()
+    } else {
+      next({ name: "Frame" })
+    }
+  }
+  next()
 })
 
 router.afterEach(() => {
