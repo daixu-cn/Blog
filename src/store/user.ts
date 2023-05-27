@@ -17,6 +17,7 @@ interface State {
 }
 
 export default defineStore("user", {
+  persist: true,
   state: (): State => ({
     info: null,
     token: localStorage.getItem("token") ?? null
@@ -39,6 +40,9 @@ export default defineStore("user", {
         const res = await http.get("/user/info")
         if (res.code === 0) {
           this.info = res.data
+        } else {
+          this.info = null
+          this.token = null
         }
       }
     }

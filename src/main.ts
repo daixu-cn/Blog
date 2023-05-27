@@ -4,6 +4,7 @@ import App from "@/App.vue"
 import router from "@/router"
 import locale from "@/locale"
 import { createPinia } from "pinia"
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate"
 import Icon from "@/components/Icon.vue"
 
 import dayjs from "dayjs"
@@ -13,6 +14,10 @@ dayjs.extend(localizedFormat)
 
 const app = createApp(App)
 
-app.use(locale).use(router).use(createPinia()).mount("#app")
+app
+  .use(locale)
+  .use(router)
+  .use(createPinia().use(piniaPluginPersistedstate))
+  .mount("#app")
 
 app.component("Icon", Icon)
