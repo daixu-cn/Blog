@@ -12,6 +12,7 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: $rowNum;
   overflow: hidden;
+  word-break: break-all;
 }
 
 //行内元素垂直居中
