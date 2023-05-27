@@ -160,7 +160,6 @@ const actionDialogRef = ref()
 const loading = ref(false)
 const formSearch = reactive({
   keyword: "",
-  category: "",
   startTime: "",
   endTime: ""
 })
