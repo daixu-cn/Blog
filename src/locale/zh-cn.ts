@@ -23,7 +23,8 @@ export default {
       article: "文章管理",
       comments: "评论/回复",
       links: "友情链接",
-      users: "用户管理"
+      users: "用户管理",
+      updates: "更新管理"
     }
   },
   category: {

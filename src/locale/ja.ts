@@ -23,7 +23,8 @@ export default {
       article: "記事管理",
       comments: "コメント/返信",
       links: "友情リンク",
-      users: "ユーザー管理"
+      users: "ユーザー管理",
+      updates: "アップデート情報"
     }
   },
   category: {

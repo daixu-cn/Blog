@@ -79,6 +79,11 @@ const router = createRouter({
           path: "/system/users",
           name: "SystemUsers",
           component: () => import("@/views/Admin/Users/Users.vue")
+        },
+        {
+          path: "/system/updates",
+          name: "SystemUpdates",
+          component: () => import("@/views/Admin/Updates/Updates.vue")
         }
       ]
     },

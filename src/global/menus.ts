@@ -3,6 +3,7 @@ import {
   ChatDotSquare,
   Discount,
   User,
+  Setting,
   House
 } from "@element-plus/icons-vue"
 
@@ -26,6 +27,11 @@ export const adminMenus = [
     path: "/system/users",
     name: "menu.system.users",
     icon: User
+  },
+  {
+    path: "/system/updates",
+    name: "menu.system.updates",
+    icon: Setting
   },
   {
     path: "/",

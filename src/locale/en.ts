@@ -23,7 +23,8 @@ export default {
       article: "Article",
       comments: "Comments",
       links: "Links",
-      users: "User"
+      users: "User",
+      updates: "Updates"
     }
   },
   category: {
