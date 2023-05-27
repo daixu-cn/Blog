@@ -24,7 +24,8 @@ export default {
       comments: "Comments",
       links: "Links",
       users: "User",
-      updates: "Updates"
+      updates: "Updates",
+      backHome: "Back Home"
     }
   },
   category: {

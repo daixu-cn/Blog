@@ -24,7 +24,8 @@ export default {
       comments: "コメント/返信",
       links: "友情リンク",
       users: "ユーザー管理",
-      updates: "アップデート情報"
+      updates: "アップデート情報",
+      backHome: "ホーム"
     }
   },
   category: {

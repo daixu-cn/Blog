@@ -24,7 +24,8 @@ export default {
       comments: "评论/回复",
       links: "友情链接",
       users: "用户管理",
-      updates: "更新管理"
+      updates: "更新管理",
+      backHome: "返回首页"
     }
   },
   category: {

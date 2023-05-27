@@ -35,7 +35,7 @@ export const adminMenus = [
   },
   {
     path: "/",
-    name: "menu.article",
+    name: "menu.system.backHome",
     icon: House
   }
 ]
