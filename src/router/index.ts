@@ -126,7 +126,8 @@ const router = createRouter({
   }
 })
 
-router.beforeEach((to, _, next) => {
+router.beforeEach((to, from, next) => {
+  sessionStorage.setItem("redirect", from.fullPath)
   NProgress.start()
 
   if (to.path.startsWith("/system")) {
