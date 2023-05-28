@@ -147,6 +147,7 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
       border-radius: $border-radius;
       box-shadow: var(--el-box-shadow);
       text-decoration: none;
+      color: $font-color;
       .logo {
         width: 70px;
         height: 70px;
@@ -159,12 +160,12 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
       .info {
         width: calc(100% - 80px);
         user-select: none;
-        transition: color $duration;
         .name {
-          color: $font-color;
+          transition: color $duration;
           @include text-ellipsis;
         }
         .description {
+          transition: color $duration;
           color: $font-color-secondary;
           margin-top: 10px;
           @include more-text-ellipsis(2);
