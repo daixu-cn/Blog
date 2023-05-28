@@ -40,6 +40,7 @@
     "path": "^0.12.7",
     "pinia": "^2.0.35",
     "pinia-plugin-persistedstate": "^3.1.0",
+    "query-string": "^8.1.0",
     "screenfull": "^6.0.2",
     "spark-md5": "^3.0.2",
     "tinycolor2": "^1.6.0",
