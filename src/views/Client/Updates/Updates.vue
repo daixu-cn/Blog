@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from "vue"
+import { reactive, ref, nextTick } from "vue"
 import http from "@/server"
 import dayjs from "dayjs"
 import { useIntersectionObserver } from "@vueuse/core"
@@ -68,6 +68,20 @@ async function getList() {
         })
       )
       total.value = res.data.total
+
+      nextTick(() => {
+        const { stop } = useIntersectionObserver(
+          footer,
+          ([{ isIntersecting }]) => {
+            stop()
+            if (isIntersecting) {
+              if (list.length < total.value) {
+                getList()
+              }
+            }
+          }
+        )
+      })
     }
   } finally {
     if (page.value === 1) {
