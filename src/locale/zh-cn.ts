@@ -44,6 +44,7 @@ export default {
     changePassword: "修改密码",
     backLogin: "返回登录",
     signOut: "退出登录",
+    oauth: "授权处理中...",
     placeholder: {
       userName: "用户名",
       email: "邮箱",

@@ -44,6 +44,7 @@ export default {
     changePassword: "パスワードを変更する",
     backLogin: "ログインに戻る",
     signOut: "ログアウトする",
+    oauth: "オーソライズイン...",
     placeholder: {
       userName: "ユーザー名",
       email: "メールアドレス",

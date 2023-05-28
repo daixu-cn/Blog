@@ -24,9 +24,9 @@
       </p>
     </div>
     <div class="OAuth">
-      <Icon class="icon-qq" />
-      <Icon class="icon-github" />
-      <Icon class="icon-google" />
+      <Icon class="icon-qq" @click="OAuthLogin('qq')" />
+      <Icon class="icon-github" @click="OAuthLogin('github')" />
+      <Icon class="icon-google" @click="OAuthLogin('google')" />
     </div>
   </div>
 </template>
@@ -39,6 +39,7 @@ import { ElMessage } from "element-plus"
 import useUserStore from "@/store/user"
 import i18n from "@/locale"
 
+const redirectURI = "https://daixu.cn/oauth"
 const router = useRouter()
 const userStore = useUserStore()
 const loading = ref(false)
@@ -73,6 +74,18 @@ async function login() {
     }
   } finally {
     loading.value = false
+  }
+}
+
+function OAuthLogin(type) {
+  if (type === "qq") {
+    window.location.href = `https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=101959622&redirect_uri=${redirectURI}&state=qq`
+  }
+  if (type === "github") {
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=52a68a030ce19089d0f1&redirect_uri=${redirectURI}&state=github`
+  }
+  if (type === "google") {
+    ElMessage.warning("授权对接中...")
   }
 }
 </script>

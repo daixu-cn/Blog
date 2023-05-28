@@ -44,6 +44,7 @@ export default {
     changePassword: "Change Password",
     backLogin: "Back to Login",
     signOut: "Sign Out",
+    oauth: "Authorization in...",
     placeholder: {
       userName: "Username",
       email: "Email",
