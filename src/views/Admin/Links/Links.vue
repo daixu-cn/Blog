@@ -15,6 +15,18 @@
           @keydown.enter="getList(1)"
         />
       </el-form-item>
+      <el-form-item label="核验状态" prop="check">
+        <el-select
+          v-model="formSearch.check"
+          :disabled="loading"
+          placeholder="请选择核验状态"
+          clearable
+          @change="getList(1)"
+        >
+          <el-option label="待审核" :value="0" />
+          <el-option label="通过" :value="1" />
+        </el-select>
+      </el-form-item>
       <el-form-item label="开始时间" prop="startTime">
         <el-date-picker
           v-model="formSearch.startTime"
@@ -110,12 +122,13 @@
         <el-table-column prop="check" label="核验状态" align="center">
           <template #default="scope">
             <el-switch
-              :value="scope.row.check"
+              v-model="scope.row.check"
+              :loading="scope.row.loading"
               style="
                 --el-switch-on-color: #13ce66;
                 --el-switch-off-color: #ff4949;
               "
-              @change="checkChange(scope.row.linkId, scope.row.check)"
+              @change="checkChange(scope.row)"
             />
           </template>
         </el-table-column>
@@ -160,6 +173,7 @@ const actionDialogRef = ref()
 const loading = ref(false)
 const formSearch = reactive({
   keyword: "",
+  check: "",
   startTime: "",
   endTime: ""
 })
@@ -170,15 +184,18 @@ const table = reactive({
   total: 0
 })
 
-async function checkChange(linkId, check) {
+async function checkChange(row) {
+  row.loading = true
   const res = await http.patch("/link/update", {
-    linkId,
-    check: check ? 0 : 1
+    linkId: row.linkId,
+    check: row.check ? 1 : 0
   })
   if (res.code === 0) {
     ElMessage.success("操作成功")
+  } else {
+    row.check = !row.check
   }
-  getList()
+  row.loading = false
 }
 
 async function getList(page = 1) {
