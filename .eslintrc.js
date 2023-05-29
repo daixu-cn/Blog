@@ -99,7 +99,7 @@ module.exports = {
     // 禁止多次声明同一变量
     "no-redeclare": "warn",
     // 禁止在 return 语句中使用赋值语句
-    "no-return-assign": "warn",
+    "no-return-assign": "off",
     // 禁用不必要的 return await
     "no-return-await": "warn",
     // 禁止自我赋值
