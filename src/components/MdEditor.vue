@@ -5,12 +5,19 @@
       :model-value="props.text"
       v-bind="MdEditorProps"
     />
-    <MdEditor v-else v-model="text" v-bind="MdEditorProps" />
+    <MdEditor
+      v-else
+      ref="editorRef"
+      v-model="text"
+      v-bind="MdEditorProps"
+      :preview="preview"
+      :placeholder="props.placeholder"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watchEffect, reactive } from "vue"
+import { ref, watchEffect, reactive, onMounted } from "vue"
 import useThemeStore from "@/store/theme"
 import useLocaleStore from "@/store/locale"
 import resumeUpload from "@/utils/resumeUpload"
@@ -26,12 +33,26 @@ const props = defineProps({
   text: {
     type: String,
     default: ""
+  },
+  preview: {
+    type: Boolean,
+    default: true
+  },
+  isUpload: {
+    type: Boolean,
+    default: true
+  },
+  placeholder: {
+    type: String,
+    default: ""
   }
 })
 
+const editorRef = ref()
+const preview = ref(props.preview)
 const themeStore = useThemeStore()
 const localeStore = useLocaleStore()
-const toolbars: ToolbarNames[] = [
+const toolbars = reactive<ToolbarNames[]>([
   "bold",
   "underline",
   "italic",
@@ -46,14 +67,14 @@ const toolbars: ToolbarNames[] = [
   "codeRow",
   "code",
   "link",
-  "image",
+  props.isUpload ? "image" : -1,
   "table",
   "mermaid",
   "katex",
   "=",
   "preview",
   "pageFullscreen"
-]
+])
 const MdEditorProps = reactive<any>({
   previewTheme: "vuepress",
   toolbars,
@@ -88,6 +109,9 @@ async function onUploadImg(files: File[], callback) {
   )
   callback(res.map((image) => image))
 }
+onMounted(() => {
+  editorRef.value?.on("preview", (status: boolean) => (preview.value = status))
+})
 
 defineExpose({
   text
@@ -99,6 +123,19 @@ defineExpose({
   .md-editor {
     border: 0;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    & ::-webkit-scrollbar-corner,
+    & ::-webkit-scrollbar-track {
+      background-color: v-bind(
+        "preview?(themeStore.isDarkMode?'#2d2d2d':'#e2e2e2'):'transparent'"
+      );
+    }
+
+    .md-editor-preview-wrapper {
+      padding: 0;
+      .md-editor-preview {
+        padding: 0 20px;
+      }
+    }
     .md-editor-toolbar-wrapper {
       .md-editor-toolbar-item {
         padding: 0 6px;
