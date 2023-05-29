@@ -1,14 +1,16 @@
 <template>
   <div id="Frame">
-    <Header />
-    <div id="main">
-      <router-view v-slot="{ Component }">
-        <transition name="route" mode="out-in">
-          <component :is="Component" />
-        </transition>
-      </router-view>
-    </div>
-    <el-backtop :right="30" :bottom="30" :visibility-height="2000" />
+    <el-scrollbar height="100vh">
+      <Header />
+      <div id="main">
+        <router-view v-slot="{ Component }">
+          <transition name="route" mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </div>
+      <el-backtop :right="30" :bottom="30" :visibility-height="2000" />
+    </el-scrollbar>
   </div>
 </template>
 
