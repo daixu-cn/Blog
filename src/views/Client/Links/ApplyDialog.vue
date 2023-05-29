@@ -60,7 +60,10 @@ const link = reactive({
 const linkRef = ref<FormInstance>()
 const rules = reactive<FormRules>({
   name: [{ required: true, message: "网站名称不能为空", trigger: "blur" }],
-  url: [{ required: true, message: "网站地址不能为空", trigger: "blur" }]
+  url: [{ required: true, message: "网站地址不能为空", trigger: "blur" }],
+  description: [
+    { required: true, message: "网站描述不能为空", trigger: "blur" }
+  ]
 })
 
 async function confirm() {

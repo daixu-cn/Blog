@@ -75,6 +75,7 @@ async function getList() {
       loading.value = true
     }
     const res = await http.post("/link/list", {
+      check: 1,
       page: page.value,
       pageSize: 20
     })
