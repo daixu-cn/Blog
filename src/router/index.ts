@@ -136,8 +136,9 @@ router.beforeEach((to, from, next) => {
     } else {
       next({ name: "Frame" })
     }
+  } else {
+    next()
   }
-  next()
 })
 
 router.afterEach(() => {
