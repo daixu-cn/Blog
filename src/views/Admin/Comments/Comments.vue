@@ -11,7 +11,15 @@
         <el-input
           v-model="formSearch.keyword"
           :disabled="loading"
-          placeholder="评论、文章、用户ID/内容"
+          placeholder="评论ID/用户ID/评论内容"
+          @keydown.enter="getList(1)"
+        />
+      </el-form-item>
+      <el-form-item label="文章ID" prop="articleId">
+        <el-input
+          v-model="formSearch.articleId"
+          :disabled="loading"
+          placeholder="请输入文章ID"
           @keydown.enter="getList(1)"
         />
       </el-form-item>
@@ -202,6 +210,7 @@ const formRef = ref<FormInstance>()
 const loading = ref(false)
 const formSearch = reactive({
   keyword: "",
+  articleId: "",
   startTime: "",
   endTime: ""
 })
