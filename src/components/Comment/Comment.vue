@@ -143,6 +143,7 @@ import { useIntersectionObserver } from "@vueuse/core"
 import Loading from "@/components/Loading.vue"
 import MdEditor from "@/components/MdEditor.vue"
 import { ElMessage } from "element-plus"
+import useUserStore from "@/store/user"
 import ReplyDialog from "./ReplyDialog.vue"
 
 const props = defineProps({
@@ -151,6 +152,7 @@ const props = defineProps({
     default: "-1"
   }
 })
+const userStore = useUserStore()
 const mdEditor = ref()
 const replyDialog = ref()
 const footer = ref()
@@ -228,6 +230,10 @@ async function getList(refresh = false) {
 getList()
 
 async function submitComment() {
+  if (!userStore.token) {
+    ElMessage.warning("未登录")
+    return
+  }
   const content = mdEditor.value?.text
   if (!content) {
     ElMessage.warning("留言内容不能为空")

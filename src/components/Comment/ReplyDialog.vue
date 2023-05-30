@@ -25,9 +25,11 @@
 import { ref, reactive } from "vue"
 import http from "@/server"
 import { ElMessage } from "element-plus"
+import useUserStore from "@/store/user"
 import MdEditor from "@/components/MdEditor.vue"
 
 const emits = defineEmits(["confirm"])
+const userStore = useUserStore()
 const mdEditor = ref()
 const show = ref(false)
 const loading = ref(false)
@@ -40,6 +42,10 @@ const reply = reactive<any>({
 })
 
 async function confirm() {
+  if (!userStore.token) {
+    ElMessage.warning("未登录")
+    return
+  }
   reply.content = mdEditor.value.text
 
   if (!reply.content) {
