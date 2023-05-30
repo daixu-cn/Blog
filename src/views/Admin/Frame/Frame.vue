@@ -3,13 +3,13 @@
     <Header />
     <div class="SystemFrame-container">
       <Menu />
-      <el-scrollbar class="SystemFrame-page">
+      <div class="SystemFrame-page">
         <router-view v-slot="{ Component }">
           <transition name="route" mode="out-in">
             <component :is="Component" />
           </transition>
         </router-view>
-      </el-scrollbar>
+      </div>
     </div>
   </div>
 </template>
@@ -26,10 +26,10 @@ import Menu from "./Menu/Menu.vue"
     height: calc(100vh - 60px);
     .SystemFrame-page {
       width: calc(100% - 200px);
-      height: 100%;
       padding: $space $space 0 $space;
       box-sizing: border-box;
       background-color: #f5f5f5;
+      @include scrollbar;
       .system-page {
         width: 100%;
         padding: 20px;

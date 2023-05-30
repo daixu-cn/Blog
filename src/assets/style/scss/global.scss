@@ -3,11 +3,13 @@
 @import "@/assets/style/scss/elementPlus.scss";
 @import "element-plus/theme-chalk/index.css";
 @import "element-plus/theme-chalk/dark/css-vars.css";
+@import "plyr/dist/plyr.css";
 
 body {
   color: $font-color;
   font-size: $font-size;
   font-family: $font-family;
+  @include scrollbar;
 
   a {
     &:active {
@@ -20,4 +22,30 @@ body {
 ::selection {
   background-color: $color-primary;
   color: #fff;
+}
+
+/*整个滚动条*/
+::-webkit-scrollbar {
+  width: 6px;
+  background-color: transparent;
+}
+
+/*滚动条上的滚动滑块*/
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 4px;
+  &:hover {
+    background-color: #90939980;
+  }
+}
+
+/*滚动条上的按钮 (上下箭头)*/
+::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+}
+
+/*垂直滚动条和水平滚动条同时出现时右下角交汇的部分*/
+::-webkit-scrollbar-corner {
+  background-color: transparent;
 }

@@ -17,7 +17,7 @@
             !keyword ? $t("search.popularArticles") : $t("search.searchResults")
           }}
         </p>
-        <ul v-if="!keyword">
+        <ul v-if="!keyword" class="searchList">
           <li
             v-for="item of hotList"
             :key="item.articleId"
@@ -27,7 +27,7 @@
             {{ item.title }}
           </li>
         </ul>
-        <el-scrollbar v-if="keyword && searchList.length" height="180px">
+        <ul v-if="keyword && searchList.length" class="searchList">
           <li
             v-for="item of searchList"
             :key="item.articleId"
@@ -36,7 +36,7 @@
             <span class="category">@{{ item.category }}</span>
             {{ item.title }}
           </li>
-        </el-scrollbar>
+        </ul>
         <el-empty
           v-if="keyword && !searchList.length && !loading"
           :description="$t('search.noArticles')"
@@ -199,9 +199,10 @@ function goToPage(articleId: string) {
   }
   .result {
     width: 600px;
-    min-height: 240px;
+    height: 300px;
     margin: 0 auto;
     padding: 30px 0;
+    box-sizing: border-box;
     background-color: $bg-color-overlay;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
@@ -237,6 +238,9 @@ function goToPage(articleId: string) {
           margin-right: 5px;
         }
       }
+    }
+    .searchList {
+      @include scrollbar(210px);
     }
   }
   @media screen and (max-width: 850px) {

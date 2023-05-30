@@ -1,16 +1,14 @@
 <template>
   <div id="Frame">
-    <el-scrollbar height="100vh">
-      <Header />
-      <div id="main">
-        <router-view v-slot="{ Component }">
-          <transition name="route" mode="out-in">
-            <component :is="Component" />
-          </transition>
-        </router-view>
-      </div>
-      <el-backtop :right="30" :bottom="30" :visibility-height="2000" />
-    </el-scrollbar>
+    <Header />
+    <div id="main">
+      <router-view v-slot="{ Component }">
+        <transition name="route" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
+    </div>
+    <el-backtop :right="20" :bottom="20" :visibility-height="2300" />
   </div>
 </template>
 
@@ -22,7 +20,6 @@ import Header from "@/views/Client/Frame/Header/Header.vue"
 #Frame {
   #main {
     width: $main-width;
-    min-height: calc(100vh - 60px);
     padding-top: 20px;
     box-sizing: border-box;
     margin: 0 auto;
