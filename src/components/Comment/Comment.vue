@@ -1,6 +1,6 @@
 <template>
   <div id="Community-Comment">
-    <h1 class="total">全部留言({{ allTotal }})</h1>
+    <h1 id="全部留言" class="total">全部留言({{ allTotal }})</h1>
     <MdEditor
       ref="mdEditor"
       :preview="false"
