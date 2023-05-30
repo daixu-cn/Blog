@@ -4,6 +4,7 @@
       v-if="props.isPreview"
       :model-value="props.text"
       v-bind="MdEditorProps"
+      @onGetCatalog="onGetCatalog"
     />
     <MdEditor
       v-else
@@ -21,9 +22,10 @@ import { ref, watchEffect, reactive, onMounted } from "vue"
 import useThemeStore from "@/store/theme"
 import useLocaleStore from "@/store/locale"
 import resumeUpload from "@/utils/resumeUpload"
-import { MdPreview, MdEditor, ToolbarNames } from "md-editor-v3"
+import { MdPreview, MdEditor, ToolbarNames, HeadList } from "md-editor-v3"
 import "md-editor-v3/lib/style.css"
 
+const emits = defineEmits(["onGetCatalog"])
 const props = defineProps({
   // 预览模式
   isPreview: {
@@ -112,6 +114,9 @@ async function onUploadImg(files: File[], callback) {
 onMounted(() => {
   editorRef.value?.on("preview", (status: boolean) => (preview.value = status))
 })
+function onGetCatalog(list: HeadList[]) {
+  emits("onGetCatalog", list)
+}
 
 defineExpose({
   text
@@ -120,7 +125,9 @@ defineExpose({
 
 <style lang="scss">
 #MdEditor {
+  width: 100%;
   .md-editor {
+    width: 100%;
     border: 0;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     & ::-webkit-scrollbar-corner,

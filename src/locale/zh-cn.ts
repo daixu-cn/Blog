@@ -73,5 +73,9 @@ export default {
     popularArticles: "热门文章",
     searchResults: "搜索结果",
     noArticles: "未搜索到相关文章"
+  },
+  plyr: {
+    speed: "速度",
+    normal: "正常"
   }
 }

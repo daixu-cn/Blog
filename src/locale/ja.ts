@@ -73,5 +73,9 @@ export default {
     popularArticles: "人気の記事",
     searchResults: "検索結果",
     noArticles: "関連する記事が見つかりませんでした"
+  },
+  plyr: {
+    speed: "スピード",
+    normal: "正常"
   }
 }

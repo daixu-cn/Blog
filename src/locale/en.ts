@@ -73,5 +73,9 @@ export default {
     popularArticles: "Popular Articles",
     searchResults: "Search Results",
     noArticles: "No articles found"
+  },
+  plyr: {
+    speed: "Speed",
+    normal: "Normal"
   }
 }
