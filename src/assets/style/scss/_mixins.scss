@@ -46,6 +46,7 @@
 // 主宽度适配
 @mixin media-width() {
   width: 80%;
+  max-width: 1600px;
   @media screen and (max-width: 1500px) {
     width: 1200px;
   }
