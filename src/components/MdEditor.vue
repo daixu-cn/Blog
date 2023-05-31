@@ -47,6 +47,10 @@ const props = defineProps({
   placeholder: {
     type: String,
     default: ""
+  },
+  style: {
+    type: Object,
+    default: () => {}
   }
 })
 
@@ -78,6 +82,7 @@ const toolbars = reactive<ToolbarNames[]>([
   "pageFullscreen"
 ])
 const MdEditorProps = reactive<any>({
+  style: props.style,
   previewTheme: "vuepress",
   toolbars,
   showCodeRowNumber: true,
