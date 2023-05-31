@@ -20,7 +20,7 @@
           <el-option
             v-for="item of categories"
             :key="item.value"
-            :label="item.label"
+            :label="i18n.global.t(item.label)"
             :value="item.value"
           />
         </el-select>
@@ -100,6 +100,7 @@ import { BASE_API } from "@/global/env"
 import useUserStore from "@/store/user"
 import http from "@/server"
 import MdEditor from "@/components/MdEditor.vue"
+import i18n from "@/locale"
 
 const route = useRoute()
 const router = useRouter()

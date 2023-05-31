@@ -1,21 +1,19 @@
-import i18n from "@/locale"
-
 // 文章分类
 export const categories = [
   {
-    label: i18n.global.t("category.code"),
+    label: "category.code",
     value: "CODE"
   },
   {
-    label: i18n.global.t("category.tutorial"),
+    label: "category.tutorial",
     value: "TUTORIAL"
   },
   {
-    label: i18n.global.t("category.leisure"),
+    label: "category.leisure",
     value: "LEISURE"
   },
   {
-    label: i18n.global.t("category.journal"),
+    label: "category.journal",
     value: "JOURNAL"
   }
 ]

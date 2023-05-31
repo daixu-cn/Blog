@@ -85,9 +85,11 @@ async function getInfo() {
   const res = await http.get(`/article/info/${articleId}`)
 
   if (res.code === 0) {
-    res.data.category = categories.find(
-      (item) => item.value === res.data.category
-    )?.label
+    res.data.category = i18n.global.t(
+      categories.find((item) => item.value === res.data.category)
+        ?.label as string
+    )
+
     res.data.createdAt = dayjs(res.data.createdAt).fromNow()
 
     info.value = res.data
