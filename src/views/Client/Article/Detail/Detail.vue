@@ -1,36 +1,57 @@
 <template>
   <div id="ArticleDetail">
     <div class="article-view">
-      <h1 class="title">{{ info?.title }}</h1>
-      <ul class="article-info">
-        <li># {{ info?.category }}</li>
-        <li>{{ info?.views.toLocaleString() }}访问</li>
-        <li>{{ info?.comment_reply_total.toLocaleString() }}评论</li>
-        <li>{{ info?.createdAt }}</li>
-      </ul>
-      <h6 class="description">{{ info?.description }}</h6>
-      <Player v-if="info?.video" :src="info?.video" />
-      <MdEditor
-        :is-preview="true"
-        :text="info?.content"
-        @onGetCatalog="onGetCatalog"
-      />
-      <Comment :article-id="(articleId as string)" />
+      <el-skeleton :loading="loading" animated>
+        <template #template>
+          <el-skeleton-item variant="h3" style="width: 30%" class="title" />
+          <ul class="article-info">
+            <el-skeleton-item style="width: 50px" />
+            <el-skeleton-item style="width: 50px" />
+            <el-skeleton-item style="width: 50px" />
+            <el-skeleton-item style="width: 50px" />
+          </ul>
+          <el-skeleton :rows="10" animated />
+        </template>
+        <template #default>
+          <h1 class="title">{{ info?.title }}</h1>
+          <ul class="article-info">
+            <li># {{ info?.category }}</li>
+            <li>{{ info?.views.toLocaleString() }}访问</li>
+            <li>{{ info?.comment_reply_total.toLocaleString() }}评论</li>
+            <li>{{ info?.createdAt }}</li>
+          </ul>
+          <h6 class="description">{{ info?.description }}</h6>
+          <Player v-if="info?.video" :src="info?.video" />
+          <MdEditor
+            :is-preview="true"
+            :text="info?.content"
+            @onGetCatalog="onGetCatalog"
+          />
+          <Comment :article-id="(articleId as string)" />
+        </template>
+      </el-skeleton>
     </div>
 
     <div class="catalog">
       <h1>目录</h1>
-      <ul>
-        <li
-          v-for="(item, index) of catalog"
-          :key="index"
-          :data-level="item.level"
-          :data-text="item.text"
-          @click="goToAnchor(item.text)"
-        >
-          {{ item.text }}
-        </li>
-      </ul>
+      <el-skeleton :loading="loading" animated>
+        <template #template>
+          <el-skeleton :rows="7" animated />
+        </template>
+        <template #default>
+          <ul>
+            <li
+              v-for="(item, index) of catalog"
+              :key="index"
+              :data-level="item.level"
+              :data-text="item.text"
+              @click="goToAnchor(item.text)"
+            >
+              {{ item.text }}
+            </li>
+          </ul>
+        </template>
+      </el-skeleton>
     </div>
   </div>
 </template>
@@ -49,7 +70,7 @@ import dayjs from "dayjs"
 
 const { articleId } = useRoute().params
 const router = useRouter()
-const loading = ref(false)
+const loading = ref(true)
 const info = ref()
 const catalog = ref<HeadList[]>([])
 
@@ -126,14 +147,27 @@ function goToAnchor(text: string) {
   .article-view {
     width: calc(100% - 320px);
     margin-top: 20px;
+    .el-skeleton {
+      display: flex;
+      flex-direction: column;
+      .article-info {
+        .el-skeleton__item {
+          margin-right: 10px;
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+    }
     .title {
-      font-size: 1.2em;
+      font-size: 1.4em;
       font-weight: bold;
-      margin-bottom: 20px;
+      margin: 0 auto 20px auto;
       text-align: center;
       @include text-ellipsis;
     }
     .article-info {
+      width: 100%;
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
