@@ -35,6 +35,7 @@ export default {
     journal: "Life Fragments"
   },
   login: {
+    notLogged: "Not logged in",
     login: "Login",
     forget: "Forgot",
     register: "Register",
@@ -77,5 +78,72 @@ export default {
   plyr: {
     speed: "Speed",
     normal: "Normal"
+  },
+  state: {
+    loadEnd: "Load finished~",
+    loadMore: "Load more",
+    success: "Success"
+  },
+  Links: {
+    applySuccess: "Application submitted, awaiting review...",
+    apply: "Apply for a link",
+    name: "Website name",
+    url: "Website URL",
+    description: "Website description",
+    logo: "Website logo",
+    email: "Webmaster email",
+    qq: "Webmaster QQ",
+    submit: "Submit application",
+    rules: {
+      name: "Website name is required",
+      url: "Website URL is required",
+      description: "Website description is required"
+    }
+  },
+  Comment: {
+    submit: "Submit",
+    all: "All",
+    allMessage: "All messages",
+    allComment: "All Comments",
+    placeholder: "Content (supports Markdown syntax)",
+    message: "Message",
+    comment: "Comment",
+    reply: "Reply",
+    rules: {
+      content: "Comment content cannot be empty"
+    },
+    messageSuccess: "Message Success",
+    commentSuccess: "Comment Success"
+  },
+  Reply: {
+    submit: "Submit reply",
+    placeholder: "Reply content (supports Markdown syntax)",
+    rules: {
+      content: "Reply content cannot be empty"
+    },
+    success: "Reply submitted successfully"
+  },
+  Community: {
+    aboutMe: "About me",
+    nickName: "Nickname",
+    occupation: "Occupation",
+    engineer: "Web Development Engineer",
+    contactQQ: "Contact QQ",
+    contactEmail: "Contact Email",
+    workUnit: "Work Unit",
+    workUnitDescription:
+      "Ningbo Institute of Information Technology Application Research, Chinese Academy of Sciences",
+    aboutBlog: "About the blog",
+    domain: "Website domain",
+    websiteTime: "Online since",
+    staticPages: "Static pages",
+    systems: "Back-end systems",
+    website: "Website introduction",
+    siteDescription:
+      "The main purpose of this site is to exchange IT technology and record daily life. This site supports quick login via QQ, GitHub, and Google."
+  },
+  Article: {
+    views: "Views",
+    catalog: "Table of Contents"
   }
 }

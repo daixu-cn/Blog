@@ -1,13 +1,13 @@
 <template>
   <div id="Community-Comment">
-    <h1 :id="`全部${type}(${allTotal})`" class="total">
-      全部{{ type }}({{ allTotal }})
+    <h1 :id="`${type}(${allTotal})`" class="total">
+      {{ type }}({{ allTotal }})
     </h1>
     <MdEditor
       ref="mdEditor"
       :preview="false"
       :is-upload="false"
-      :placeholder="`${type}内容(支持 Markdown 语法)`"
+      :placeholder="`${i18n.global.t('Comment.placeholder')}`"
       :style="{ height: '300px' }"
     />
     <div class="submitComment">
@@ -17,7 +17,7 @@
         plain
         @click="submitComment"
       >
-        提交{{ type }}
+        {{ $t("Comment.submit") }}{{ type }}
       </el-button>
     </div>
 
@@ -110,7 +110,9 @@
                   </p>
                   <p class="timer">
                     <span class="replyUser"
-                      >回复@{{ reply.parent.userName }}</span
+                      >{{ $t("Comment.reply") }}@{{
+                        reply.parent.userName
+                      }}</span
                     >{{ reply.createdAt }}
                   </p>
                 </div>
@@ -130,7 +132,7 @@
                 text
                 :loading="item.replyLoading"
                 @click="loadReply(item)"
-                >加载更多</el-button
+                >{{ $t("state.loadMore") }}</el-button
               >
             </div>
           </div>
@@ -153,6 +155,7 @@ import Loading from "@/components/Loading.vue"
 import MdEditor from "@/components/MdEditor.vue"
 import { ElMessage } from "element-plus"
 import useUserStore from "@/store/user"
+import i18n from "@/locale"
 import ReplyDialog from "./ReplyDialog.vue"
 
 const props = defineProps({
@@ -162,7 +165,11 @@ const props = defineProps({
   }
 })
 
-const type = computed(() => (props.articleId === "-1" ? "留言" : "评论"))
+const type = computed(() =>
+  props.articleId === "-1"
+    ? i18n.global.t("Comment.allMessage")
+    : i18n.global.t("Comment.allComment")
+)
 const userStore = useUserStore()
 const mdEditor = ref()
 const replyDialog = ref()
@@ -242,12 +249,12 @@ getList()
 
 async function submitComment() {
   if (!userStore.token) {
-    ElMessage.warning("未登录")
+    ElMessage.warning(i18n.global.t("login.notLogged"))
     return
   }
   const content = mdEditor.value?.text
   if (!content) {
-    ElMessage.warning("留言内容不能为空")
+    ElMessage.warning(i18n.global.t("Comment.rules.content"))
     return
   }
 
@@ -257,7 +264,13 @@ async function submitComment() {
     content
   })
   if (res.code === 0) {
-    ElMessage.success("留言成功")
+    ElMessage.success(
+      `${i18n.global.t(
+        props.articleId === "-1"
+          ? "Comment.messageSuccess"
+          : "Comment.commentSuccess"
+      )}`
+    )
     mdEditor.value.text = ""
     getList(true)
   }

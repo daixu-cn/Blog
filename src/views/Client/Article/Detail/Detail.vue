@@ -16,8 +16,13 @@
           <h1 class="title">{{ info?.title }}</h1>
           <ul class="article-info">
             <li># {{ info?.category }}</li>
-            <li>{{ info?.views.toLocaleString() }}访问</li>
-            <li>{{ info?.comment_reply_total.toLocaleString() }}评论</li>
+            <li>
+              {{ info?.views.toLocaleString() }} {{ $t("Article.views") }}
+            </li>
+            <li>
+              {{ info?.comment_reply_total.toLocaleString() }}
+              {{ $t("Comment.comment") }}
+            </li>
             <li>{{ info?.createdAt }}</li>
           </ul>
           <h6 class="description">{{ info?.description }}</h6>
@@ -33,7 +38,7 @@
     </div>
 
     <div class="catalog">
-      <h1>目录</h1>
+      <h1>{{ $t("Article.catalog") }}</h1>
       <el-skeleton :loading="loading" animated>
         <template #template>
           <el-skeleton :rows="7" animated />
@@ -67,6 +72,7 @@ import Comment from "@/components/Comment/Comment.vue"
 import { cloneDeep } from "lodash"
 import { categories } from "@/global/select"
 import dayjs from "dayjs"
+import i18n from "@/locale"
 
 const { articleId } = useRoute().params
 const router = useRouter()
@@ -97,7 +103,9 @@ function onGetCatalog(list: HeadList[]) {
     catalog.value = [
       ...list,
       {
-        text: `全部评论(${info.value.comment_reply_total})`,
+        text: `${i18n.global.t("Comment.allComment")}(${
+          info.value.comment_reply_total
+        })`,
         level: 1
       }
     ]

@@ -35,6 +35,7 @@ export default {
     journal: "生活のかけら"
   },
   login: {
+    notLogged: "ログインしていない",
     login: "ログインする",
     forget: "パスワードを忘れた方はこちら",
     register: "登録する",
@@ -77,5 +78,71 @@ export default {
   plyr: {
     speed: "スピード",
     normal: "正常"
+  },
+  state: {
+    loadEnd: "読み込み完了",
+    loadMore: "もっと読む",
+    success: "成功"
+  },
+  Links: {
+    applySuccess: "申請が成功しました。審査待ちです...",
+    apply: "リンク申請",
+    name: "ウェブサイト名",
+    url: "ウェブサイトのURL",
+    description: "ウェブサイトの説明",
+    logo: "ウェブサイトのロゴ",
+    email: "サイト管理者のメールアドレス",
+    qq: "サイト管理者のQQ",
+    submit: "申請を送信",
+    rules: {
+      name: "ウェブサイト名を入力してください",
+      url: "ウェブサイトのURLを入力してください",
+      description: "ウェブサイトの説明を入力してください"
+    }
+  },
+  Comment: {
+    submit: "投稿",
+    all: "すべて",
+    allMessage: "すべてのメッセージ",
+    allComment: "すべてのコメント",
+    placeholder: "内容（Markdown形式をサポート）",
+    message: "メッセージ",
+    comment: "コメント",
+    reply: "返信",
+    rules: {
+      content: "コメント内容を入力してください"
+    },
+    messageSuccess: "メッセージサクセス",
+    commentSuccess: "コメント成功"
+  },
+  Reply: {
+    submit: "返信を送信",
+    placeholder: "返信内容（Markdown形式をサポート）",
+    rules: {
+      content: "返信内容を入力してください"
+    },
+    success: "返信が成功しました"
+  },
+  Community: {
+    aboutMe: "自己紹介",
+    nickName: "ニックネーム",
+    occupation: "職業",
+    engineer: "WEB開発エンジニア",
+    contactQQ: "連絡先QQ",
+    contactEmail: "連絡先メールアドレス",
+    workUnit: "所属機関",
+    workUnitDescription: "中国科学院寧波情報技術応用研究所",
+    aboutBlog: "ブログについて",
+    domain: "ウェブサイトドメイン",
+    websiteTime: "公開日時",
+    staticPages: "静的ページ",
+    systems: "バックエンドシステム",
+    website: "ウェブサイト紹介",
+    siteDescription:
+      "このサイトの主な目的は、IT技術の交流と日常の記録です。このサイトでは、QQ、GitHub、Googleを使用したクイックログインがサポートされています。"
+  },
+  Article: {
+    views: "閲覧数",
+    catalog: "目次"
   }
 }

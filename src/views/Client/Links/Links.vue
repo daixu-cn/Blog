@@ -36,7 +36,7 @@
             </div>
           </a>
           <a class="link-item apply" @click="applyDialog.show = true">
-            <i-ep-plus />友联申请
+            <i-ep-plus />{{ $t("Links.apply") }}
           </a>
 
           <i v-for="item of 4" :key="item" class="placeholder" />

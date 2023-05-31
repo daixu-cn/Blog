@@ -2,7 +2,7 @@
   <el-dialog
     id="ApplyDialog"
     v-model="show"
-    title="友联申请"
+    :title="i18n.global.t('Links.apply')"
     @close="linkRef?.resetFields()"
   >
     <el-form
@@ -13,28 +13,43 @@
       label-width="0"
     >
       <el-form-item prop="name">
-        <el-input v-model="link.name" placeholder="网站名称:" />
+        <el-input
+          v-model="link.name"
+          :placeholder="i18n.global.t('Links.name')"
+        />
       </el-form-item>
       <el-form-item prop="url">
-        <el-input v-model="link.url" placeholder="网站地址:" />
+        <el-input
+          v-model="link.url"
+          :placeholder="i18n.global.t('Links.url')"
+        />
       </el-form-item>
       <el-form-item prop="description">
-        <el-input v-model="link.description" placeholder="网站描述:" />
+        <el-input
+          v-model="link.description"
+          :placeholder="i18n.global.t('Links.description')"
+        />
       </el-form-item>
       <el-form-item prop="logo">
-        <el-input v-model="link.logo" placeholder="网站LOGO:" />
+        <el-input
+          v-model="link.logo"
+          :placeholder="i18n.global.t('Links.logo')"
+        />
       </el-form-item>
       <el-form-item prop="email">
-        <el-input v-model="link.email" placeholder="站长邮箱:" />
+        <el-input
+          v-model="link.email"
+          :placeholder="i18n.global.t('Links.email')"
+        />
       </el-form-item>
       <el-form-item prop="qq">
-        <el-input v-model="link.qq" placeholder="网站QQ:" />
+        <el-input v-model="link.qq" :placeholder="i18n.global.t('Links.qq')" />
       </el-form-item>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
         <el-button type="primary" :loading="loading" @click="confirm">
-          提交申请
+          {{ $t("Links.submit") }}
         </el-button>
       </span>
     </template>
@@ -46,6 +61,7 @@ import { ref, reactive } from "vue"
 import http from "@/server"
 import { ElMessage } from "element-plus"
 import type { FormInstance, FormRules } from "element-plus"
+import i18n from "@/locale"
 
 const show = ref(false)
 const loading = ref(false)
@@ -59,10 +75,26 @@ const link = reactive({
 })
 const linkRef = ref<FormInstance>()
 const rules = reactive<FormRules>({
-  name: [{ required: true, message: "网站名称不能为空", trigger: "blur" }],
-  url: [{ required: true, message: "网站地址不能为空", trigger: "blur" }],
+  name: [
+    {
+      required: true,
+      message: i18n.global.t("Links.rules.name"),
+      trigger: "blur"
+    }
+  ],
+  url: [
+    {
+      required: true,
+      message: i18n.global.t("Links.rules.url"),
+      trigger: "blur"
+    }
+  ],
   description: [
-    { required: true, message: "网站描述不能为空", trigger: "blur" }
+    {
+      required: true,
+      message: i18n.global.t("Links.rules.description"),
+      trigger: "blur"
+    }
   ]
 })
 
@@ -72,7 +104,7 @@ async function confirm() {
     loading.value = true
     const res = await http.put("/link/create", link)
     if (res.code === 0) {
-      ElMessage.success("申请成功,等待审核...")
+      ElMessage.success(i18n.global.t("Links.applySuccess"))
       show.value = false
     }
     loading.value = false
