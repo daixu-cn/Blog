@@ -76,7 +76,7 @@ function onGetCatalog(list: HeadList[]) {
     catalog.value = [
       ...list,
       {
-        text: "全部留言",
+        text: `全部评论(${info.value.comment_reply_total})`,
         level: 1
       }
     ]

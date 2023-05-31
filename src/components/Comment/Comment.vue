@@ -1,11 +1,14 @@
 <template>
   <div id="Community-Comment">
-    <h1 id="全部留言" class="total">全部留言({{ allTotal }})</h1>
+    <h1 :id="`全部${type}(${allTotal})`" class="total">
+      全部{{ type }}({{ allTotal }})
+    </h1>
     <MdEditor
       ref="mdEditor"
       :preview="false"
       :is-upload="false"
-      placeholder="留言内容(支持 Markdown 语法)"
+      :placeholder="`${type}内容(支持 Markdown 语法)`"
+      :style="{ height: '300px' }"
     />
     <div class="submitComment">
       <el-button
@@ -14,7 +17,7 @@
         plain
         @click="submitComment"
       >
-        提交留言
+        提交{{ type }}
       </el-button>
     </div>
 
@@ -69,7 +72,12 @@
               </p>
               <p class="timer">{{ item.createdAt }}</p>
             </div>
-            <MdEditor class="content" :is-preview="true" :text="item.content" />
+            <MdEditor
+              class="content"
+              :is-preview="true"
+              :text="item.content"
+              :style="{ maxHeight: '300px' }"
+            />
 
             <div
               v-for="reply of item.replies"
@@ -110,6 +118,7 @@
                   class="content"
                   :is-preview="true"
                   :text="reply.content"
+                  :style="{ maxHeight: '300px' }"
                 />
               </div>
             </div>
@@ -136,7 +145,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, nextTick } from "vue"
+import { ref, nextTick, computed } from "vue"
 import http from "@/server"
 import dayjs from "dayjs"
 import { useIntersectionObserver } from "@vueuse/core"
@@ -152,6 +161,8 @@ const props = defineProps({
     default: "-1"
   }
 })
+
+const type = computed(() => (props.articleId === "-1" ? "留言" : "评论"))
 const userStore = useUserStore()
 const mdEditor = ref()
 const replyDialog = ref()
@@ -270,9 +281,10 @@ async function loadReply(comment, refresh = false) {
         return !comment.replies.find((reply) => reply.replyId === item.replyId)
       })
     ]
-    if (!refresh) {
-      comment.replyPage += 1
+    if (refresh) {
       allTotal.value++
+    } else {
+      comment.replyPage += 1
     }
   }
   comment.replyLoading = false
@@ -302,6 +314,7 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
     font-weight: bold;
     margin-bottom: 30px;
   }
+
   .submitComment {
     display: flex;
     justify-content: flex-end;
