@@ -1,8 +1,13 @@
 html {
+  body {
+    &.el-popup-parent--hidden {
+      width: 100% !important;
+    }
+  }
+
   .el-button {
     font-family: inherit;
   }
-
   .el-dialog {
     width: 400px;
     .el-dialog__header {
