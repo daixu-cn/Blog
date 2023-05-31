@@ -50,6 +50,7 @@
 import { ref, onMounted, watchEffect } from "vue"
 import http from "@/server"
 import { useRouter } from "vue-router"
+import { categories } from "@/global/select"
 
 const router = useRouter()
 const props = defineProps({
@@ -107,7 +108,14 @@ async function getHotList() {
   })
 
   if (res.code === 0) {
-    hotList.value = res.data.list
+    hotList.value = res.data.list.map((item) => {
+      return {
+        ...item,
+        category: categories.find(
+          (category) => category.value === item.category
+        )?.label
+      }
+    })
   } else {
     hotList.value = []
   }

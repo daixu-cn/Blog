@@ -26,7 +26,7 @@
           <el-option
             v-for="item of categories"
             :key="item.value"
-            :label="i18n.global.t(item.name)"
+            :label="item.label"
             :value="item.value"
           />
         </el-select>

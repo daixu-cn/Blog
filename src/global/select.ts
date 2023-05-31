@@ -1,23 +1,21 @@
+import i18n from "@/locale"
+
 // 文章分类
 export const categories = [
   {
-    label: "实验室",
-    value: "CODE",
-    name: "category.code"
+    label: i18n.global.t("category.code"),
+    value: "CODE"
   },
   {
-    label: "探索站",
-    value: "TUTORIAL",
-    name: "category.tutorial"
+    label: i18n.global.t("category.tutorial"),
+    value: "TUTORIAL"
   },
   {
-    label: "咖啡屋",
-    value: "LEISURE",
-    name: "category.leisure"
+    label: i18n.global.t("category.leisure"),
+    value: "LEISURE"
   },
   {
-    label: "生活碎片",
-    value: "JOURNAL",
-    name: "category.journal"
+    label: i18n.global.t("category.journal"),
+    value: "JOURNAL"
   }
 ]
