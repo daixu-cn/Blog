@@ -42,3 +42,14 @@
     }
   }
 }
+
+// 主宽度适配
+@mixin media-width() {
+  width: 80%;
+  @media screen and (max-width: 1500px) {
+    width: 1200px;
+  }
+  @media screen and (max-width: 1250px) {
+    width: 100%;
+  }
+}

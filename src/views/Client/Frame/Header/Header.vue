@@ -63,7 +63,7 @@ function goToPage(name: string) {
     opacity: 0;
   }
   .container {
-    width: $main-width;
+    @include media-width;
     height: 100%;
     margin: 0 auto;
     display: flex;
@@ -125,7 +125,6 @@ function goToPage(name: string) {
 
   @media screen and (max-width: 1250px) {
     .container {
-      width: 100%;
       padding: 0 20px;
       box-sizing: border-box;
     }
