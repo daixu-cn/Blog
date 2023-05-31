@@ -1,5 +1,6 @@
 <template>
   <el-config-provider
+    v-if="isRouterAlive"
     :locale="localeStore.element"
     v-bind="(ElConfigProviderConfig as ConfigProviderProps)"
   >
@@ -13,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from "vue"
+import { reactive, ref, nextTick, provide } from "vue"
 import { addListener, launch } from "devtools-detector"
 import NotFound from "@/views/Error/NotFound.vue"
 import useUserStore from "@/store/user"
@@ -29,6 +30,7 @@ if (import.meta.env.MODE !== "development") {
   launch()
 }
 
+const isRouterAlive = ref(true)
 const userStore = useUserStore()
 const themeStore = useThemeStore()
 const localeStore = useLocaleStore()
@@ -47,6 +49,14 @@ const ElConfigProviderConfig = reactive({
     autoInsertSpace: true
   }
 })
+
+function reload() {
+  isRouterAlive.value = false
+  nextTick(() => {
+    isRouterAlive.value = true
+  })
+}
+provide("reload", reload)
 </script>
 
 <style lang="scss">

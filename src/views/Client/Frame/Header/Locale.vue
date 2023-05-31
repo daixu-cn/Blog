@@ -20,11 +20,15 @@
 </template>
 
 <script lang="ts" setup>
+import { inject } from "vue"
 import locales, { LocaleType } from "@/global/locale"
 import useLocaleStore from "@/store/locale"
 
+const reload = inject<() => void>("reload")
 const localeStore = useLocaleStore()
+
 function localeChange(locale: LocaleType) {
   localeStore.setLocale(locale)
+  reload?.()
 }
 </script>
