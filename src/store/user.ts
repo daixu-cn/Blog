@@ -8,6 +8,9 @@ interface Info {
   email: string
   emailService: boolean
   role: number
+  qq: boolean
+  github: boolean
+  google: boolean
   createdAt: string
   updatedAt: number
 }
