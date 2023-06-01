@@ -152,6 +152,7 @@ function goToPage(articleId: string) {
 
 <style lang="scss">
 #SearchModal {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;

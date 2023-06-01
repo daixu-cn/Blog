@@ -20,7 +20,7 @@
       </div>
     </div>
   </div>
-  <SearchModal :show="isSearch" @close="isSearch = false" />
+  <SearchModal :show="isSearch" @close="searchClose" />
   <NavMobile ref="NavMobileRef" />
 </template>
 
@@ -43,6 +43,12 @@ const router = useRouter()
 
 function goToPage(name: string) {
   router.push({ name })
+}
+
+function searchClose() {
+  isSearch.value = false
+  const SearchModalEL = document.querySelector("#SearchModal") as HTMLElement
+  SearchModalEL.style.display = "none"
 }
 </script>
 

@@ -10,6 +10,9 @@ function searchHandler() {
   const HeaderEL = document.querySelector("#Header") as HTMLElement
   HeaderEL.setAttribute("class", "hidden")
 
+  const SearchModalEL = document.querySelector("#SearchModal") as HTMLElement
+  SearchModalEL.style.display = "block"
+
   function listener(event: TransitionEvent) {
     if (event.target === HeaderEL) {
       emit("open")
