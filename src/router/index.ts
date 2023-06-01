@@ -136,6 +136,12 @@ router.beforeEach((to, from, next) => {
     } else {
       next({ name: "Frame" })
     }
+  } else if (to.path === "/account") {
+    if (useUserStore()?.info) {
+      next()
+    } else {
+      next({ name: "Login" })
+    }
   } else {
     next()
   }
