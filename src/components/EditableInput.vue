@@ -43,9 +43,10 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  // 自定义编辑
-  customEditing: {
-    type: Function
+  // 是否自定义处理编辑函数
+  isCustom: {
+    type: Boolean,
+    default: false
   },
   params: {
     type: Object,
@@ -72,7 +73,7 @@ const props = defineProps({
     default: "patch"
   }
 })
-const emit = defineEmits(["save", "cancel"])
+const emits = defineEmits(["save", "cancel", "customEditing"])
 const form = reactive<EditableFrom>({
   loading: false,
   isEditable: false,
@@ -81,8 +82,8 @@ const form = reactive<EditableFrom>({
 const input = ref()
 
 function edit() {
-  if (props.customEditing) {
-    props.customEditing()
+  if (props.isCustom) {
+    emits("customEditing")
   } else {
     form.isEditable = true
     nextTick(() => input.value?.focus())
@@ -99,7 +100,7 @@ async function save() {
       ElMessage.success("编辑成功!")
       form.isEditable = false
 
-      emit("save", res.data)
+      emits("save", res.data)
     } else {
       ElMessage.error(res.msg)
     }
@@ -111,7 +112,7 @@ function cancel() {
   form.value = props.defaultValue
   form.isEditable = false
 
-  emit("cancel")
+  emits("cancel")
 }
 </script>
 <style lang="scss">
