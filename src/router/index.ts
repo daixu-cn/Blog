@@ -126,15 +126,18 @@ const router = createRouter({
   }
 })
 
-router.beforeEach((to, from, next) => {
-  sessionStorage.setItem("redirect", from.fullPath)
+const redirectIgnore = ["/OAuth", "/login", "/forget", "/register"]
+router.beforeEach((to, _, next) => {
+  if (!redirectIgnore.includes(to.fullPath)) {
+    sessionStorage.setItem("redirect", to.fullPath)
+  }
   NProgress.start()
 
   if (to.path.startsWith("/system")) {
     if (useUserStore()?.info?.role === 0) {
       next()
     } else {
-      next({ name: "Frame" })
+      next({ name: "Login" })
     }
   } else if (to.path === "/account") {
     if (useUserStore()?.info) {
