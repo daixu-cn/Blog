@@ -70,7 +70,12 @@
           align="center"
           show-overflow-tooltip
         />
-        <el-table-column prop="category" label="文章类别" align="center" />
+        <el-table-column
+          prop="category"
+          label="文章类别"
+          align="center"
+          show-overflow-tooltip
+        />
         <el-table-column
           prop="description"
           label="描述"
@@ -216,9 +221,10 @@ async function getList(page = 1) {
       table.list = res.data.list.map((item) => {
         return {
           ...item,
-          category: categories.find(
-            (category) => category.value === item.category
-          )?.label,
+          category: i18n.global.t(
+            categories.find((category) => category.value === item.category)
+              ?.label as string
+          ),
           views: item.views.toLocaleString(),
           updatedAt: dayjs(item.updatedAt).format("L LTS"),
           createdAt: dayjs(item.createdAt).format("L LTS")
