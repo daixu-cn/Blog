@@ -193,7 +193,7 @@ async function getList(refresh = false) {
     }
     const res = await http.post("/comment/list", {
       articleId: props.articleId,
-      page: refresh ? page.value - 1 : page.value,
+      page: refresh ? 1 : page.value,
       pageSize: 10
     })
 
@@ -206,14 +206,16 @@ async function getList(refresh = false) {
         }
       }
 
-      list.value = [
-        ...list.value,
-        ...res.data.list.filter((item) => {
-          return !list.value.find(
-            (comment) => comment.commentId === item.commentId
-          )
-        })
-      ]
+      list.value = refresh
+        ? res.data.list
+        : [
+            ...list.value,
+            ...res.data.list.filter((item) => {
+              return !list.value.find(
+                (comment) => comment.commentId === item.commentId
+              )
+            })
+          ]
       total.value = res.data.total
       allTotal.value = res.data.comment_reply_total
 
