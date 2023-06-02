@@ -348,6 +348,13 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
       height: 46px;
       object-fit: contain;
       border-radius: $border-radius;
+      .image-slot {
+        width: 100%;
+        height: 100%;
+        background-color: var(--el-text-color-disabled);
+        color: white;
+        @include flex-center;
+      }
     }
     .comment-content {
       width: calc(100% - 56px);
