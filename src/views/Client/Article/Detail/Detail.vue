@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, nextTick } from "vue"
+import { ref, nextTick, onBeforeUnmount } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import http from "@/server"
 import Player from "@/components/Player.vue"
@@ -112,28 +112,26 @@ function onGetCatalog(list: HeadList[]) {
       }
     ]
     nextTick(() => {
-      scrollHandler()
+      window.addEventListener("scroll", scrollHandler)
     })
   }
 }
 function scrollHandler() {
-  window.addEventListener("scroll", () => {
-    const contentSections = catalog.value.map(
-      (item) => document.getElementById(item.text) as HTMLElement
-    )
-    for (const el of cloneDeep(contentSections).reverse()) {
-      if (el.getBoundingClientRect().top <= 80) {
-        for (const item of document.querySelectorAll(".catalog ul li")) {
-          if (el.id === item.getAttribute("data-text")) {
-            item.classList.add("active")
-          } else {
-            item.classList.remove("active")
-          }
+  const contentSections = catalog.value.map(
+    (item) => document.getElementById(item.text) as HTMLElement
+  )
+  for (const el of cloneDeep(contentSections).reverse()) {
+    if (el.getBoundingClientRect().top <= 80) {
+      for (const item of document.querySelectorAll(".catalog ul li")) {
+        if (el.id === item.getAttribute("data-text")) {
+          item.classList.add("active")
+        } else {
+          item.classList.remove("active")
         }
-        return
       }
+      return
     }
-  })
+  }
 }
 
 function goToAnchor(text: string) {
@@ -146,6 +144,10 @@ function goToAnchor(text: string) {
     behavior: "smooth"
   })
 }
+
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll", scrollHandler)
+})
 </script>
 
 <style lang="scss">
