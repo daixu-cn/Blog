@@ -21,13 +21,18 @@ const userStore = useUserStore()
 async function login(url, params) {
   const res = await http.post(url, params)
   if (res.code === 0) {
-    ElMessage.success(i18n.global.t("login.message.successfullyLogin"))
+    ElMessage.success(
+      i18n.global.t(
+        userStore.token
+          ? "login.message.bindSuccessfully"
+          : "login.message.successfullyLogin"
+      )
+    )
     userStore.setUser(res.data.user)
     userStore.setToken(res.data.token)
-    router.replace(sessionStorage.getItem("redirect") ?? "/")
-    sessionStorage.removeItem("redirect")
   }
   router.replace(sessionStorage.getItem("redirect") ?? "/")
+  sessionStorage.removeItem("redirect")
 }
 
 if (queryString.parse(window.location.hash)?.state === "qq") {
