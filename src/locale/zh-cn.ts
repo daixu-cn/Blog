@@ -66,7 +66,8 @@ export default {
       reacquireTimer: "重新获取({timers}s)",
       successfullyLogin: "登录成功",
       successfullyModified: "修改成功",
-      successfullyRegister: "注册成功"
+      successfullyRegister: "注册成功",
+      bindSuccessfully: "绑定成功"
     }
   },
   search: {
@@ -144,5 +145,17 @@ export default {
   Article: {
     views: "访问",
     catalog: "目录"
+  },
+  Account: {
+    avatar: "头像",
+    userName: "用户名",
+    email: "邮箱",
+    mailboxService: "邮箱服务",
+    bind: "已绑定",
+    modifiedSuccessfully: "修改成功"
+  },
+  file: {
+    formatException: "图片格式异常",
+    sizeException: "图片格式不能超过{size}MB!"
   }
 }

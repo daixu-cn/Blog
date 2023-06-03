@@ -66,7 +66,8 @@ export default {
       reacquireTimer: "{timers}s",
       successfullyLogin: "ログインに成功しました。",
       successfullyModified: "変更に成功しました。",
-      successfullyRegister: "登録に成功しました。"
+      successfullyRegister: "登録に成功しました。",
+      bindSuccessfully: "バインド成功"
     }
   },
   search: {
@@ -144,5 +145,17 @@ export default {
   Article: {
     views: "閲覧数",
     catalog: "目次"
+  },
+  Account: {
+    avatar: "アバター",
+    userName: "ユーザー名",
+    email: "メールアドレス",
+    mailboxService: "メールボックスサービス",
+    bind: "バインド済み",
+    modifiedSuccessfully: "修正が成功しました"
+  },
+  file: {
+    formatException: "画像形式の例外",
+    sizeException: "画像形式は{size}MBを超えることはできません！"
   }
 }

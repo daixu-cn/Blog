@@ -66,7 +66,8 @@ export default {
       reacquireTimer: "{timers}s",
       successfullyLogin: "Login successful",
       successfullyModified: "Modification successful",
-      successfullyRegister: "Registration successful"
+      successfullyRegister: "Registration successful",
+      bindSuccessfully: "Bind successfully"
     }
   },
   search: {
@@ -145,5 +146,17 @@ export default {
   Article: {
     views: "Views",
     catalog: "Table of Contents"
+  },
+  Account: {
+    avatar: "Avatar",
+    userName: "Username",
+    email: "Email",
+    mailboxService: "Mailbox Service",
+    bind: "Bound",
+    modifiedSuccessfully: "Modified Successfully"
+  },
+  file: {
+    formatException: "Image format exception",
+    sizeException: "Image format cannot exceed {size}MB!"
   }
 }
