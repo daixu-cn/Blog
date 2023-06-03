@@ -27,6 +27,7 @@ body {
 /*整个滚动条*/
 ::-webkit-scrollbar {
   width: 6px;
+  height: 0;
   background-color: transparent;
 }
 
