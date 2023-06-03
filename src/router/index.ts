@@ -111,7 +111,7 @@ const router = createRouter({
       ]
     },
     {
-      path: "/OAuth",
+      path: "/oauth",
       name: "OAuth",
       component: () => import("@/views/User/OAuth.vue")
     },
@@ -126,9 +126,9 @@ const router = createRouter({
   }
 })
 
-const redirectIgnore = ["/OAuth", "/login", "/forget", "/register"]
+const redirectIgnore = ["/oauth", "/login", "/forget", "/register"]
 router.beforeEach((to, _, next) => {
-  if (!redirectIgnore.includes(to.fullPath)) {
+  if (!redirectIgnore.includes(to.path.toLocaleLowerCase())) {
     sessionStorage.setItem("redirect", to.fullPath)
   }
   NProgress.start()
