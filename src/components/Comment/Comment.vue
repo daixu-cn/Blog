@@ -296,9 +296,14 @@ async function loadReply(comment, refresh = false) {
         return !comment.replies.find((reply) => reply.replyId === item.replyId)
       })
     ]
+
+    const { length } = res.data.list
     if (refresh) {
       allTotal.value++
-    } else {
+    } else if (
+      Number.isInteger(length / 10) ||
+      Number.isInteger((length + 1) / 10)
+    ) {
       comment.replyPage += 1
     }
   }
