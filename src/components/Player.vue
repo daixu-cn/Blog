@@ -58,8 +58,8 @@ onBeforeUnmount(() => {
 <style lang="scss">
 #Player {
   width: 100%;
-  video {
-    width: 100%;
+  .plyr {
+    height: 100%;
   }
 }
 </style>
