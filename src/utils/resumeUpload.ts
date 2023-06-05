@@ -101,13 +101,15 @@ export default async function resumeUpload(file: File, options: Options) {
 
         const res = await http[options.methods](options.url, formData)
         if (res.code === 0) {
-          options.onProgress?.(++currentChunk, chunks)
+          currentChunk++
+          options.onProgress?.(currentChunk, chunks)
           options.onSuccess?.(res.data)
         } else if (res.code === 12009) {
           currentChunk = res.data
           uploadChunk()
         } else if (res.code === 12011) {
-          options.onProgress?.(++currentChunk, chunks)
+          currentChunk++
+          options.onProgress?.(currentChunk, chunks)
           uploadChunk()
         } else {
           options.onError?.(res)
