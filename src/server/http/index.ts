@@ -44,7 +44,7 @@ class HTTP {
           resolve(res)
         })
         .catch((err) => {
-          ElMessage.error(err.message)
+          ElMessage.error(err?.response?.data?.message ?? err.message)
           reject(err)
         })
     })
