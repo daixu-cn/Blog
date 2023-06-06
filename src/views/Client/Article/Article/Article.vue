@@ -33,7 +33,10 @@
               {{ item.description }}
             </p>
             <Player v-if="item.video" :src="item.video" :poster="item.poster" />
-            <ul class="views">
+            <ul
+              class="views"
+              @click="goToPage('ArticleDetail', { articleId: item.articleId })"
+            >
               <li>
                 <i-ep-view />
                 <span>{{ item.views.toLocaleString() }}</span>
