@@ -17,7 +17,11 @@
         plain
         @click="submitComment"
       >
-        {{ $t("Comment.submit") }}{{ type }}
+        {{
+          props.articleId === "-1"
+            ? $t("Comment.submitMessage")
+            : $t("Comment.submitComment")
+        }}
       </el-button>
     </div>
 
@@ -65,10 +69,17 @@
             <div class="info">
               <p class="user-row">
                 <span class="userName">{{ item.user.userName }}</span>
-                <i-ep-promotion
-                  class="reply-icon"
-                  @click="replyHandler(item, undefined, item.user.userName)"
-                />
+                <span>
+                  <i-ep-promotion
+                    class="reply-icon"
+                    @click="replyHandler(item, undefined, item.user.userName)"
+                  />
+                  <i-ep-deleteFilled
+                    v-if="userStore.info?.userId === item.user.userId"
+                    class="delete-icon"
+                    @click="deleteHandler(0, item, item.commentId)"
+                  />
+                </span>
               </p>
               <p class="timer">{{ item.createdAt }}</p>
             </div>
@@ -101,12 +112,19 @@
                 <div class="info">
                   <p class="user-row">
                     <span class="userName">{{ reply.user.userName }}</span>
-                    <i-ep-promotion
-                      class="reply-icon"
-                      @click="
-                        replyHandler(item, reply.replyId, reply.user.userName)
-                      "
-                    />
+                    <span>
+                      <i-ep-promotion
+                        class="reply-icon"
+                        @click="
+                          replyHandler(item, reply.replyId, reply.user.userName)
+                        "
+                      />
+                      <i-ep-deleteFilled
+                        v-if="userStore.info?.userId === reply.user.userId"
+                        class="delete-icon"
+                        @click="deleteHandler(1, item, reply.replyId)"
+                      />
+                    </span>
                   </p>
                   <p class="timer">
                     <span class="replyUser"
@@ -153,7 +171,7 @@ import dayjs from "dayjs"
 import { useIntersectionObserver } from "@vueuse/core"
 import Loading from "@/components/Loading.vue"
 import MdEditor from "@/components/MdEditor.vue"
-import { ElMessage } from "element-plus"
+import { ElMessage, ElMessageBox } from "element-plus"
 import useUserStore from "@/store/user"
 import i18n from "@/locale"
 import ReplyDialog from "./ReplyDialog.vue"
@@ -318,6 +336,53 @@ function replyHandler(comment, parentId?: string, userName?: string) {
   replyDialog.value.show = true
 }
 
+/**
+ * @description 删除评论/回复
+ * @param {number} type 类型：0评论、1回复
+ * @param {any} comment 评论信息
+ * @param {string} id 评论/回复ID
+ */
+function deleteHandler(type: number, comment, id: string) {
+  ElMessageBox.confirm(
+    `此操作将永久删除该${type === 0 ? "评论" : "回复"},是否继续?`,
+    "提示",
+    {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+      beforeClose: async (action, instance, done) => {
+        if (action === "confirm") {
+          try {
+            instance.confirmButtonLoading = true
+
+            const res = await http.delete(
+              type === 0 ? `/comment/${id}` : `/reply/${id}`
+            )
+            if (res.code === 0) {
+              done()
+            }
+          } finally {
+            instance.confirmButtonLoading = false
+          }
+        } else {
+          done()
+        }
+      }
+    }
+  ).then(() => {
+    ElMessage.success("删除成功")
+    if (type === 0) {
+      getList(true)
+    } else {
+      comment.replies.splice(
+        comment.replies.findIndex((item) => item.replyId === id),
+        1
+      )
+      loadReply(comment, true)
+    }
+  })
+}
+
 const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
   if (isIntersecting) {
     if (list.value.length < total.value) {
@@ -377,16 +442,20 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
           align-items: center;
           .userName {
             display: inline-block;
-            max-width: calc(100% - 50px);
+            max-width: calc(100% - 60px);
             @include text-ellipsis;
           }
-          .reply-icon {
+          .reply-icon,
+          .delete-icon {
             cursor: pointer;
             color: $font-color-secondary;
             transition: color $duration;
             &:hover {
               color: $color-primary;
             }
+          }
+          .delete-icon {
+            margin-left: 10px;
           }
         }
         .timer {
