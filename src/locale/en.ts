@@ -85,6 +85,14 @@ export default {
     loadMore: "Load more",
     success: "Success"
   },
+  dialog: {
+    message:
+      "This operation will permanently delete the record. Do you want to continue?",
+    title: "Warning",
+    confirmButton: "OK",
+    cancelButton: "Cancel",
+    success: "Operation successful"
+  },
   Links: {
     applySuccess: "Application submitted, awaiting review...",
     apply: "Apply for a link",
@@ -102,7 +110,8 @@ export default {
     }
   },
   Comment: {
-    submit: "Submit",
+    submitComment: "Submit Comment",
+    submitMessage: "Submit Message",
     all: "All",
     allMessage: "All messages",
     allComment: "All Comments",

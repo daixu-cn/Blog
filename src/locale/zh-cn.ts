@@ -85,6 +85,13 @@ export default {
     loadMore: "加载更多",
     success: "成功"
   },
+  dialog: {
+    message: "此操作将永久删除该记录,是否继续?",
+    title: "警告",
+    confirmButton: "确定",
+    cancelButton: "取消",
+    success: "操作成功"
+  },
   Links: {
     applySuccess: "申请成功,等待审核...",
     apply: "友联申请",
@@ -102,7 +109,8 @@ export default {
     }
   },
   Comment: {
-    submit: "提交",
+    submitComment: "提交评论",
+    submitMessage: "提交留言",
     all: "全部",
     allMessage: "全部留言",
     allComment: "全部评论",

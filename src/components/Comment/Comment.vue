@@ -344,11 +344,11 @@ function replyHandler(comment, parentId?: string, userName?: string) {
  */
 function deleteHandler(type: number, comment, id: string) {
   ElMessageBox.confirm(
-    `此操作将永久删除该${type === 0 ? "评论" : "回复"},是否继续?`,
-    "提示",
+    i18n.global.t("dialog.message"),
+    i18n.global.t("dialog.title"),
     {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
+      confirmButtonText: i18n.global.t("dialog.confirmButton"),
+      cancelButtonText: i18n.global.t("dialog.cancelButton"),
       type: "warning",
       beforeClose: async (action, instance, done) => {
         if (action === "confirm") {
@@ -370,7 +370,7 @@ function deleteHandler(type: number, comment, id: string) {
       }
     }
   ).then(() => {
-    ElMessage.success("删除成功")
+    ElMessage.success(i18n.global.t("dialog.success"))
     if (type === 0) {
       getList(true)
     } else {

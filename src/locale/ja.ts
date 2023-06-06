@@ -85,6 +85,13 @@ export default {
     loadMore: "もっと読む",
     success: "成功"
   },
+  dialog: {
+    message: "この操作はレコードを永久に削除します。続行しますか？",
+    title: "警告",
+    confirmButton: "はい",
+    cancelButton: "キャンセル",
+    success: "操作が成功しました"
+  },
   Links: {
     applySuccess: "申請が成功しました。審査待ちです...",
     apply: "リンク申請",
@@ -102,7 +109,8 @@ export default {
     }
   },
   Comment: {
-    submit: "投稿",
+    submitComment: "コメント投稿",
+    submitMessage: "メッセージの送信",
     all: "すべて",
     allMessage: "すべてのメッセージ",
     allComment: "すべてのコメント",
