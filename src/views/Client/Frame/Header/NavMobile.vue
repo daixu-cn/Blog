@@ -9,16 +9,12 @@
     >
       <div class="user">
         <el-image
-          src="/src/assets/image/mobileBg.png"
+          :src="getAssets('mobileBg.png')"
           fit="cover"
           class="mobileBg"
         />
         <div class="user-info">
-          <el-image
-            src="/src/assets/image/avatar.png"
-            fit="cover"
-            class="avatar"
-          />
+          <el-image :src="getAssets('avatar.png')" fit="cover" class="avatar" />
           <div class="signature">
             <p>daixu</p>
             <p>{{ $t("site.signature") }}</p>
@@ -60,6 +56,7 @@ import { ref } from "vue"
 import menus, { adminMenus } from "@/global/menus"
 import { useRoute, useRouter } from "vue-router"
 import useUserStore from "@/store/user"
+import { getAssets } from "@/utils/util"
 import User from "./User.vue"
 
 const route = useRoute()
