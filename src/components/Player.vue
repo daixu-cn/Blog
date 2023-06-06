@@ -59,7 +59,10 @@ onBeforeUnmount(() => {
 #Player {
   width: 100%;
   .plyr {
-    height: 100%;
+    video {
+      height: 100%;
+      max-height: 350px;
+    }
   }
 }
 </style>

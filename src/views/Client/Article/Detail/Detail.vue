@@ -201,6 +201,7 @@ onBeforeUnmount(() => {
       }
     }
     .description {
+      line-height: 1.3em;
       color: $font-color-secondary;
       margin-bottom: 20px;
     }
