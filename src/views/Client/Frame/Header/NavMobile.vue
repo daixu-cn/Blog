@@ -37,11 +37,7 @@
         </li>
         <User v-else @router="drawer = false">
           <li>
-            <el-image
-              src="/src/assets/image/avatar.png"
-              fit="cover"
-              class="avatar"
-            />
+            <el-image :src="userStore.info.avatar" fit="cover" class="avatar" />
 
             {{ userStore.info.userName }}
           </li>
@@ -101,6 +97,8 @@ defineExpose({ drawer })
           background-color: $bg-color;
           border-radius: $border-radius;
           .avatar {
+            height: 100%;
+            aspect-ratio: 1;
             margin-right: 10px;
           }
           .signature {
