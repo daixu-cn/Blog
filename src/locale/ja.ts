@@ -15,7 +15,7 @@ export default {
     article: "ホーム",
     community: "コミュニティ",
     links: "リンク",
-    magic: "マジック",
+    creations: "クリエーション",
     updates: "アップデート",
     account: "アカウント",
     system: {

@@ -54,8 +54,8 @@ export default [
     name: "menu.links"
   },
   {
-    path: "/magic",
-    name: "menu.magic"
+    path: "/creations",
+    name: "menu.creations"
   },
   {
     path: "/updates",

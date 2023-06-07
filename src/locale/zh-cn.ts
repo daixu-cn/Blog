@@ -15,7 +15,7 @@ export default {
     article: "首页",
     community: "互动社区",
     links: "友情链接",
-    magic: "魔法空间",
+    creations: "创意空间",
     updates: "站点动态",
     account: "账户中心",
     system: {

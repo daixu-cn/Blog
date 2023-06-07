@@ -15,7 +15,7 @@ export default {
     article: "Home",
     community: "Community",
     links: "Links",
-    magic: "Magic",
+    creations: "Creations",
     updates: "Updates",
     account: "Account",
     system: {

@@ -32,9 +32,9 @@ const router = createRouter({
           component: () => import("@/views/Client/Links/Links.vue")
         },
         {
-          path: "/magic",
-          name: "Magic",
-          component: () => import("@/views/Client/Magic/Magic.vue")
+          path: "/creations",
+          name: "Creations",
+          component: () => import("@/views/Client/Creations/Creations.vue")
         },
         {
           path: "/updates",
