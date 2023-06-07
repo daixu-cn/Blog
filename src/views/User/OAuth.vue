@@ -9,7 +9,7 @@
 <script lang="ts" setup>
 import { useRoute, useRouter } from "vue-router"
 import http from "@/server"
-import { ElMessage } from "element-plus"
+import { ElMessage, ElNotification } from "element-plus"
 import useUserStore from "@/store/user"
 import i18n from "@/locale"
 import queryString from "query-string"
@@ -21,26 +21,42 @@ const userStore = useUserStore()
 async function login(url, params) {
   const res = await http.post(url, params)
   if (res.code === 0) {
-    ElMessage.success(
-      i18n.global.t(
-        userStore.token
-          ? "login.message.bindSuccessfully"
-          : "login.message.successfullyLogin"
-      )
-    )
     userStore.setUser(res.data.user)
     userStore.setToken(res.data.token)
+
+    if (res.data.newUser) {
+      ElNotification({
+        title: i18n.global.t("login.message.successfullyRegister"),
+        message: i18n.global.t("login.newUser"),
+        type: "success",
+        duration: 0
+      })
+    } else {
+      ElMessage.success(
+        i18n.global.t(
+          userStore.token
+            ? "login.message.bindSuccessfully"
+            : "login.message.successfullyLogin"
+        )
+      )
+    }
   }
   router.replace(sessionStorage.getItem("redirect") ?? "/")
   sessionStorage.removeItem("redirect")
 }
 
-if (queryString.parse(window.location.hash)?.state === "qq") {
+const state = query?.state ?? queryString.parse(window.location.hash)?.state
+
+if (state === "qq") {
   login("/user/login/qq", {
     accessToken: queryString.parse(window.location.hash)?.access_token
   })
-} else if (query?.state === "github") {
+} else if (state === "github") {
   login("/user/login/github", { code: query?.code })
+} else if (state === "google") {
+  login("/user/login/google", {
+    accessToken: queryString.parse(window.location.hash)?.access_token
+  })
 } else {
   router.replace(sessionStorage.getItem("redirect") ?? "/")
 }

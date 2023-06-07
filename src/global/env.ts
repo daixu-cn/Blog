@@ -15,4 +15,9 @@ export function OAuth(type: "qq" | "github" | "google") {
   if (type === "github") {
     window.location.href = `https://github.com/login/oauth/authorize?client_id=52a68a030ce19089d0f1&redirect_uri=${redirectURI}&state=github`
   }
+  if (type === "google") {
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=149094609811-jt66sud8u9qmvueehdh8rhani1aqaeiv.apps.googleusercontent.com&redirect_uri=${redirectURI}&scope=${encodeURIComponent(
+      "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid"
+    )}&response_type=token&state=google`
+  }
 }
