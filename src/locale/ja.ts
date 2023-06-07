@@ -68,7 +68,9 @@ export default {
       successfullyModified: "変更に成功しました。",
       successfullyRegister: "登録に成功しました。",
       bindSuccessfully: "バインド成功"
-    }
+    },
+    newUser:
+      "必要な場合は、アカウントセンターでお手続きください。 お手続き後は、記事公開のツイートやコメント返信の通知などの情報を受け取ることができます。"
   },
   search: {
     articleTitle: "記事のタイトル",

@@ -68,7 +68,9 @@ export default {
       successfullyModified: "修改成功",
       successfullyRegister: "注册成功",
       bindSuccessfully: "绑定成功"
-    }
+    },
+    newUser:
+      "您的邮箱未进行绑定，如有需要可前往账户中心进行绑定，绑定之后可以接收文章发布推送、评论回复通知等信息。"
   },
   search: {
     articleTitle: "文章标题",

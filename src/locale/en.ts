@@ -68,7 +68,9 @@ export default {
       successfullyModified: "Modification successful",
       successfullyRegister: "Registration successful",
       bindSuccessfully: "Bind successfully"
-    }
+    },
+    newUser:
+      "Your mailbox is not bound, if you need, you can go to the account center for binding, after binding, you can receive article release push, comment reply notification and other information."
   },
   search: {
     articleTitle: "Article Title",
