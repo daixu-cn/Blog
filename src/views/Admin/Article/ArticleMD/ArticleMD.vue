@@ -32,6 +32,7 @@
         <el-input
           v-model="article.description"
           :rows="1"
+          autosize
           type="textarea"
           placeholder="请输入文章描述"
         />
