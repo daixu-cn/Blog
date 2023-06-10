@@ -1,6 +1,10 @@
 <template>
   <div id="Article">
-    <el-skeleton :loading="skeletonLoading && page === 1" animated :count="5">
+    <el-skeleton
+      :loading="article.skeletonLoading && article.page === 1"
+      animated
+      :count="5"
+    >
       <template #template>
         <div class="article-container">
           <div class="article-item">
@@ -31,47 +35,67 @@
       </template>
       <template #default>
         <div class="article-container">
-          <div v-for="item of list" :key="item.articleId" class="article-item">
+          <div class="article-list">
             <div
-              class="article-info"
-              @click="goToPage('ArticleDetail', { articleId: item.articleId })"
+              v-for="item of article.list"
+              :key="item.articleId"
+              class="article-item"
             >
-              <img :src="item.user.avatar" class="avatar" />
-              <div class="header">
-                <h1>{{ item.title }}</h1>
-                <ul>
-                  <li>@{{ item.category }}</li>
-                  <li>{{ item.createdAt }}</li>
-                </ul>
+              <div class="article-info">
+                <img :src="item.user.avatar" class="avatar" />
+                <div class="header">
+                  <h1>{{ item.title }}</h1>
+                  <ul>
+                    <li
+                      class="category"
+                      :class="{ active: item.category === search.category }"
+                      @click="categoryChange(item.category)"
+                    >
+                      @{{ item.categoryFormat }}
+                    </li>
+                    <li>{{ item.createdAt }}</li>
+                  </ul>
+                </div>
               </div>
+              <p
+                class="description"
+                @click="
+                  goToPage('ArticleDetail', { articleId: item.articleId })
+                "
+              >
+                {{ item.description }}
+              </p>
+              <Player
+                v-if="item.video"
+                :src="item.video"
+                :poster="item.poster"
+              />
+              <ul
+                class="views"
+                @click="
+                  goToPage('ArticleDetail', { articleId: item.articleId })
+                "
+              >
+                <li>
+                  <i-ep-view />
+                  <span>{{ item.views.toLocaleString() }}</span>
+                </li>
+                <li>
+                  <i-ep-chatDotSquare />
+                  <span>{{ item.comment_reply_total.toLocaleString() }}</span>
+                </li>
+              </ul>
             </div>
-            <p
-              class="description"
-              @click="goToPage('ArticleDetail', { articleId: item.articleId })"
-            >
-              {{ item.description }}
-            </p>
-            <Player v-if="item.video" :src="item.video" :poster="item.poster" />
-            <ul
-              class="views"
-              @click="goToPage('ArticleDetail', { articleId: item.articleId })"
-            >
-              <li>
-                <i-ep-view />
-                <span>{{ item.views.toLocaleString() }}</span>
-              </li>
-              <li>
-                <i-ep-chatDotSquare />
-                <span>{{ item.comment_reply_total.toLocaleString() }}</span>
-              </li>
-            </ul>
           </div>
         </div>
       </template>
     </el-skeleton>
     <div ref="footer" class="footer">
-      <Loading :loading="loading" />
-      <p v-if="list.length >= total && !skeletonLoading" class="loadingEnd">
+      <Loading :loading="article.loading" />
+      <p
+        v-if="article.list.length >= article.total && !article.skeletonLoading"
+        class="loadingEnd"
+      >
         {{ $t("state.loadEnd") }}
       </p>
     </div>
@@ -91,38 +115,47 @@ import Player from "@/components/Player.vue"
 
 const router = useRouter()
 const footer = ref()
-const list = reactive<any[]>([])
-const skeletonLoading = ref(true)
-const loading = ref(false)
-const page = ref(1)
-const total = ref(0)
+const search = reactive({
+  category: ""
+})
+const article = reactive<any>({
+  skeletonLoading: false,
+  loading: false,
+  list: [],
+  page: 1,
+  total: 0
+})
 
-async function getList() {
+async function getList(page = article.page) {
   try {
-    if (page.value === 1) {
-      skeletonLoading.value = true
+    if (page === 1) {
+      article.skeletonLoading = true
     } else {
-      loading.value = true
+      article.loading = true
     }
     const res = await http.post("/article/list", {
-      page: page.value,
+      ...search,
+      page,
       pageSize: 20
     })
 
     if (res.code === 0) {
-      list.push(
-        ...res.data.list.map((item) => {
-          return {
-            ...item,
-            category: i18n.global.t(
-              categories.find((category) => category.value)?.label as string
-            ),
-            createdAt: dayjs(item.createdAt).fromNow(),
-            updatedAt: dayjs(item.updatedAt).fromNow()
-          }
-        })
-      )
-      total.value = res.data.total
+      for (const item of res.data.list) {
+        item.categoryFormat = i18n.global.t(
+          categories.find((category) => category.value === item.category)
+            ?.label as string
+        )
+        item.createdAt = dayjs(item.createdAt).fromNow()
+        item.updatedAt = dayjs(item.updatedAt).fromNow()
+      }
+
+      if (page === 1) {
+        article.list = res.data.list
+      } else {
+        article.list.push(...res.data.list)
+      }
+
+      article.total = res.data.total
 
       nextTick(() => {
         const { stop } = useIntersectionObserver(
@@ -130,7 +163,7 @@ async function getList() {
           ([{ isIntersecting }]) => {
             stop()
             if (isIntersecting) {
-              if (list.length < total.value) {
+              if (article.list.length < article.total && page !== 1) {
                 getList()
               }
             }
@@ -139,22 +172,27 @@ async function getList() {
       })
     }
   } finally {
-    if (page.value === 1) {
-      skeletonLoading.value = false
+    if (article.page === 1) {
+      article.skeletonLoading = false
     } else {
-      loading.value = false
+      article.loading = false
     }
-    if (list.length >= total.value) {
+    if (article.list.length >= article.total) {
       stop()
     }
-    page.value++
+    article.page++
   }
 }
 getList()
 
+function categoryChange(category: string) {
+  search.category = search.category === category ? "" : category
+  getList(1)
+}
+
 const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
   if (isIntersecting) {
-    if (list.length < total.value) {
+    if (article.list.length < article.total) {
       getList()
     }
   }
@@ -168,78 +206,117 @@ function goToPage(name, params) {
 <style lang="scss">
 #Article {
   .article-container {
-    .article-item {
-      cursor: pointer;
-      padding: $space 0;
-      margin-bottom: $space;
-      &:last-child {
-        margin-bottom: 0;
-      }
-      &:hover {
-        .article-info {
-          .header {
-            h1 {
-              color: $color-primary;
+    display: flex;
+    justify-content: space-between;
+    .article-list {
+      width: 100%;
+      .article-item {
+        padding: $space;
+        margin-bottom: $space;
+        border-radius: $border-radius;
+        border-bottom: $border;
+        &:last-child {
+          margin-bottom: 0;
+          border-bottom: none;
+        }
+        &:has(.description) {
+          &:hover {
+            .article-info {
+              .header {
+                h1 {
+                  color: $color-primary;
+                }
+              }
+            }
+            .description {
+              color: $font-color-secondary;
             }
           }
         }
-      }
-      .article-info {
-        height: 100%;
-        height: 50px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: $space;
-        .avatar {
-          height: 50px;
-          aspect-ratio: 1;
-          border-radius: $border-radius;
-          object-fit: cover;
-        }
-        .header {
-          width: calc(100% - 60px);
+        .article-info {
           height: 100%;
+          height: 50px;
           display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-          h1 {
-            transition: all $duration;
-            @include text-ellipsis;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: $space;
+          .avatar {
+            height: 50px;
+            aspect-ratio: 1;
+            border-radius: $border-radius;
+            object-fit: cover;
           }
-          ul {
+          .header {
+            width: calc(100% - 60px);
+            height: 100%;
             display: flex;
-            color: $font-color-placeholder;
-            li {
-              margin-right: $space;
-              &:last-child {
-                margin-right: 0;
+            flex-direction: column;
+            justify-content: space-around;
+            h1 {
+              transition: all $duration;
+              cursor: pointer;
+              @include text-ellipsis;
+            }
+            ul {
+              display: flex;
+              color: $font-color-placeholder;
+              li {
+                margin-right: $space;
+                &:last-child {
+                  margin-right: 0;
+                }
+              }
+              .category {
+                position: relative;
+                transition: all $duration;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                &::after {
+                  content: "";
+                  position: absolute;
+                  left: 0;
+                  bottom: -5px;
+                  display: inline-block;
+                  width: 0;
+                  border-bottom: 1px dashed $color-primary;
+                  transition: all $duration;
+                }
+                &:hover,
+                &.active {
+                  color: $color-primary;
+                  &::after {
+                    width: 100%;
+                  }
+                }
               }
             }
           }
         }
-      }
-      .description {
-        line-height: 1.3em;
-        color: $font-color-placeholder;
-        margin-bottom: $space;
-      }
-      #Player {
-        margin-bottom: $space;
-      }
-      .views {
-        display: flex;
-        justify-content: flex-end;
-        li {
-          color: $font-color-secondary;
+        .description {
+          line-height: 1.3em;
+          color: $font-color-placeholder;
+          margin-bottom: $space;
+          cursor: pointer;
+          transition: color $duration;
+        }
+        #Player {
+          margin-bottom: $space;
+        }
+        .views {
           display: flex;
-          align-items: center;
-          margin-right: $space;
-          &:last-child {
-            margin-right: 0;
-          }
-          span {
-            margin-left: 5px;
+          li {
+            color: $font-color-secondary;
+            display: flex;
+            align-items: center;
+            margin-right: $space;
+            cursor: pointer;
+            &:last-child {
+              margin-right: 0;
+            }
+            span {
+              margin-left: 5px;
+            }
           }
         }
       }
