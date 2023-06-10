@@ -7,29 +7,31 @@
     >
       <template #template>
         <div class="article-container">
-          <div class="article-item">
-            <div class="article-info">
-              <el-skeleton-item class="avatar" style="width: 50px" />
-              <div class="header">
-                <el-skeleton-item
-                  variant="h1"
-                  style="width: 60%; max-width: 400px"
-                />
-                <ul>
+          <div class="article-list">
+            <div class="article-item">
+              <div class="article-info">
+                <el-skeleton-item class="avatar" style="width: 50px" />
+                <div class="header">
                   <el-skeleton-item
-                    variant="text"
-                    style="width: 20%; max-width: 100px"
+                    variant="h1"
+                    style="width: 60%; max-width: 400px"
                   />
-                  <el-skeleton-item
-                    variant="text"
-                    style="width: 20%; max-width: 100px; margin-left: 10px"
-                  />
-                </ul>
+                  <ul>
+                    <el-skeleton-item
+                      variant="text"
+                      style="width: 20%; max-width: 100px"
+                    />
+                    <el-skeleton-item
+                      variant="text"
+                      style="width: 20%; max-width: 100px; margin-left: 10px"
+                    />
+                  </ul>
+                </div>
               </div>
+              <el-skeleton-item variant="p" class="description" />
+              <el-skeleton-item variant="p" class="description" />
+              <el-skeleton-item variant="p" class="description" />
             </div>
-            <el-skeleton-item variant="p" class="description" />
-            <el-skeleton-item variant="p" class="description" />
-            <el-skeleton-item variant="p" class="description" />
           </div>
         </div>
       </template>
@@ -119,7 +121,7 @@ const search = reactive({
   category: ""
 })
 const article = reactive<any>({
-  skeletonLoading: false,
+  skeletonLoading: true,
   loading: false,
   list: [],
   page: 1,
