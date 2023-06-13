@@ -46,7 +46,13 @@
               <div class="article-info">
                 <img :src="item.user.avatar" class="avatar" />
                 <div class="header">
-                  <h1>{{ item.title }}</h1>
+                  <h1
+                    @click="
+                      goToPage('ArticleDetail', { articleId: item.articleId })
+                    "
+                  >
+                    {{ item.title }}
+                  </h1>
                   <ul>
                     <li
                       class="category"
