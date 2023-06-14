@@ -59,9 +59,14 @@ onBeforeUnmount(() => {
 #Player {
   width: 100%;
   .plyr {
+    &:fullscreen {
+      video {
+        max-height: initial;
+      }
+    }
     video {
       height: 100%;
-      max-height: 350px;
+      max-height: 500px;
     }
   }
 }
