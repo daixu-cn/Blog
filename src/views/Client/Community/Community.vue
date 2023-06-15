@@ -47,7 +47,7 @@
           <li>
             <label>{{ $t("Community.systems") }}</label>
             <span class="colon">:</span>
-            AliCloud + Koa2 + MySql + Redis
+            Tencent Cloud + Koa2 + MySql + Redis
           </li>
           <li>
             <label>{{ $t("Community.website") }}</label>
