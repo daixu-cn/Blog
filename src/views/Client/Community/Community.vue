@@ -24,11 +24,6 @@
             <span class="colon">:</span>
             daixu.cn@outlook.com
           </li>
-          <li>
-            <label>{{ $t("Community.workUnit") }}</label>
-            <span class="colon">:</span>
-            {{ $t("Community.workUnitDescription") }}
-          </li>
         </ul>
       </div>
       <div class="about">

@@ -142,9 +142,6 @@ export default {
     engineer: "Web Development Engineer",
     contactQQ: "Contact QQ",
     contactEmail: "Contact Email",
-    workUnit: "Work Unit",
-    workUnitDescription:
-      "Ningbo Institute of Information Technology Application Research, Chinese Academy of Sciences",
     aboutBlog: "About the blog",
     domain: "Website domain",
     websiteTime: "Online since",

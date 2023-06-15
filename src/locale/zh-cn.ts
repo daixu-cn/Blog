@@ -141,8 +141,6 @@ export default {
     engineer: "WEB开发工程师",
     contactQQ: "联系QQ",
     contactEmail: "联系邮箱",
-    workUnit: "工作单位",
-    workUnitDescription: "宁波中国科学院信息技术应用研究院",
     aboutBlog: "关于博客",
     domain: "网站域名",
     websiteTime: "上线时间",

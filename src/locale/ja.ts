@@ -141,8 +141,6 @@ export default {
     engineer: "WEB開発エンジニア",
     contactQQ: "連絡先QQ",
     contactEmail: "連絡先メールアドレス",
-    workUnit: "所属機関",
-    workUnitDescription: "中国科学院寧波情報技術応用研究所",
     aboutBlog: "ブログについて",
     domain: "ウェブサイトドメイン",
     websiteTime: "公開日時",
