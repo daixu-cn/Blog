@@ -32,8 +32,8 @@
                 @click="goToPage(item.articleId)"
               >
                 <p>
-                  {{ item.title
-                  }}<span class="category">@{{ item.category }}</span>
+                  <span class="title">{{ item.title }}</span
+                  ><span class="category">@{{ item.category }}</span>
                 </p>
               </li>
             </ul>
@@ -45,8 +45,8 @@
                 @click="goToPage(item.articleId)"
               >
                 <p>
-                  {{ item.title
-                  }}<span class="category">@{{ item.category }}</span>
+                  <span class="title">{{ item.title }}</span
+                  ><span class="category">@{{ item.category }}</span>
                 </p>
               </li>
             </ul>
@@ -271,11 +271,17 @@ function goToPage(articleId: string) {
           width: calc(100% - 48px - 1em);
           display: flex;
           justify-content: space-between;
-        }
-        .category {
-          color: $font-color-placeholder;
-          margin-left: 10px;
-          font-size: calc(1em - 2px);
+          .title {
+            width: calc(100% - 80px);
+            @include text-ellipsis;
+          }
+          .category {
+            width: 60px;
+            color: $font-color-placeholder;
+            margin-left: 10px;
+            font-size: calc(1em - 2px);
+            @include text-ellipsis;
+          }
         }
       }
     }
@@ -291,8 +297,11 @@ function goToPage(articleId: string) {
         & > p {
           padding-left: calc($space + 10px);
         }
-        li {
+        .search-item {
           padding-left: calc($space + 10px + 1em);
+          p {
+            width: 100%;
+          }
         }
       }
     }
