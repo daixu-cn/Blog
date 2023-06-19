@@ -167,6 +167,6 @@ defineExpose({
   }
 }
 .medium-zoom-overlay {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.05) !important;
 }
 </style>
