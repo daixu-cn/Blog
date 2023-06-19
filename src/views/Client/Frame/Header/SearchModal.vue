@@ -17,30 +17,45 @@
             !keyword ? $t("search.popularArticles") : $t("search.searchResults")
           }}
         </p>
-        <ul v-if="!keyword" class="searchList">
-          <li
-            v-for="item of hotList"
-            :key="item.articleId"
-            @click="goToPage(item.articleId)"
-          >
-            <span class="category">@{{ item.category }}</span>
-            {{ item.title }}
-          </li>
-        </ul>
-        <ul v-if="keyword && searchList.length" class="searchList">
-          <li
-            v-for="item of searchList"
-            :key="item.articleId"
-            @click="goToPage(item.articleId)"
-          >
-            <span class="category">@{{ item.category }}</span>
-            {{ item.title }}
-          </li>
-        </ul>
-        <el-empty
-          v-if="keyword && !searchList.length && !loading"
-          :description="$t('search.noArticles')"
-        />
+        <el-skeleton :loading="loading" animated :count="6">
+          <template #template>
+            <li class="search-item">
+              <el-skeleton-item style="width: calc(100% - 48px - 1em)" />
+            </li>
+          </template>
+          <template #default>
+            <ul v-if="!keyword" class="searchList">
+              <li
+                v-for="item of hotList"
+                :key="item.articleId"
+                class="search-item"
+                @click="goToPage(item.articleId)"
+              >
+                <p>
+                  {{ item.title
+                  }}<span class="category">@{{ item.category }}</span>
+                </p>
+              </li>
+            </ul>
+            <ul v-if="keyword && searchList.length" class="searchList">
+              <li
+                v-for="item of searchList"
+                :key="item.articleId"
+                class="search-item"
+                @click="goToPage(item.articleId)"
+              >
+                <p>
+                  {{ item.title
+                  }}<span class="category">@{{ item.category }}</span>
+                </p>
+              </li>
+            </ul>
+            <el-empty
+              v-if="keyword && !searchList.length && !loading"
+              :description="$t('search.noArticles')"
+            />
+          </template>
+        </el-skeleton>
       </ul>
     </div>
   </div>
@@ -132,7 +147,15 @@ async function getList() {
     })
 
     if (res.code === 0) {
-      searchList.value = res.data
+      searchList.value = res.data.map((item) => {
+        return {
+          ...item,
+          category: i18n.global.t(
+            categories.find((category) => category.value === item.category)
+              ?.label as string
+          )
+        }
+      })
     } else {
       searchList.value = []
     }
@@ -229,7 +252,7 @@ function goToPage(articleId: string) {
       .el-empty {
         padding: 0;
       }
-      li {
+      .search-item {
         width: 100%;
         height: 30px;
         line-height: 30px;
@@ -244,9 +267,15 @@ function goToPage(articleId: string) {
           cursor: pointer;
         }
 
+        p {
+          width: calc(100% - 48px - 1em);
+          display: flex;
+          justify-content: space-between;
+        }
         .category {
-          color: #ccc;
-          margin-right: 5px;
+          color: $font-color-placeholder;
+          margin-left: 10px;
+          font-size: calc(1em - 2px);
         }
       }
     }
