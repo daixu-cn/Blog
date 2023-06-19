@@ -112,6 +112,7 @@ export default {
     }
   },
   Comment: {
+    admin: "Admin",
     submitComment: "Submit Comment",
     submitMessage: "Submit Message",
     all: "All",

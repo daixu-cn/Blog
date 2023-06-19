@@ -111,6 +111,7 @@ export default {
     }
   },
   Comment: {
+    admin: "管理员",
     submitComment: "提交评论",
     submitMessage: "提交留言",
     all: "全部",

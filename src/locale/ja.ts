@@ -111,6 +111,7 @@ export default {
     }
   },
   Comment: {
+    admin: "アドミン",
     submitComment: "コメント投稿",
     submitMessage: "メッセージの送信",
     all: "すべて",

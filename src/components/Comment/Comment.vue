@@ -68,7 +68,12 @@
           <div class="comment-content">
             <div class="info">
               <p class="user-row">
-                <span class="userName">{{ item.user.userName }}</span>
+                <span class="userName"
+                  >{{ item.user.userName
+                  }}<i v-if="item.user.role === 0" class="admin">{{
+                    $t("Comment.admin")
+                  }}</i></span
+                >
                 <span>
                   <i-ep-promotion
                     class="reply-icon"
@@ -111,7 +116,12 @@
               <div class="comment-content">
                 <div class="info">
                   <p class="user-row">
-                    <span class="userName">{{ reply.user.userName }}</span>
+                    <span class="userName"
+                      >{{ reply.user.userName
+                      }}<i v-if="reply.user.role === 0" class="admin">{{
+                        $t("Comment.admin")
+                      }}</i></span
+                    >
                     <span>
                       <i-ep-promotion
                         class="reply-icon"
@@ -444,6 +454,12 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
             display: inline-block;
             max-width: calc(100% - 60px);
             @include text-ellipsis;
+            .admin {
+              color: $color-primary;
+              font-size: calc(1em - 2px);
+              font-style: italic;
+              margin-left: 5px;
+            }
           }
           .reply-icon,
           .delete-icon {
