@@ -32,7 +32,7 @@
             :text="info?.content"
             @onGetCatalog="onGetCatalog"
           />
-          <Comment :article-id="(articleId as string)" />
+          <Comment :article-id="(route.params?.articleId as string)" />
         </template>
       </el-skeleton>
     </div>
@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, nextTick, onBeforeUnmount } from "vue"
+import { ref, nextTick, onBeforeUnmount, watchEffect } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import http from "@/server"
 import Player from "@/components/Player.vue"
@@ -74,7 +74,7 @@ import { categories } from "@/global/select"
 import dayjs from "dayjs"
 import i18n from "@/locale"
 
-const { articleId } = useRoute().params
+const route = useRoute()
 const router = useRouter()
 const loading = ref(true)
 const info = ref()
@@ -82,7 +82,7 @@ const catalog = ref<HeadList[]>([])
 
 async function getInfo() {
   loading.value = true
-  const res = await http.get(`/article/info/${articleId}`)
+  const res = await http.get(`/article/info/${route.params?.articleId}`)
 
   if (res.code === 0) {
     res.data.category = i18n.global.t(
@@ -98,7 +98,12 @@ async function getInfo() {
   }
   loading.value = false
 }
-getInfo()
+
+watchEffect(() => {
+  if (route.params?.articleId) {
+    getInfo()
+  }
+})
 
 function onGetCatalog(list: HeadList[]) {
   if (list.length && list.length !== catalog.value.length - 1) {
