@@ -81,7 +81,7 @@
         />
       </el-form-item>
       <el-form-item label-width="0">
-        <MdEditor ref="MdEditorRef" />
+        <MdEditor ref="MdEditorRef" @on-change="contentChange" />
       </el-form-item>
       <el-form-item label-width="0" class="button-container">
         <el-button type="primary" @click="saveArticle">保存</el-button>
@@ -91,11 +91,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from "vue"
-import { useRoute, useRouter } from "vue-router"
+import { ref, reactive, onUnmounted } from "vue"
+import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router"
 import { categories } from "@/global/select"
 import resumeUpload from "@/utils/resumeUpload"
-import { ElMessage } from "element-plus"
+import { ElMessage, ElMessageBox } from "element-plus"
 import type { FormInstance, FormRules, UploadProps } from "element-plus"
 import { BASE_API } from "@/global/env"
 import useUserStore from "@/store/user"
@@ -112,6 +112,7 @@ const MdEditorRef = ref()
 const loading = ref(false)
 const isProgress = ref(false)
 const percentage = ref(0)
+const articleOriginContent = ref("")
 const article = reactive({
   articleId,
   category: "",
@@ -190,6 +191,7 @@ async function getArticleInfo() {
       article.poster = res.data.poster
       article.video = res.data.video
       article.content = res.data.content
+      articleOriginContent.value = res.data.content
 
       MdEditorRef.value.text = res.data.content
     }
@@ -198,15 +200,18 @@ async function getArticleInfo() {
 }
 getArticleInfo()
 
+function contentChange(content: string) {
+  article.content = content
+}
+
 async function saveArticle() {
   try {
     const valid = await articleRef.value?.validate()
     if (valid) {
-      if (!MdEditorRef.value?.text) {
+      if (article.content) {
         ElMessage.error("文章正文不能为空")
         return
       }
-      article.content = MdEditorRef.value.text
       loading.value = true
 
       const url = articleId === "0" ? "/article/create" : "/article/update"
@@ -222,6 +227,41 @@ async function saveArticle() {
     loading.value = false
   }
 }
+
+function hasUnsavedChanges() {
+  return article.content === articleOriginContent.value
+}
+onBeforeRouteLeave((_to, _form, next) => {
+  if (!hasUnsavedChanges()) {
+    ElMessageBox.confirm("您有未保存的更改，确定要离开此页面吗？", "警告", {
+      confirmButtonText: "确认",
+      cancelButtonText: "取消",
+      type: "warning"
+    })
+      .then(() => {
+        next()
+      })
+      .catch(() => {
+        ElMessageBox.close()
+        next(false)
+      })
+  } else {
+    next()
+  }
+})
+
+function onbeforeunload(event: BeforeUnloadEvent) {
+  if (!hasUnsavedChanges()) {
+    event.preventDefault()
+    event.returnValue = "您有未保存的更改，确定要离开此页面吗？"
+  }
+}
+
+window.addEventListener("beforeunload", onbeforeunload)
+
+onUnmounted(() => {
+  window.removeEventListener("beforeunload", onbeforeunload)
+})
 </script>
 
 <style lang="scss">
