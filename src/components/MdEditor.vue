@@ -13,6 +13,7 @@
       v-bind="MdEditorProps"
       :preview="preview"
       :placeholder="props.placeholder"
+      @onChange="onChange"
     />
   </div>
 </template>
@@ -25,7 +26,7 @@ import resumeUpload from "@/utils/resumeUpload"
 import { MdPreview, MdEditor, ToolbarNames, HeadList } from "md-editor-v3"
 import "md-editor-v3/lib/style.css"
 
-const emits = defineEmits(["onGetCatalog"])
+const emits = defineEmits(["onGetCatalog", "onChange"])
 const props = defineProps({
   // 预览模式
   isPreview: {
@@ -121,6 +122,9 @@ onMounted(() => {
 })
 function onGetCatalog(list: HeadList[]) {
   emits("onGetCatalog", list)
+}
+function onChange(value: string) {
+  emits("onChange", value)
 }
 
 defineExpose({
