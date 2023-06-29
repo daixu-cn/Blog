@@ -208,7 +208,7 @@ async function saveArticle() {
   try {
     const valid = await articleRef.value?.validate()
     if (valid) {
-      if (article.content) {
+      if (!article.content) {
         ElMessage.error("文章正文不能为空")
         return
       }
@@ -219,6 +219,7 @@ async function saveArticle() {
       const res = await http[methods](url, article)
 
       if (res.code === 0) {
+        articleOriginContent.value = article.content
         router.replace({ name: "SystemArticle" })
         ElMessage.success("操作成功")
       }
