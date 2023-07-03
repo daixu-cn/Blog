@@ -13,7 +13,7 @@
           <el-skeleton :rows="10" animated />
         </template>
         <template #default>
-          <h1 class="title">{{ info?.title }}</h1>
+          <h1 :id="info?.title" class="title">{{ info?.title }}</h1>
           <ul class="article-info">
             <li># {{ info?.category }}</li>
             <li>
@@ -106,9 +106,29 @@ watchEffect(() => {
 })
 
 function onGetCatalog(list: HeadList[]) {
-  if (list.length && list.length !== catalog.value.length - 1) {
+  if (list.length && list.length !== catalog.value.length - 2) {
     catalog.value = [
+      {
+        text: info.value?.title,
+        level: 1
+      },
       ...list,
+      {
+        text: `${i18n.global.t("Comment.allComment")}(${
+          info.value.comment_reply_total
+        })`,
+        level: 1
+      }
+    ]
+    nextTick(() => {
+      window.addEventListener("scroll", scrollHandler)
+    })
+  } else if (list.length === 0 && catalog.value.length === 0) {
+    catalog.value = [
+      {
+        text: info.value?.title,
+        level: 1
+      },
       {
         text: `${i18n.global.t("Comment.allComment")}(${
           info.value.comment_reply_total
@@ -126,7 +146,7 @@ function scrollHandler() {
     (item) => document.getElementById(item.text) as HTMLElement
   )
   for (const el of cloneDeep(contentSections).reverse()) {
-    if (el.getBoundingClientRect().top <= 80) {
+    if (el?.getBoundingClientRect().top <= 80) {
       for (const item of document.querySelectorAll(".catalog ul li")) {
         if (el.id === item.getAttribute("data-text")) {
           item.classList.add("active")
