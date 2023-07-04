@@ -24,32 +24,35 @@
             </li>
           </template>
           <template #default>
-            <ul v-if="!keyword" class="searchList">
-              <li
-                v-for="item of hotList"
-                :key="item.articleId"
-                class="search-item"
-                @click="goToPage(item.articleId)"
-              >
-                <p>
-                  <span class="title">{{ item.title }}</span
-                  ><span class="category">@{{ item.category }}</span>
-                </p>
-              </li>
-            </ul>
-            <ul v-if="keyword && searchList.length" class="searchList">
-              <li
-                v-for="item of searchList"
-                :key="item.articleId"
-                class="search-item"
-                @click="goToPage(item.articleId)"
-              >
-                <p>
-                  <span class="title">{{ item.title }}</span
-                  ><span class="category">@{{ item.category }}</span>
-                </p>
-              </li>
-            </ul>
+            <el-scrollbar height="210px">
+              <ul v-if="!keyword" class="searchList">
+                <li
+                  v-for="item of hotList"
+                  :key="item.articleId"
+                  class="search-item"
+                  @click="goToPage(item.articleId)"
+                >
+                  <p>
+                    <span class="title">{{ item.title }}</span
+                    ><span class="category">@{{ item.category }}</span>
+                  </p>
+                </li>
+              </ul>
+              <ul v-if="keyword && searchList.length" class="searchList">
+                <li
+                  v-for="item of searchList"
+                  :key="item.articleId"
+                  class="search-item"
+                  @click="goToPage(item.articleId)"
+                >
+                  <p>
+                    <span class="title">{{ item.title }}</span
+                    ><span class="category">@{{ item.category }}</span>
+                  </p>
+                </li>
+              </ul>
+            </el-scrollbar>
+
             <el-empty
               v-if="keyword && !searchList.length && !loading"
               :description="$t('search.noArticles')"
@@ -284,9 +287,6 @@ function goToPage(articleId: string) {
           }
         }
       }
-    }
-    .searchList {
-      @include scrollbar(210px);
     }
   }
   @media screen and (max-width: 850px) {

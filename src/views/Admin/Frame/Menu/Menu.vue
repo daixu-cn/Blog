@@ -1,17 +1,19 @@
 <template>
   <div id="SystemMenu">
-    <el-menu :default-active="active" router>
-      <el-menu-item
-        v-for="item of adminMenus"
-        :key="item.path"
-        :index="item.path"
-      >
-        <el-icon>
-          <component :is="item.icon" />
-        </el-icon>
-        <span>{{ $t(item.name) }}</span>
-      </el-menu-item>
-    </el-menu>
+    <el-scrollbar>
+      <el-menu :default-active="active" router>
+        <el-menu-item
+          v-for="item of adminMenus"
+          :key="item.path"
+          :index="item.path"
+        >
+          <el-icon>
+            <component :is="item.icon" />
+          </el-icon>
+          <span>{{ $t(item.name) }}</span>
+        </el-menu-item>
+      </el-menu>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -30,7 +32,6 @@ const active = ref(route.fullPath.split("/").slice(0, 3).join("/"))
   width: 200px;
   height: 100%;
   .el-menu {
-    @include scrollbar;
     padding: 10px 5px;
     box-sizing: border-box;
     border-right-color: rgba(5, 5, 5, 0.06);

@@ -36,11 +36,6 @@
 @mixin scrollbar($height: 100%) {
   height: $height;
   overflow: overlay;
-  &:hover {
-    &::-webkit-scrollbar-thumb {
-      background-color: #9093994d;
-    }
-  }
 }
 
 // 主宽度适配
