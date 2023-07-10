@@ -139,6 +139,7 @@ defineExpose({
     width: 100%;
     border: 0;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    font-family: $font-family;
     & ::-webkit-scrollbar-corner,
     & ::-webkit-scrollbar-track {
       background-color: v-bind(
