@@ -183,6 +183,8 @@ onBeforeUnmount(() => {
   .article-view {
     width: calc(100% - 320px);
     margin-top: 20px;
+    position: relative;
+    z-index: 2;
     .el-skeleton {
       display: flex;
       flex-direction: column;
@@ -246,6 +248,7 @@ onBeforeUnmount(() => {
     @include media-width;
     position: fixed;
     top: 80px;
+    z-index: 1;
     display: flex;
     justify-content: flex-end;
     .catalog {
