@@ -33,6 +33,7 @@ module.exports = {
     }
   },
   rules: {
+    "vue/no-v-html": "off",
     "import/prefer-default-export": "off",
     "vue/require-default-prop": "off",
     "no-param-reassign": "off",
