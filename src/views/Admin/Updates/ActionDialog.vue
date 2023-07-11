@@ -3,7 +3,7 @@
     id="SystemUpdates-ActionDialog"
     v-model="show"
     :title="form.updateId ? '编辑更新' : '新建更新'"
-    @close="formRef?.resetFields()"
+    @close="reset"
   >
     <el-form
       ref="formRef"
@@ -16,6 +16,7 @@
         <el-input
           v-model="form.content"
           placeholder="请输入更新内容"
+          :autosize="{ minRows: 4 }"
           :rows="4"
           type="textarea"
         />
@@ -63,6 +64,11 @@ async function confirm() {
     }
     loading.value = false
   }
+}
+
+function reset() {
+  form.updateId = ""
+  form.content = ""
 }
 
 defineExpose({
