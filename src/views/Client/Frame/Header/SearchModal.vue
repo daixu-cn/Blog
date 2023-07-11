@@ -51,12 +51,11 @@
                   </p>
                 </li>
               </ul>
+              <el-empty
+                v-if="keyword && !searchList.length && !loading"
+                :description="$t('search.noArticles')"
+              />
             </el-scrollbar>
-
-            <el-empty
-              v-if="keyword && !searchList.length && !loading"
-              :description="$t('search.noArticles')"
-            />
           </template>
         </el-skeleton>
       </ul>
