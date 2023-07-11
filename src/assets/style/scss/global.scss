@@ -5,18 +5,16 @@
 @import "element-plus/theme-chalk/dark/css-vars.css";
 @import "plyr/dist/plyr.css";
 
-html {
-  @include scrollbar;
+body {
+  width: 100vw;
+  color: $font-color;
+  font-size: $font-size;
+  font-family: $font-family;
+  overflow-x: hidden;
 
-  body {
-    color: $font-color;
-    font-size: $font-size;
-    font-family: $font-family;
-
-    a {
-      &:active {
-        color: $font-color;
-      }
+  a {
+    &:active {
+      color: $font-color;
     }
   }
 }

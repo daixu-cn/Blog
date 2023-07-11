@@ -60,9 +60,8 @@ function searchClose() {
   height: 60px;
   box-sizing: border-box;
   border-bottom: 1px solid $border-color;
-  background-image: radial-gradient(transparent 1px, $bg-color 1px);
-  background-size: 4px 4px;
-  backdrop-filter: saturate(50%) blur(4px);
+  background-color: rgba($color: #ffffff, $alpha: 0.8);
+  backdrop-filter: blur(2px);
   transition: transform 0.5s, opacity 0.5s;
   &.hidden {
     transform: scale(0);
