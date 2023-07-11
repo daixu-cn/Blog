@@ -8,7 +8,7 @@
     />
     <MdEditor
       v-else
-      ref="editorRef"
+      ref="Editor"
       v-model="text"
       v-bind="MdEditorProps"
       :preview="preview"
@@ -55,7 +55,7 @@ const props = defineProps({
   }
 })
 
-const editorRef = ref()
+const Editor = ref()
 const preview = ref(props.preview)
 const themeStore = useThemeStore()
 const localeStore = useLocaleStore()
@@ -118,7 +118,7 @@ async function onUploadImg(files: File[], callback) {
   callback(res.map((image) => image))
 }
 onMounted(() => {
-  editorRef.value?.on("preview", (status: boolean) => (preview.value = status))
+  Editor.value?.on("preview", (status: boolean) => (preview.value = status))
 })
 function onGetCatalog(list: HeadList[]) {
   emits("onGetCatalog", list)
@@ -126,9 +126,9 @@ function onGetCatalog(list: HeadList[]) {
 function onChange(value: string) {
   emits("onChange", value)
 }
-
 defineExpose({
-  text
+  text,
+  Editor
 })
 </script>
 
