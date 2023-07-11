@@ -135,6 +135,8 @@ const article = reactive<any>({
 })
 
 async function getList(page = article.page) {
+  article.page = page
+
   try {
     if (page === 1) {
       article.skeletonLoading = true
