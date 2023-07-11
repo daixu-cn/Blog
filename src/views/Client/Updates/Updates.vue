@@ -17,7 +17,7 @@
             :key="item.updateId"
             :timestamp="item.createdAt"
           >
-            {{ item.content }}
+            <div v-html="item.content"></div>
           </el-timeline-item>
         </el-timeline>
       </template>
