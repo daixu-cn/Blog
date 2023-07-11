@@ -5,16 +5,19 @@
 @import "element-plus/theme-chalk/dark/css-vars.css";
 @import "plyr/dist/plyr.css";
 
-body {
+html {
   width: 100vw;
-  color: $font-color;
-  font-size: $font-size;
-  font-family: $font-family;
-  overflow-x: hidden;
 
-  a {
-    &:active {
-      color: $font-color;
+  body {
+    color: $font-color;
+    font-size: $font-size;
+    font-family: $font-family;
+    overflow-x: hidden;
+
+    a {
+      &:active {
+        color: $font-color;
+      }
     }
   }
 }

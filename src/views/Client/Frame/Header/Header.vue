@@ -60,7 +60,7 @@ function searchClose() {
   height: 60px;
   box-sizing: border-box;
   border-bottom: 1px solid $border-color;
-  background-color: rgba($color: #ffffff, $alpha: 0.8);
+  background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(2px);
   transition: transform 0.5s, opacity 0.5s;
   &.hidden {
@@ -161,6 +161,11 @@ function searchClose() {
         }
       }
     }
+  }
+}
+html.dark {
+  #Header {
+    background-color: rgba(0, 0, 0, 0.6);
   }
 }
 </style>
