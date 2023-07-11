@@ -3,6 +3,7 @@
     id="ReplyDialog"
     v-model="show"
     :title="`@${reply?.userName}`"
+    @opened="mdEditor?.Editor?.focus()"
     @close="reset"
   >
     <MdEditor
@@ -31,7 +32,7 @@ import i18n from "@/locale"
 
 const emits = defineEmits(["confirm"])
 const userStore = useUserStore()
-const mdEditor = ref()
+const mdEditor = ref<InstanceType<typeof MdEditor> | null>(null)
 const show = ref(false)
 const loading = ref(false)
 const comment = ref()
@@ -47,7 +48,7 @@ async function confirm() {
     ElMessage.warning(i18n.global.t("login.notLogged"))
     return
   }
-  reply.content = mdEditor.value.text
+  reply.content = mdEditor.value?.text
 
   if (!reply.content) {
     ElMessage.warning(i18n.global.t("Reply.rules.content"))
@@ -64,14 +65,13 @@ async function confirm() {
   loading.value = false
 }
 function reset() {
-  mdEditor.value.text = ""
+  mdEditor.value!.text = ""
   reply.user = null
   reply.content = null
   reply.commentId = null
   reply.parentId = null
   show.value = false
 }
-
 defineExpose({
   show,
   reply,
