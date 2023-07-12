@@ -2,7 +2,7 @@
   <div id="Frame">
     <Header />
 
-    <el-scrollbar wrap-class="Frame-main">
+    <el-scrollbar wrap-class="Frame-main" noresize>
       <router-view v-slot="{ Component }">
         <transition name="route" mode="out-in">
           <component :is="Component" />
