@@ -47,7 +47,7 @@
           <li>
             <label>{{ $t("Community.systems") }}</label>
             <span class="colon">:</span>
-            Tencent Cloud + Koa2 + MySql + Redis
+            Koa2 + Sequelize + Redis + BandwagonHost VPS + Aliyun OSS
           </li>
           <li>
             <label>{{ $t("Community.website") }}</label>
