@@ -108,6 +108,16 @@ export default {
       name: "网站名称不能为空",
       url: "网站地址不能为空",
       description: "网站描述不能为空"
+    },
+    label: {
+      name: "名称",
+      url: "地址",
+      favicon: "图标",
+      desc: "描述"
+    },
+    info: {
+      description:
+        "daixu个人博客 - 记录学习、分享生活, 本站用于IT技术交流, web技术分享及日常生活记录。"
     }
   },
   Comment: {

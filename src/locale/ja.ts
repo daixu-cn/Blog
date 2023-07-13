@@ -108,6 +108,16 @@ export default {
       name: "ウェブサイト名を入力してください",
       url: "ウェブサイトのURLを入力してください",
       description: "ウェブサイトの説明を入力してください"
+    },
+    label: {
+      name: "名前",
+      url: "URL",
+      favicon: "ファビコン",
+      desc: "説明"
+    },
+    info: {
+      description:
+        "Daixu個人ブログ - 学習を記録し、生活を共有する。このサイトはIT技術交流、Web技術の共有、日常生活の記録に使用されます。"
     }
   },
   Comment: {

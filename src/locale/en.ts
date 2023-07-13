@@ -109,6 +109,16 @@ export default {
       name: "Website name is required",
       url: "Website URL is required",
       description: "Website description is required"
+    },
+    label: {
+      name: "Name",
+      url: "URL",
+      favicon: "Favicon",
+      desc: "Description"
+    },
+    info: {
+      description:
+        "Daixu personal blog - Record learning, share life. This site is for IT technology exchange, web technology sharing and daily life records."
     }
   },
   Comment: {

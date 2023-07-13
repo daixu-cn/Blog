@@ -2,9 +2,32 @@
   <el-dialog
     id="ApplyDialog"
     v-model="show"
+    align-center
     :title="i18n.global.t('Links.apply')"
     @close="linkRef?.resetFields()"
   >
+    <ul class="siteInfo">
+      <li>
+        <label>{{ $t("Links.label.name") }}</label>
+        <span class="colon">:</span>
+        DAIXU BLOG
+      </li>
+      <li>
+        <label>{{ $t("Links.label.url") }}</label>
+        <span class="colon">:</span>
+        https://daixu.cn
+      </li>
+      <li>
+        <label>{{ $t("Links.label.favicon") }}</label>
+        <span class="colon">:</span>
+        https://api.daixu.cn/favicon.png
+      </li>
+      <li>
+        <label>{{ $t("Links.label.desc") }}</label>
+        <span class="colon">:</span>
+        {{ $t("Links.info.description") }}
+      </li>
+    </ul>
     <el-form
       ref="linkRef"
       :model="link"
@@ -22,6 +45,7 @@
         <el-input
           v-model="link.url"
           :placeholder="i18n.global.t('Links.url')"
+          type="url"
         />
       </el-form-item>
       <el-form-item prop="description">
@@ -40,10 +64,15 @@
         <el-input
           v-model="link.email"
           :placeholder="i18n.global.t('Links.email')"
+          type="email"
         />
       </el-form-item>
       <el-form-item prop="qq">
-        <el-input v-model="link.qq" :placeholder="i18n.global.t('Links.qq')" />
+        <el-input
+          v-model="link.qq"
+          :placeholder="i18n.global.t('Links.qq')"
+          type="number"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -120,6 +149,20 @@ defineExpose({
 #ApplyDialog {
   .el-dialog__body {
     padding-bottom: 0;
+    .siteInfo {
+      background-color: var(--el-color-primary-light-9);
+      padding: $space;
+      border-radius: $border-radius;
+      margin-bottom: 18px;
+      li {
+        margin-bottom: $space;
+        line-height: 1.5em;
+        color: $font-color-secondary;
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
     .el-input__wrapper {
       box-shadow: none;
       border-bottom: 1px solid $border-color;
