@@ -77,6 +77,7 @@
                 v-if="item.video"
                 :src="item.video"
                 :poster="item.poster"
+                @play="videoPlay(item.articleId)"
               />
               <ul
                 class="views"
@@ -198,6 +199,10 @@ getList()
 function categoryChange(category: string) {
   search.category = search.category === category ? "" : category
   getList(1)
+}
+
+async function videoPlay(articleId: string) {
+  http.get(`/article/info/${articleId}`)
 }
 
 const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
