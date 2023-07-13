@@ -9,6 +9,7 @@ import { ref, watch, nextTick, onBeforeUnmount, reactive } from "vue"
 import Plyr from "plyr"
 import i18n from "@/locale"
 
+const emits = defineEmits(["play"])
 const props = defineProps({
   src: {
     type: String,
@@ -43,6 +44,9 @@ watch(
           }
         ]
       }
+      player.value.on("play", () => {
+        emits("play")
+      })
     })
   },
   {
