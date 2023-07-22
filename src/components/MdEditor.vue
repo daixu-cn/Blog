@@ -151,6 +151,13 @@ defineExpose({
       padding: 0;
       .md-editor-preview {
         padding: 0 20px;
+        figure:has(> .medium-zoom-image) {
+          width: 100%;
+        }
+        .medium-zoom-image {
+          max-height: 600px;
+          object-fit: contain;
+        }
       }
     }
     .md-editor-toolbar-wrapper {
@@ -166,6 +173,18 @@ defineExpose({
         .md-editor-menu-item {
           padding: 0 24px;
           line-height: 34px;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 750px) {
+    .md-editor {
+      .md-editor-preview-wrapper {
+        .md-editor-preview {
+          .medium-zoom-image {
+            max-height: initial;
+          }
         }
       }
     }
