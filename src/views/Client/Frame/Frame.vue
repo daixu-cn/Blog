@@ -10,12 +10,7 @@
       </router-view>
     </el-scrollbar>
 
-    <el-backtop
-      :right="20"
-      :bottom="20"
-      :visibility-height="2300"
-      style="z-index: 1"
-    />
+    <el-backtop :right="20" :bottom="20" :visibility-height="2300" />
   </div>
 </template>
 
