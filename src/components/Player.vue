@@ -70,7 +70,15 @@ onBeforeUnmount(() => {
     }
     video {
       height: 100%;
-      max-height: 500px;
+      max-height: 600px;
+    }
+  }
+
+  @media screen and (max-width: 750px) {
+    .plyr {
+      video {
+        max-height: initial;
+      }
     }
   }
 }
