@@ -86,7 +86,7 @@ async function login() {
     align-items: center;
     padding-top: 20px;
     border-top: 1px dashed #ccc;
-    .icon {
+    #Icon {
       font-size: 30px;
       color: $font-color-secondary;
       transition: all 0.3s;

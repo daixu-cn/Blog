@@ -1,5 +1,5 @@
 <template>
-  <svg id="Icon" class="icon">
+  <svg id="Icon" :class="props.class">
     <use :xlink:href="`#${props.class}`" :fill="props.color" />
   </svg>
 </template>

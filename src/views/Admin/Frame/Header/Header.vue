@@ -58,7 +58,7 @@ function goToPage(name: string) {
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
-    .icon {
+    #Icon {
       font-size: 20px;
       transition: all $duration;
       &:hover {
@@ -74,7 +74,7 @@ function goToPage(name: string) {
         margin-right: 30px;
         color: $color-primary;
         transition: all $duration;
-        .icon {
+        #Icon {
           font-size: 60px;
         }
         &:hover {
