@@ -153,6 +153,7 @@ defineExpose({
         padding: 0 20px;
         figure:has(> .medium-zoom-image) {
           width: 100%;
+          display: inline-block;
         }
         .medium-zoom-image {
           max-height: 600px;
