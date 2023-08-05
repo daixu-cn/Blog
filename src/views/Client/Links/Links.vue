@@ -131,6 +131,8 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
 
 <style lang="scss">
 #Links {
+  --shadow-color: #c8d0e7;
+
   .link-container {
     width: 100%;
     display: flex;
@@ -139,16 +141,18 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
     .link-item {
       width: calc(25% - 15px);
       padding: 10px;
-      box-sizing: border-box;
       margin-bottom: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
       border-radius: $border-radius;
-      box-shadow: var(--el-box-shadow);
+      box-shadow: inset 3px 3px 8px var(--shadow-color),
+        inset -3px -3px 8px $bg-color;
       text-decoration: none;
       color: $font-color;
+      box-sizing: border-box;
+      transition: all $duration;
       .logo {
         width: 70px;
         height: 70px;
@@ -173,6 +177,9 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
         }
       }
       &:hover {
+        box-shadow: inset 3px 3px 8px var(--shadow-color),
+          inset 3px 3px 8px var(--shadow-color);
+
         .info {
           .name,
           .description {
@@ -223,6 +230,11 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
         width: 100%;
       }
     }
+  }
+}
+html.dark {
+  #Links {
+    --shadow-color: #495671;
   }
 }
 </style>
