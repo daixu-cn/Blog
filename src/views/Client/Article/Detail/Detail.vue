@@ -31,7 +31,7 @@
             :is-preview="true"
             :text="info?.content"
             @onGetCatalog="onGetCatalog"
-            @vnode-mounted="articleMounted"
+            @vue-mounted="articleMounted"
           />
           <Comment :article-id="(route.params?.articleId as string)" />
         </template>
