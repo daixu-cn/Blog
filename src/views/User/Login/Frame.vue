@@ -55,7 +55,8 @@
         &:-webkit-autofill:focus,
         &:-webkit-autofill:active {
           -webkit-transition-delay: 111111s;
-          -webkit-transition: color 11111s ease-out,
+          -webkit-transition:
+            color 11111s ease-out,
             background-color 111111s ease-out;
         }
         @keyframes inputBorder {

@@ -49,8 +49,8 @@
 
 <script lang="ts" setup>
 import { ref } from "vue"
-import menus, { adminMenus } from "@/global/menus"
 import { useRoute, useRouter } from "vue-router"
+import menus, { adminMenus } from "@/global/menus"
 import useUserStore from "@/store/user"
 import { getAssets } from "@/utils/util"
 import User from "./User.vue"

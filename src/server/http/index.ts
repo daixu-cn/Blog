@@ -12,7 +12,7 @@ class HTTP {
     this.instance = axios.create(config)
     // 请求拦截器
     this.instance.interceptors.request.use(
-      (config) => {
+      config => {
         if (config.headers) {
           const token = localStorage.getItem("token")
           if (token) {
@@ -21,16 +21,16 @@ class HTTP {
         }
         return config
       },
-      (error) => {
+      error => {
         return Promise.reject(error)
       }
     )
     // 响应拦截器
     this.instance.interceptors.response.use(
-      (response) => {
+      response => {
         return responseFormat(response)
       },
-      (error) => {
+      error => {
         return Promise.reject(ErrorStatus(error))
       }
     )
@@ -40,10 +40,10 @@ class HTTP {
     return new Promise((resolve, reject) => {
       this.instance
         .request<any, T>(config)
-        .then((res) => {
+        .then(res => {
           resolve(res)
         })
-        .catch((err) => {
+        .catch(err => {
           ElMessage.error(err?.response?.data?.message ?? err.message)
           reject(err)
         })

@@ -53,9 +53,9 @@
 
 <script lang="ts" setup>
 import { reactive, ref, nextTick } from "vue"
-import http from "@/server"
 import dayjs from "dayjs"
 import { useIntersectionObserver } from "@vueuse/core"
+import http from "@/server"
 import Loading from "@/components/Loading.vue"
 import ApplyDialog from "./ApplyDialog.vue"
 
@@ -82,7 +82,7 @@ async function getList() {
 
     if (res.code === 0) {
       list.push(
-        ...res.data.list.map((item) => {
+        ...res.data.list.map(item => {
           return {
             ...item,
             createdAt: dayjs(item.createdAt).format("L LTS"),
@@ -147,7 +147,8 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
       align-items: center;
       cursor: pointer;
       border-radius: $border-radius;
-      box-shadow: inset 3px 3px 8px var(--shadow-color),
+      box-shadow:
+        inset 3px 3px 8px var(--shadow-color),
         inset -3px -3px 8px $bg-color;
       text-decoration: none;
       color: $font-color;
@@ -177,7 +178,8 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
         }
       }
       &:hover {
-        box-shadow: inset 3px 3px 8px var(--shadow-color),
+        box-shadow:
+          inset 3px 3px 8px var(--shadow-color),
           inset 3px 3px 8px var(--shadow-color);
 
         .info {

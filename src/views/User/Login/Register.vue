@@ -52,8 +52,8 @@
 <script lang="ts" setup>
 import { ref, reactive } from "vue"
 import { useRouter } from "vue-router"
-import http from "@/server"
 import { ElMessage } from "element-plus"
+import http from "@/server"
 import useUserStore from "@/store/user"
 import i18n from "@/locale"
 

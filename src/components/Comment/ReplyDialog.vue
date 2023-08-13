@@ -24,8 +24,8 @@
 
 <script lang="ts" setup>
 import { ref, reactive } from "vue"
-import http from "@/server"
 import { ElMessage } from "element-plus"
+import http from "@/server"
 import useUserStore from "@/store/user"
 import MdEditor from "@/components/MdEditor.vue"
 import i18n from "@/locale"

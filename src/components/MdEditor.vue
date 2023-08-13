@@ -20,9 +20,6 @@
 
 <script lang="ts" setup>
 import { ref, watchEffect, reactive, onMounted } from "vue"
-import useThemeStore from "@/store/theme"
-import useLocaleStore from "@/store/locale"
-import resumeUpload from "@/utils/resumeUpload"
 import {
   MdPreview,
   MdEditor,
@@ -30,6 +27,9 @@ import {
   HeadList,
   config
 } from "md-editor-v3"
+import useThemeStore from "@/store/theme"
+import useLocaleStore from "@/store/locale"
+import resumeUpload from "@/utils/resumeUpload"
 import "md-editor-v3/lib/style.css"
 
 const emits = defineEmits(["onGetCatalog", "onChange"])
@@ -101,7 +101,7 @@ const text = ref(props.text)
 
 config({
   markdownItPlugins(plugins) {
-    return plugins.map((plugin) => {
+    return plugins.map(plugin => {
       if (plugin.type === "image") {
         return {
           ...plugin,
@@ -123,8 +123,8 @@ watchEffect(() => {
 })
 async function onUploadImg(files: File[], callback) {
   const res = await Promise.all(
-    files.map((file) => {
-      return new Promise((resolve) => {
+    files.map(file => {
+      return new Promise(resolve => {
         resumeUpload(file, {
           url: "/upload/file",
           methods: "put",
@@ -138,7 +138,7 @@ async function onUploadImg(files: File[], callback) {
       })
     })
   )
-  callback(res.map((image) => image))
+  callback(res.map(image => image))
 }
 onMounted(() => {
   Editor.value?.on("preview", (status: boolean) => (preview.value = status))

@@ -62,8 +62,8 @@
 </template>
 
 <script lang="ts" setup>
-import Comment from "@/components/Comment/Comment.vue"
 import dayjs from "dayjs"
+import Comment from "@/components/Comment/Comment.vue"
 </script>
 
 <style lang="scss">

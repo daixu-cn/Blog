@@ -176,12 +176,12 @@
 
 <script lang="ts" setup>
 import { ref, nextTick, computed } from "vue"
-import http from "@/server"
 import dayjs from "dayjs"
 import { useIntersectionObserver } from "@vueuse/core"
+import { ElMessage, ElMessageBox } from "element-plus"
+import http from "@/server"
 import Loading from "@/components/Loading.vue"
 import MdEditor from "@/components/MdEditor.vue"
-import { ElMessage, ElMessageBox } from "element-plus"
 import useUserStore from "@/store/user"
 import i18n from "@/locale"
 import ReplyDialog from "./ReplyDialog.vue"
@@ -238,9 +238,9 @@ async function getList(refresh = false) {
         ? res.data.list
         : [
             ...list.value,
-            ...res.data.list.filter((item) => {
+            ...res.data.list.filter(item => {
               return !list.value.find(
-                (comment) => comment.commentId === item.commentId
+                comment => comment.commentId === item.commentId
               )
             })
           ]
@@ -320,8 +320,8 @@ async function loadReply(comment, refresh = false) {
 
     comment.replies = [
       ...comment.replies,
-      ...res.data.list.filter((item) => {
-        return !comment.replies.find((reply) => reply.replyId === item.replyId)
+      ...res.data.list.filter(item => {
+        return !comment.replies.find(reply => reply.replyId === item.replyId)
       })
     ]
 
@@ -385,7 +385,7 @@ function deleteHandler(type: number, comment, id: string) {
       getList(true)
     } else {
       comment.replies.splice(
-        comment.replies.findIndex((item) => item.replyId === id),
+        comment.replies.findIndex(item => item.replyId === id),
         1
       )
       loadReply(comment, true)

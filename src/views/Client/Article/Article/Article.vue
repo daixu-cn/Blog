@@ -114,9 +114,9 @@
 <script lang="ts" setup>
 import { reactive, ref, nextTick } from "vue"
 import { useRouter } from "vue-router"
-import http from "@/server"
 import dayjs from "dayjs"
 import { useIntersectionObserver } from "@vueuse/core"
+import http from "@/server"
 import Loading from "@/components/Loading.vue"
 import { categories } from "@/global/select"
 import i18n from "@/locale"
@@ -153,7 +153,7 @@ async function getList(page = article.page) {
     if (res.code === 0) {
       for (const item of res.data.list) {
         item.categoryFormat = i18n.global.t(
-          categories.find((category) => category.value === item.category)
+          categories.find(category => category.value === item.category)
             ?.label as string
         )
         item.createdAt = dayjs(item.createdAt).fromNow()

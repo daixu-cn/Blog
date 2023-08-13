@@ -8,11 +8,11 @@
 
 <script lang="ts" setup>
 import { useRoute, useRouter } from "vue-router"
-import http from "@/server"
 import { ElMessage, ElNotification } from "element-plus"
+import queryString from "query-string"
+import http from "@/server"
 import useUserStore from "@/store/user"
 import i18n from "@/locale"
-import queryString from "query-string"
 
 const { query } = useRoute()
 const router = useRouter()

@@ -33,7 +33,7 @@
             @onGetCatalog="onGetCatalog"
             @vue:mounted="articleMounted"
           />
-          <Comment :article-id="(route.params?.articleId as string)" />
+          <Comment :article-id="route.params?.articleId as string" />
         </template>
       </el-skeleton>
     </div>
@@ -72,14 +72,14 @@
 <script lang="ts" setup>
 import { ref, nextTick, onBeforeUnmount, watchEffect } from "vue"
 import { useRoute, useRouter } from "vue-router"
+import { HeadList } from "md-editor-v3"
+import { cloneDeep } from "lodash"
+import dayjs from "dayjs"
 import http from "@/server"
 import Player from "@/components/Player.vue"
 import MdEditor from "@/components/MdEditor.vue"
-import { HeadList } from "md-editor-v3"
 import Comment from "@/components/Comment/Comment.vue"
-import { cloneDeep } from "lodash"
 import { categories } from "@/global/select"
-import dayjs from "dayjs"
 import i18n from "@/locale"
 import ImageViewer from "@/components/ImageViewer.vue"
 
@@ -95,8 +95,7 @@ async function getInfo() {
 
   if (res.code === 0) {
     res.data.category = i18n.global.t(
-      categories.find((item) => item.value === res.data.category)
-        ?.label as string
+      categories.find(item => item.value === res.data.category)?.label as string
     )
 
     res.data.createdAt = dayjs(res.data.createdAt).fromNow()
@@ -152,7 +151,7 @@ function onGetCatalog(list: HeadList[]) {
 }
 function scrollHandler() {
   const contentSections = catalog.value.map(
-    (item) => document.getElementById(item.text) as HTMLElement
+    item => document.getElementById(item.text) as HTMLElement
   )
   for (const el of cloneDeep(contentSections).reverse()) {
     if (el?.getBoundingClientRect().top <= 80) {

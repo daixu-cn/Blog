@@ -27,7 +27,7 @@ function calculateFileMd5(file: File, chunkSize: number) {
     const reader = new FileReader()
 
     let currentChunk = 0
-    reader.onload = (e) => {
+    reader.onload = e => {
       spark.append(e.target?.result as ArrayBuffer)
       currentChunk++
 
@@ -57,7 +57,7 @@ function calculateChunkMd5(file: File, start: number, end: number) {
     const chunk = file.slice(start, end)
     const reader = new FileReader()
     reader.readAsArrayBuffer(chunk)
-    reader.onload = (e) => {
+    reader.onload = e => {
       const spark = new SparkMD5.ArrayBuffer()
       spark.append(e.target?.result as ArrayBuffer)
       resolve(spark.end())

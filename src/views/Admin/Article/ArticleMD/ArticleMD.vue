@@ -93,10 +93,10 @@
 <script lang="ts" setup>
 import { ref, reactive, onUnmounted } from "vue"
 import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router"
-import { categories } from "@/global/select"
-import resumeUpload from "@/utils/resumeUpload"
 import { ElMessage, ElMessageBox } from "element-plus"
 import type { FormInstance, FormRules, UploadProps } from "element-plus"
+import { categories } from "@/global/select"
+import resumeUpload from "@/utils/resumeUpload"
 import { BASE_API } from "@/global/env"
 import useUserStore from "@/store/user"
 import http from "@/server"
@@ -133,7 +133,7 @@ const rules = reactive<FormRules>({
   ]
 })
 
-const beforePosterUpload: UploadProps["beforeUpload"] = (rawFile) => {
+const beforePosterUpload: UploadProps["beforeUpload"] = rawFile => {
   if (!rawFile.type.startsWith("image")) {
     ElMessage.error("图片格式异常")
     return false
@@ -144,7 +144,7 @@ const beforePosterUpload: UploadProps["beforeUpload"] = (rawFile) => {
   }
   return true
 }
-const posterUploadSuccess: UploadProps["onSuccess"] = (res) => {
+const posterUploadSuccess: UploadProps["onSuccess"] = res => {
   if (res.code === 0) {
     article.poster = res.data
   } else {
@@ -155,7 +155,7 @@ const posterUploadSuccess: UploadProps["onSuccess"] = (res) => {
 function progressFormat(percentage: number) {
   return percentage === 100 ? "100%" : `${percentage.toFixed(2)}%`
 }
-const videoUploadChange: UploadProps["onChange"] = (rawFile) => {
+const videoUploadChange: UploadProps["onChange"] = rawFile => {
   if (rawFile.raw?.type.startsWith("video")) {
     isProgress.value = true
     resumeUpload(rawFile.raw, {

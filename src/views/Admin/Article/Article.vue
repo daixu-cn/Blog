@@ -183,14 +183,14 @@
 
 <script lang="ts" setup>
 import { ref, reactive } from "vue"
-import { categories } from "@/global/select"
-import i18n from "@/locale"
 import { ElMessageBox, ElMessage } from "element-plus"
 import type { FormInstance } from "element-plus"
-import http from "@/server"
 import dayjs from "dayjs"
 import { Plus } from "@element-plus/icons-vue"
 import { useRouter } from "vue-router"
+import http from "@/server"
+import i18n from "@/locale"
+import { categories } from "@/global/select"
 
 const router = useRouter()
 const formRef = ref<FormInstance>()
@@ -218,11 +218,11 @@ async function getList(page = 1) {
     })
 
     if (res.code === 0) {
-      table.list = res.data.list.map((item) => {
+      table.list = res.data.list.map(item => {
         return {
           ...item,
           category: i18n.global.t(
-            categories.find((category) => category.value === item.category)
+            categories.find(category => category.value === item.category)
               ?.label as string
           ),
           views: item.views.toLocaleString(),

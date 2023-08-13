@@ -1,15 +1,15 @@
 import { createApp } from "vue"
 import "@/assets/style/scss/global.scss"
-import App from "@/App.vue"
-import router from "@/router"
-import locale from "@/locale"
 import { createPinia } from "pinia"
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate"
-import Icon from "@/components/Icon.vue"
 
 import dayjs from "dayjs"
 import localizedFormat from "dayjs/plugin/localizedFormat"
 import relativeTime from "dayjs/plugin/relativeTime"
+import Icon from "@/components/Icon.vue"
+import locale from "@/locale"
+import router from "@/router"
+import App from "@/App.vue"
 
 dayjs.extend(localizedFormat)
 dayjs.extend(relativeTime)

@@ -46,9 +46,9 @@
 
 <script lang="ts" setup>
 import { ref, reactive } from "vue"
-import http from "@/server"
 import { ElMessage } from "element-plus"
 import type { FormInstance, FormRules } from "element-plus"
+import http from "@/server"
 import i18n from "@/locale"
 
 const emits = defineEmits(["confirm"])

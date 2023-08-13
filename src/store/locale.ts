@@ -20,7 +20,7 @@ export default defineStore("locale", {
     setLocale(locale?: LocaleType) {
       return new Promise<void>(async (resolve, reject) => {
         try {
-          const isLocale = locales.find((item) => item.locale === locale)
+          const isLocale = locales.find(item => item.locale === locale)
 
           const LOCALE: LocaleType = isLocale
             ? locale ?? this.current

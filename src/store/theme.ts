@@ -59,7 +59,7 @@ export default defineStore("theme", {
     setTheme(theme?: ThemeType) {
       return new Promise<void>(async (resolve, reject) => {
         try {
-          const isTheme = themes.find((item) => item.theme === theme)
+          const isTheme = themes.find(item => item.theme === theme)
 
           const THEME: ThemeType = isTheme
             ? theme ?? this.current
@@ -72,7 +72,7 @@ export default defineStore("theme", {
           const el = document.documentElement
           el.setAttribute("style", "")
 
-          Object.keys(module.default).forEach((attr) => {
+          Object.keys(module.default).forEach(attr => {
             if (attr === "--el-color-primary") {
               setFavicon(module.default[attr])
             }

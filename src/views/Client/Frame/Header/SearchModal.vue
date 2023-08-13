@@ -65,8 +65,8 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, watchEffect } from "vue"
-import http from "@/server"
 import { useRouter } from "vue-router"
+import http from "@/server"
 import { categories } from "@/global/select"
 import i18n from "@/locale"
 
@@ -90,7 +90,7 @@ onMounted(() => {
 
   SearchModalEL.addEventListener(
     "transitionend",
-    (event) => {
+    event => {
       if (event.target === SearchModalEL && !isSearch.value) {
         emit("close")
       }
@@ -126,11 +126,11 @@ async function getHotList() {
   })
 
   if (res.code === 0) {
-    hotList.value = res.data.list.map((item) => {
+    hotList.value = res.data.list.map(item => {
       return {
         ...item,
         category: i18n.global.t(
-          categories.find((category) => category.value === item.category)
+          categories.find(category => category.value === item.category)
             ?.label as string
         )
       }
@@ -149,11 +149,11 @@ async function getList() {
     })
 
     if (res.code === 0) {
-      searchList.value = res.data.map((item) => {
+      searchList.value = res.data.map(item => {
         return {
           ...item,
           category: i18n.global.t(
-            categories.find((category) => category.value === item.category)
+            categories.find(category => category.value === item.category)
               ?.label as string
           )
         }

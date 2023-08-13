@@ -62,7 +62,9 @@ function searchClose() {
   border-bottom: 1px solid $border-color;
   background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(2px);
-  transition: transform 0.5s, opacity 0.5s;
+  transition:
+    transform 0.5s,
+    opacity 0.5s;
   &.hidden {
     transform: scale(0);
     opacity: 0;

@@ -2,7 +2,7 @@
   <el-config-provider
     v-if="isRouterAlive"
     :locale="localeStore.element"
-    v-bind="(ElConfigProviderConfig as ConfigProviderProps)"
+    v-bind="ElConfigProviderConfig as ConfigProviderProps"
   >
     <NotFound v-if="isPeep" />
     <router-view v-else v-slot="{ Component }">
@@ -16,15 +16,15 @@
 <script lang="ts" setup>
 import { reactive, ref, nextTick, provide } from "vue"
 import { addListener, launch } from "devtools-detector"
+import type { ConfigProviderProps } from "element-plus"
 import NotFound from "@/views/Error/NotFound.vue"
 import useUserStore from "@/store/user"
 import useThemeStore from "@/store/theme"
 import useLocaleStore from "@/store/locale"
-import type { ConfigProviderProps } from "element-plus"
 
 const isPeep = ref(false)
 if (import.meta.env.MODE !== "development") {
-  addListener((isOpen) => {
+  addListener(isOpen => {
     isPeep.value = isOpen
   })
   launch()

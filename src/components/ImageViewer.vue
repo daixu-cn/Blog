@@ -29,7 +29,7 @@ const body = document.querySelector("body") as HTMLBodyElement
 
 watch(
   () => props.show,
-  (show) => {
+  show => {
     body.style.overflow = show ? "hidden" : ""
   }
 )

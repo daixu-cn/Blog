@@ -151,8 +151,8 @@
 <script lang="ts" setup>
 import { ref, reactive } from "vue"
 import type { FormInstance } from "element-plus"
-import http from "@/server"
 import dayjs from "dayjs"
+import http from "@/server"
 
 const formRef = ref<FormInstance>()
 const loading = ref(false)
@@ -176,7 +176,7 @@ async function getList(page = 1) {
     })
 
     if (res.code === 0) {
-      table.list = res.data.list.map((item) => {
+      table.list = res.data.list.map(item => {
         return {
           ...item,
           role: item.role === 0 ? "管理员" : "普通用户",

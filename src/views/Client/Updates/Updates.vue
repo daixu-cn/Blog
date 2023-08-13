@@ -33,9 +33,9 @@
 
 <script lang="ts" setup>
 import { reactive, ref, nextTick } from "vue"
-import http from "@/server"
 import dayjs from "dayjs"
 import { useIntersectionObserver } from "@vueuse/core"
+import http from "@/server"
 import Loading from "@/components/Loading.vue"
 
 const footer = ref()
@@ -59,7 +59,7 @@ async function getList() {
 
     if (res.code === 0) {
       list.push(
-        ...res.data.list.map((item) => {
+        ...res.data.list.map(item => {
           return {
             ...item,
             createdAt: dayjs(item.createdAt).format("L LTS"),

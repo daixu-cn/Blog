@@ -106,7 +106,7 @@ const emailChangeDialog = ref()
 const uploadLoading = ref(false)
 const emailServiceLoading = ref(false)
 
-const beforeUpload: UploadProps["beforeUpload"] = (rawFile) => {
+const beforeUpload: UploadProps["beforeUpload"] = rawFile => {
   if (!rawFile.type.startsWith("image")) {
     ElMessage.error(i18n.global.t("file.formatException"))
     return false
@@ -118,7 +118,7 @@ const beforeUpload: UploadProps["beforeUpload"] = (rawFile) => {
   uploadLoading.value = true
   return true
 }
-const uploadSuccess: UploadProps["onSuccess"] = (res) => {
+const uploadSuccess: UploadProps["onSuccess"] = res => {
   if (res.code === 0) {
     updateUser("avatar", res.data)
   } else {

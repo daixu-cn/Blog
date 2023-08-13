@@ -33,8 +33,8 @@
 
 <script lang="ts" setup>
 import { useSlots } from "vue"
-import useUserStore from "@/store/user"
 import { useRoute, useRouter } from "vue-router"
+import useUserStore from "@/store/user"
 
 const slots = useSlots()
 const route = useRoute()
