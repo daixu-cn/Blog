@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from "vue"
+import { PropType, watch } from "vue"
 
 const props = defineProps({
   show: {
@@ -25,4 +25,12 @@ const props = defineProps({
   }
 })
 const emits = defineEmits(["close"])
+const body = document.querySelector("body") as HTMLBodyElement
+
+watch(
+  () => props.show,
+  (show) => {
+    body.style.overflow = show ? "hidden" : ""
+  }
+)
 </script>
