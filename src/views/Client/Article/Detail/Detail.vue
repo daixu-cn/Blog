@@ -61,7 +61,7 @@
         </el-skeleton>
       </div>
     </div>
-    <ImagePreview
+    <ImageViewer
       :show="Boolean(previewImgUrl.length)"
       :url-list="previewImgUrl"
       @close="previewImgUrl = []"
@@ -81,7 +81,7 @@ import { cloneDeep } from "lodash"
 import { categories } from "@/global/select"
 import dayjs from "dayjs"
 import i18n from "@/locale"
-import ImagePreview from "@/components/ImagePreview.vue"
+import ImageViewer from "@/components/ImageViewer.vue"
 
 const route = useRoute()
 const router = useRouter()
