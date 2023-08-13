@@ -5,7 +5,9 @@
     <el-scrollbar wrap-class="Frame-main" noresize>
       <router-view v-slot="{ Component }">
         <transition name="route" mode="out-in">
-          <component :is="Component" />
+          <keep-alive>
+            <component :is="Component" />
+          </keep-alive>
         </transition>
       </router-view>
     </el-scrollbar>
