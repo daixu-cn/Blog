@@ -77,7 +77,7 @@
                 v-if="item.video"
                 :src="item.video"
                 :poster="item.poster"
-                @play="videoPlay(item.articleId)"
+                @play.once="videoPlay(item.articleId)"
               />
               <ul
                 class="views"
