@@ -17,7 +17,7 @@
             :key="item.updateId"
             :timestamp="item.createdAt"
           >
-            <div v-html="item.content"></div>
+            <span v-html="item.content"></span>
           </el-timeline-item>
         </el-timeline>
       </template>
@@ -113,6 +113,9 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
       width: 30%;
       margin-top: 8px;
     }
+  }
+  .el-timeline-item__content {
+    line-height: 1.5em;
   }
   .footer {
     margin-bottom: 20px;
