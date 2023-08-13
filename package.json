@@ -13,7 +13,7 @@
     "preview": "vite preview",
     "prettier": "prettier --write .",
     "lint": "lint-staged",
-    "prepare": "husky install && npx husky add .husky/commit-msg 'npm run lint && npx --no-install commitlint --edit $1'",
+    "husky": "husky install && npx husky add .husky/commit-msg 'npm run lint && npx --no-install commitlint --edit $1'",
     "commit": "cz"
   },
   "lint-staged": {
@@ -35,7 +35,7 @@
     "dayjs": "^1.11.9",
     "devtools-detector": "^2.0.14",
     "element-plus": "^2.3.7",
-    "md-editor-v3": "^4.2.1",
+    "md-editor-v3": "^4.3.0",
     "nprogress": "^0.2.0",
     "path": "^0.12.7",
     "pinia": "^2.0.35",

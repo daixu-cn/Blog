@@ -31,6 +31,7 @@
             :is-preview="true"
             :text="info?.content"
             @onGetCatalog="onGetCatalog"
+            @vnode-mounted="articleMounted"
           />
           <Comment :article-id="(route.params?.articleId as string)" />
         </template>
@@ -60,6 +61,11 @@
         </el-skeleton>
       </div>
     </div>
+    <ImagePreview
+      :show="Boolean(previewImgUrl.length)"
+      :url-list="previewImgUrl"
+      @close="previewImgUrl = []"
+    />
   </div>
 </template>
 
@@ -75,13 +81,14 @@ import { cloneDeep } from "lodash"
 import { categories } from "@/global/select"
 import dayjs from "dayjs"
 import i18n from "@/locale"
+import ImagePreview from "@/components/ImagePreview.vue"
 
 const route = useRoute()
 const router = useRouter()
 const loading = ref(true)
 const info = ref()
 const catalog = ref<HeadList[]>([])
-
+const previewImgUrl = ref<string[]>([])
 async function getInfo() {
   loading.value = true
   const res = await http.get(`/article/info/${route.params?.articleId}`)
@@ -170,6 +177,19 @@ function goToAnchor(text: string) {
     top: Math.ceil(top) - 80,
     behavior: "smooth"
   })
+}
+function articleMounted() {
+  const images = document.querySelectorAll(".article-image")
+
+  for (const image of images) {
+    const src = image.getAttribute("src")
+
+    if (src) {
+      image.addEventListener("click", () => {
+        previewImgUrl.value = [src]
+      })
+    }
+  }
 }
 
 onBeforeUnmount(() => {

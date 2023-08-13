@@ -23,7 +23,13 @@ import { ref, watchEffect, reactive, onMounted } from "vue"
 import useThemeStore from "@/store/theme"
 import useLocaleStore from "@/store/locale"
 import resumeUpload from "@/utils/resumeUpload"
-import { MdPreview, MdEditor, ToolbarNames, HeadList } from "md-editor-v3"
+import {
+  MdPreview,
+  MdEditor,
+  ToolbarNames,
+  HeadList,
+  config
+} from "md-editor-v3"
 import "md-editor-v3/lib/style.css"
 
 const emits = defineEmits(["onGetCatalog", "onChange"])
@@ -93,6 +99,23 @@ const MdEditorProps = reactive<any>({
 })
 const text = ref(props.text)
 
+config({
+  markdownItPlugins(plugins) {
+    return plugins.map((plugin) => {
+      if (plugin.type === "image") {
+        return {
+          ...plugin,
+          options: {
+            ...plugin.options,
+            classes: "article-image"
+          }
+        }
+      }
+      return plugin
+    })
+  }
+})
+
 watchEffect(() => {
   MdEditorProps.theme = themeStore.isDarkMode ? "dark" : "light"
   MdEditorProps.codeTheme = themeStore.isDarkMode ? "atom" : "paraiso"
@@ -151,13 +174,14 @@ defineExpose({
       padding: 0;
       .md-editor-preview {
         padding: 0 20px;
-        figure:has(> .medium-zoom-image) {
+        figure:has(> .article-image) {
           width: 100%;
           display: inline-block;
         }
-        .medium-zoom-image {
+        .article-image {
           max-height: 600px;
           object-fit: contain;
+          cursor: pointer;
         }
       }
     }
