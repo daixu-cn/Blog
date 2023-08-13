@@ -63,15 +63,15 @@ provide("reload", reload)
 .route-enter-from,
 .route-leave-to {
   opacity: 0;
-  transform: scale(1.1);
+  transform: translateX(-50px);
 }
 .route-enter-to,
 .route-leave-from {
   opacity: 1;
-  transform: scale(1);
+  transform: translateX(0);
 }
 .route-enter-active,
 .route-leave-active {
-  transition: all 0.3s;
+  transition: all 0.5s;
 }
 </style>
