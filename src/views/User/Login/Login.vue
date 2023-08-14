@@ -2,11 +2,11 @@
   <div id="Login" class="module">
     <h1 class="title">登录</h1>
     <div class="form">
-      <input v-model="form.email" type="text" placeholder="email" />
+      <input v-model="form.email" type="text" placeholder="邮箱" />
       <input
         v-model="form.password"
         type="password"
-        placeholder="password"
+        placeholder="密码"
         @keyup.enter="login"
       />
     </div>
