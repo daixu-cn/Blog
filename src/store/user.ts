@@ -7,7 +7,7 @@ interface Info {
   avatar: string
   email: string
   emailService: boolean
-  role: number
+  role: 0 | 1
   qq: boolean
   github: boolean
   google: boolean
@@ -38,14 +38,13 @@ export default defineStore("user", {
       this.token = null
       localStorage.removeItem("token")
     },
-    async getUser() {
+    async getUserInfo() {
       if (localStorage.getItem("token")) {
         const res = await http.get("/user/info")
         if (res.code === 0) {
           this.info = res.data
         } else {
-          this.info = null
-          this.token = null
+          this.reset()
         }
       }
     }

@@ -25,7 +25,7 @@ const themeStore = useThemeStore()
 const localeStore = useLocaleStore()
 
 // 初始化用户信息
-userStore.getUser()
+userStore.getUserInfo()
 // 初始化主题
 themeStore.setTheme()
 // 初始化语言
