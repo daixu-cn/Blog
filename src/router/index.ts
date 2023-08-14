@@ -14,7 +14,10 @@ const router = createRouter({
         {
           path: "/article",
           name: "Article",
-          component: () => import("@/views/Client/Article/Article/Article.vue")
+          component: () => import("@/views/Client/Article/Article/Article.vue"),
+          meta: {
+            title: "首页"
+          }
         },
         {
           path: "/article/:articleId",
@@ -24,27 +27,43 @@ const router = createRouter({
         {
           path: "/community",
           name: "Community",
-          component: () => import("@/views/Client/Community/Community.vue")
+          component: () => import("@/views/Client/Community/Community.vue"),
+          meta: {
+            title: "互动社区"
+          }
         },
         {
           path: "/links",
           name: "Links",
-          component: () => import("@/views/Client/Links/Links.vue")
+          component: () => import("@/views/Client/Links/Links.vue"),
+          meta: {
+            title: "友情链接"
+          }
         },
         {
           path: "/creations",
           name: "Creations",
-          component: () => import("@/views/Client/Creations/Creations.vue")
+          component: () => import("@/views/Client/Creations/Creations.vue"),
+          meta: {
+            title: "创意空间"
+          }
         },
         {
           path: "/updates",
           name: "Updates",
-          component: () => import("@/views/Client/Updates/Updates.vue")
+          component: () => import("@/views/Client/Updates/Updates.vue"),
+          meta: {
+            title: "站点动态"
+          }
         },
         {
           path: "/account",
           name: "Account",
-          component: () => import("@/views/Client/Account/Account.vue")
+          component: () => import("@/views/Client/Account/Account.vue"),
+          meta: {
+            role: 1,
+            title: "账户中心"
+          }
         }
       ]
     },
@@ -53,37 +72,64 @@ const router = createRouter({
       name: "SystemFrame",
       component: () => import("@/views/Admin/Frame/Frame.vue"),
       redirect: "/system/article",
+      meta: {
+        role: 0
+      },
       children: [
         {
           path: "/system/article",
           name: "SystemArticle",
-          component: () => import("@/views/Admin/Article/Article.vue")
+          component: () => import("@/views/Admin/Article/Article.vue"),
+          meta: {
+            role: 0,
+            title: "文章管理"
+          }
         },
         {
           path: "/system/article/md/:articleId",
           name: "SystemArticleMD",
           component: () =>
-            import("@/views/Admin/Article/ArticleMD/ArticleMD.vue")
+            import("@/views/Admin/Article/ArticleMD/ArticleMD.vue"),
+          meta: {
+            role: 0,
+            title: "文章操作"
+          }
         },
         {
           path: "/system/comments",
           name: "SystemComments",
-          component: () => import("@/views/Admin/Comments/Comments.vue")
+          component: () => import("@/views/Admin/Comments/Comments.vue"),
+          meta: {
+            role: 0,
+            title: "评论/回复管理"
+          }
         },
         {
           path: "/system/links",
           name: "SystemLinks",
-          component: () => import("@/views/Admin/Links/Links.vue")
+          component: () => import("@/views/Admin/Links/Links.vue"),
+          meta: {
+            role: 0,
+            title: "友情链接管理"
+          }
         },
         {
           path: "/system/users",
           name: "SystemUsers",
-          component: () => import("@/views/Admin/Users/Users.vue")
+          component: () => import("@/views/Admin/Users/Users.vue"),
+          meta: {
+            role: 0,
+            title: "用户管理"
+          }
         },
         {
           path: "/system/updates",
           name: "SystemUpdates",
-          component: () => import("@/views/Admin/Updates/Updates.vue")
+          component: () => import("@/views/Admin/Updates/Updates.vue"),
+          meta: {
+            role: 0,
+            title: "更新管理"
+          }
         }
       ]
     },
@@ -96,29 +142,44 @@ const router = createRouter({
         {
           path: "/login",
           name: "Login",
-          component: () => import("@/views/User/Login/Login.vue")
+          component: () => import("@/views/User/Login/Login.vue"),
+          meta: {
+            title: "登录"
+          }
         },
         {
           path: "/forget",
           name: "Forget",
-          component: () => import("@/views/User/Login/Forget.vue")
+          component: () => import("@/views/User/Login/Forget.vue"),
+          meta: {
+            title: "忘记密码"
+          }
         },
         {
           path: "/register",
           name: "Register",
-          component: () => import("@/views/User/Login/Register.vue")
+          component: () => import("@/views/User/Login/Register.vue"),
+          meta: {
+            title: "注册"
+          }
         }
       ]
     },
     {
       path: "/oauth",
       name: "OAuth",
-      component: () => import("@/views/User/OAuth.vue")
+      component: () => import("@/views/User/OAuth.vue"),
+      meta: {
+        title: "授权"
+      }
     },
     {
       path: "/:catchAll(.*)",
       name: "NotFound",
-      component: () => import("@/views/Error/NotFound.vue")
+      component: () => import("@/views/Error/NotFound.vue"),
+      meta: {
+        title: "NotFound"
+      }
     }
   ],
   scrollBehavior() {
@@ -126,25 +187,27 @@ const router = createRouter({
   }
 })
 
-const redirectIgnore = ["/oauth", "/login", "/forget", "/register"]
 router.beforeEach((to, _, next) => {
-  if (!redirectIgnore.includes(to.path.toLocaleLowerCase())) {
-    sessionStorage.setItem("redirect", to.fullPath)
-  }
   NProgress.start()
 
-  if (to.path.startsWith("/system")) {
-    if (useUserStore()?.info?.role === 0) {
-      next()
-    } else {
-      next({ name: "Login" })
+  document.title = to.meta?.title
+    ? `${to.meta?.title} -- DAIXU BLOG`
+    : "DAIXU BLOG"
+
+  // 判断进入的路由是否需要登录
+  if (Number.isInteger(to.meta.role)) {
+    const info = useUserStore()?.info
+
+    // 管理员路由 || 普通用户路由
+    if (
+      (to.meta.role === 0 && info?.role === 0) ||
+      (to.meta.role === 1 && info)
+    ) {
+      return next()
     }
-  } else if (to.path === "/account") {
-    if (useUserStore()?.info) {
-      next()
-    } else {
-      next({ name: "Login" })
-    }
+
+    sessionStorage.setItem("redirect", to.path.toLocaleLowerCase())
+    next({ name: "Login", replace: true })
   } else {
     next()
   }
