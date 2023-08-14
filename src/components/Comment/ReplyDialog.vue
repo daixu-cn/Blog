@@ -10,12 +10,12 @@
       ref="mdEditor"
       :preview="false"
       :is-upload="false"
-      :placeholder="i18n.global.t('Reply.placeholder')"
+      placeholder="回复内容(支持 Markdown 语法)"
     />
     <template #footer>
       <span class="dialog-footer">
         <el-button type="primary" :loading="loading" @click="confirm">
-          {{ $t("Reply.submit") }}
+          提交回复
         </el-button>
       </span>
     </template>
@@ -28,7 +28,6 @@ import { ElMessage } from "element-plus"
 import http from "@/server"
 import useUserStore from "@/store/user"
 import MdEditor from "@/components/MdEditor.vue"
-import i18n from "@/locale"
 
 const emits = defineEmits(["confirm"])
 const userStore = useUserStore()
@@ -45,20 +44,20 @@ const reply = reactive<any>({
 
 async function confirm() {
   if (!userStore.token) {
-    ElMessage.warning(i18n.global.t("login.notLogged"))
+    ElMessage.warning("未登录")
     return
   }
   reply.content = mdEditor.value?.text
 
   if (!reply.content) {
-    ElMessage.warning(i18n.global.t("Reply.rules.content"))
+    ElMessage.warning("回复内容不能为空")
     return
   }
 
   loading.value = true
   const res = await http.put("/reply/create", reply)
   if (res.code === 0) {
-    ElMessage.success(i18n.global.t("Reply.success"))
+    ElMessage.success("回复成功")
     emits("confirm", comment.value, true)
     reset()
   }

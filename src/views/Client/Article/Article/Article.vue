@@ -105,7 +105,7 @@
         v-if="article.list.length >= article.total && !article.skeletonLoading"
         class="loadingEnd"
       >
-        {{ $t("state.loadEnd") }}
+        加载结束～
       </p>
     </div>
   </div>
@@ -119,7 +119,6 @@ import { useIntersectionObserver } from "@vueuse/core"
 import http from "@/server"
 import Loading from "@/components/Loading.vue"
 import { categories } from "@/global/select"
-import i18n from "@/locale"
 import Player from "@/components/Player.vue"
 
 const router = useRouter()
@@ -152,10 +151,9 @@ async function getList(page = article.page) {
 
     if (res.code === 0) {
       for (const item of res.data.list) {
-        item.categoryFormat = i18n.global.t(
-          categories.find(category => category.value === item.category)
-            ?.label as string
-        )
+        item.categoryFormat = categories.find(
+          category => category.value === item.category
+        )?.label
         item.createdAt = dayjs(item.createdAt).fromNow()
         item.updatedAt = dayjs(item.updatedAt).fromNow()
       }

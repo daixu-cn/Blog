@@ -14,16 +14,10 @@
       label-width="80px"
     >
       <el-form-item label="邮箱" prop="email">
-        <el-input
-          v-model="form.email"
-          :placeholder="$t('login.placeholder.email')"
-        />
+        <el-input v-model="form.email" placeholder="邮箱" />
       </el-form-item>
       <el-form-item label="验证码" prop="sms" class="captcha">
-        <el-input
-          v-model="form.sms"
-          :placeholder="$t('login.placeholder.captcha')"
-        />
+        <el-input v-model="form.sms" placeholder="验证码" />
         <el-button
           :class="{ disabled }"
           :disabled="disabled"
@@ -49,14 +43,13 @@ import { ref, reactive } from "vue"
 import { ElMessage } from "element-plus"
 import type { FormInstance, FormRules } from "element-plus"
 import http from "@/server"
-import i18n from "@/locale"
 
 const emits = defineEmits(["confirm"])
 const show = ref(false)
 const disabled = ref(false)
 const codeLoading = ref(false)
 const loading = ref(false)
-const captcha = ref(i18n.global.t("login.getCode"))
+const captcha = ref("获取验证码")
 let timer: number
 const form = reactive({
   email: "",
@@ -67,14 +60,14 @@ const rules = reactive<FormRules>({
   email: [
     {
       required: true,
-      message: i18n.global.t("login.message.verifyEmail"),
+      message: "请输入邮箱",
       trigger: "blur"
     }
   ],
   sms: [
     {
       required: true,
-      message: i18n.global.t("login.message.verifyCaptcha"),
+      message: "请输入验证码",
       trigger: "blur"
     }
   ]
@@ -82,11 +75,11 @@ const rules = reactive<FormRules>({
 
 async function getCode() {
   if (!form.email.trim()) {
-    ElMessage.warning(i18n.global.t("login.message.verifyEmail"))
+    ElMessage.warning("请输入邮箱")
     return
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
-    ElMessage.warning(i18n.global.t("login.message.verifyEmailFormat"))
+    ElMessage.warning("邮箱格式有误")
     return
   }
 
@@ -96,21 +89,18 @@ async function getCode() {
       email: form.email
     })
     if (res.code === 0) {
-      ElMessage.success(i18n.global.t("login.message.sentSuccessfully"))
+      ElMessage.success("验证码发送成功")
       let timers = 59
       disabled.value = true
-      captcha.value = i18n.global.t("login.message.reacquireTimer", {
-        timers: 60
-      })
+      captcha.value = `重新获取(${timers}s)`
+
       timer = setInterval(() => {
         if (timers <= 0) {
           clearInterval(timer)
-          captcha.value = i18n.global.t("login.message.reacquire")
+          captcha.value = "重新获取"
           disabled.value = false
         } else {
-          captcha.value = i18n.global.t("login.message.reacquireTimer", {
-            timers
-          })
+          captcha.value = `重新获取(${timers}s)`
           timers--
         }
       }, 1000)
@@ -126,7 +116,7 @@ async function confirm() {
     loading.value = true
     const res = await http.patch("/user/update", form)
     if (res.code === 0) {
-      ElMessage.success(i18n.global.t("login.message.successfullyModified"))
+      ElMessage.success("修改成功")
       show.value = false
       emits("confirm", res.data)
     }

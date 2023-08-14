@@ -26,7 +26,7 @@
           <el-option
             v-for="item of categories"
             :key="item.value"
-            :label="i18n.global.t(item.label)"
+            :label="item.label"
             :value="item.value"
           />
         </el-select>
@@ -189,7 +189,6 @@ import dayjs from "dayjs"
 import { Plus } from "@element-plus/icons-vue"
 import { useRouter } from "vue-router"
 import http from "@/server"
-import i18n from "@/locale"
 import { categories } from "@/global/select"
 
 const router = useRouter()
@@ -221,10 +220,9 @@ async function getList(page = 1) {
       table.list = res.data.list.map(item => {
         return {
           ...item,
-          category: i18n.global.t(
-            categories.find(category => category.value === item.category)
-              ?.label as string
-          ),
+          category: categories.find(
+            category => category.value === item.category
+          )?.label,
           views: item.views.toLocaleString(),
           updatedAt: dayjs(item.updatedAt).format("L LTS"),
           createdAt: dayjs(item.createdAt).format("L LTS")

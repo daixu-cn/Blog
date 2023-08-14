@@ -3,29 +3,30 @@
     id="ApplyDialog"
     v-model="show"
     align-center
-    :title="i18n.global.t('Links.apply')"
+    title="友联申请"
     @close="linkRef?.resetFields()"
   >
     <ul class="siteInfo">
       <li>
-        <label>{{ $t("Links.label.name") }}</label>
+        <label>名称</label>
         <span class="colon">:</span>
         DAIXU BLOG
       </li>
       <li>
-        <label>{{ $t("Links.label.url") }}</label>
+        <label>地址</label>
         <span class="colon">:</span>
         https://daixu.cn
       </li>
       <li>
-        <label>{{ $t("Links.label.favicon") }}</label>
+        <label>图标</label>
         <span class="colon">:</span>
         https://api.daixu.cn/favicon.png
       </li>
       <li>
-        <label>{{ $t("Links.label.desc") }}</label>
+        <label>描述</label>
         <span class="colon">:</span>
-        {{ $t("Links.info.description") }}
+        daixu个人博客 - 记录学习、分享生活, 本站用于IT技术交流,
+        web技术分享及日常生活记录。
       </li>
     </ul>
     <el-form
@@ -36,49 +37,28 @@
       label-width="0"
     >
       <el-form-item prop="name">
-        <el-input
-          v-model="link.name"
-          :placeholder="i18n.global.t('Links.name')"
-        />
+        <el-input v-model="link.name" placeholder="网站名称" />
       </el-form-item>
       <el-form-item prop="url">
-        <el-input
-          v-model="link.url"
-          :placeholder="i18n.global.t('Links.url')"
-          type="url"
-        />
+        <el-input v-model="link.url" placeholder="网站地址" type="url" />
       </el-form-item>
       <el-form-item prop="description">
-        <el-input
-          v-model="link.description"
-          :placeholder="i18n.global.t('Links.description')"
-        />
+        <el-input v-model="link.description" placeholder="网站描述" />
       </el-form-item>
       <el-form-item prop="logo">
-        <el-input
-          v-model="link.logo"
-          :placeholder="i18n.global.t('Links.logo')"
-        />
+        <el-input v-model="link.logo" placeholder="网站LOGO" />
       </el-form-item>
       <el-form-item prop="email">
-        <el-input
-          v-model="link.email"
-          :placeholder="i18n.global.t('Links.email')"
-          type="email"
-        />
+        <el-input v-model="link.email" placeholder="站长邮箱" type="email" />
       </el-form-item>
       <el-form-item prop="qq">
-        <el-input
-          v-model="link.qq"
-          :placeholder="i18n.global.t('Links.qq')"
-          type="number"
-        />
+        <el-input v-model="link.qq" placeholder="站长QQ" type="number" />
       </el-form-item>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
         <el-button type="primary" :loading="loading" @click="confirm">
-          {{ $t("Links.submit") }}
+          提交申请
         </el-button>
       </span>
     </template>
@@ -90,7 +70,6 @@ import { ref, reactive } from "vue"
 import { ElMessage } from "element-plus"
 import type { FormInstance, FormRules } from "element-plus"
 import http from "@/server"
-import i18n from "@/locale"
 
 const show = ref(false)
 const loading = ref(false)
@@ -107,21 +86,21 @@ const rules = reactive<FormRules>({
   name: [
     {
       required: true,
-      message: i18n.global.t("Links.rules.name"),
+      message: "网站名称不能为空",
       trigger: "blur"
     }
   ],
   url: [
     {
       required: true,
-      message: i18n.global.t("Links.rules.url"),
+      message: "网站地址不能为空",
       trigger: "blur"
     }
   ],
   description: [
     {
       required: true,
-      message: i18n.global.t("Links.rules.description"),
+      message: "网站描述不能为空",
       trigger: "blur"
     }
   ]
@@ -133,7 +112,7 @@ async function confirm() {
     loading.value = true
     const res = await http.put("/link/create", link)
     if (res.code === 0) {
-      ElMessage.success(i18n.global.t("Links.applySuccess"))
+      ElMessage.success("申请成功,等待审核...")
       show.value = false
     }
     loading.value = false

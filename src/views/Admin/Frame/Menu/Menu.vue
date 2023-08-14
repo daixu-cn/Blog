@@ -10,7 +10,7 @@
           <el-icon>
             <component :is="item.icon" />
           </el-icon>
-          <span>{{ $t(item.name) }}</span>
+          <span>{{ item.name }}</span>
         </el-menu-item>
       </el-menu>
     </el-scrollbar>

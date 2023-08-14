@@ -7,7 +7,7 @@
         :class="{ active: route.path.startsWith(item.path) }"
         @click="goToPage(item.path)"
       >
-        {{ $t(item.name) }}
+        {{ item.name }}
       </li>
     </ul>
   </div>

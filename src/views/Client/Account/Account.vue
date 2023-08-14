@@ -2,7 +2,7 @@
   <div id="Account">
     <ul>
       <li class="start">
-        <label class="avatar-label"> {{ $t("Account.avatar") }}: </label>
+        <label class="avatar-label"> 头像: </label>
         <el-upload
           v-loading="uploadLoading"
           :action="`${BASE_API}/upload/file`"
@@ -20,7 +20,7 @@
         </el-upload>
       </li>
       <li>
-        <label> {{ $t("Account.userName") }}: </label>
+        <label> 用户名: </label>
         <EditableInput
           :default-value="userStore.info?.userName"
           url="/user/update"
@@ -29,7 +29,7 @@
         />
       </li>
       <li>
-        <label> {{ $t("Account.email") }}: </label>
+        <label> 邮箱: </label>
         <EditableInput
           is-custom
           :default-value="userStore.info?.email"
@@ -54,9 +54,7 @@
         <label> GitHub: </label>
         <EditableInput
           is-custom
-          :default-value="
-            userStore.info?.github ? i18n.global.t('Account.bind') : ''
-          "
+          :default-value="userStore.info?.github ? '已绑定' : ''"
           url="/user/update"
           attr="userName"
           @custom-editing="OAuth('github')"
@@ -67,9 +65,7 @@
         <label> Google: </label>
         <EditableInput
           is-custom
-          :default-value="
-            userStore.info?.google ? i18n.global.t('Account.bind') : ''
-          "
+          :default-value="userStore.info?.google ? '已绑定' : ''"
           url="/user/update"
           attr="userName"
           @custom-editing="OAuth('google')"
@@ -77,7 +73,7 @@
         />
       </li>
       <li class="start">
-        <label> {{ $t("Account.mailboxService") }}: </label>
+        <label> 邮箱服务: </label>
         <el-switch
           :model-value="userStore.info?.emailService"
           :loading="emailServiceLoading"
@@ -97,7 +93,6 @@ import type { UploadProps } from "element-plus"
 import { OAuth, BASE_API } from "@/global/env"
 import useUserStore from "@/store/user"
 import http from "@/server"
-import i18n from "@/locale"
 import EditableInput from "@/components/EditableInput.vue"
 import EmailChangeDialog from "./EmailChangeDialog.vue"
 
@@ -108,11 +103,11 @@ const emailServiceLoading = ref(false)
 
 const beforeUpload: UploadProps["beforeUpload"] = rawFile => {
   if (!rawFile.type.startsWith("image")) {
-    ElMessage.error(i18n.global.t("file.formatException"))
+    ElMessage.error("图片格式异常")
     return false
   }
   if (rawFile.size / 1024 / 1024 > 2) {
-    ElMessage.error(i18n.global.t("file.sizeException", { size: 2 }))
+    ElMessage.error("图片格式不能超过2MB!")
     return false
   }
   uploadLoading.value = true
@@ -132,7 +127,7 @@ async function updateUser(key: string, value) {
       [key]: value
     })
     if (res.code === 0) {
-      ElMessage.success(i18n.global.t("Account.modifiedSuccessfully"))
+      ElMessage.success("修改成功")
       refresh(res.data)
     }
   } finally {

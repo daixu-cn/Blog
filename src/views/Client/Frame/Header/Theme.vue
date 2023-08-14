@@ -16,7 +16,7 @@
               class="color-item"
               :style="{ backgroundColor: item.color }"
             ></span>
-            {{ $t(`theme.${item.theme}`) }}</el-dropdown-item
+            {{ item.title }}</el-dropdown-item
           >
         </el-dropdown-menu>
       </template>

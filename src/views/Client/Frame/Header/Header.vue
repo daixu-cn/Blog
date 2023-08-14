@@ -13,7 +13,6 @@
       <div class="shortcut">
         <Search @open="isSearch = true" />
         <FullScreen />
-        <Locale />
         <Theme />
         <Mode />
         <User />
@@ -32,7 +31,6 @@ import Menu from "./Menu.vue"
 import Search from "./Search.vue"
 import SearchModal from "./SearchModal.vue"
 import FullScreen from "./FullScreen.vue"
-import Locale from "./Locale.vue"
 import Theme from "./Theme.vue"
 import Mode from "./Mode.vue"
 import User from "./User.vue"

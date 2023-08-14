@@ -28,7 +28,6 @@ import {
   config
 } from "md-editor-v3"
 import useThemeStore from "@/store/theme"
-import useLocaleStore from "@/store/locale"
 import resumeUpload from "@/utils/resumeUpload"
 import "md-editor-v3/lib/style.css"
 
@@ -64,7 +63,6 @@ const props = defineProps({
 const Editor = ref()
 const preview = ref(props.preview)
 const themeStore = useThemeStore()
-const localeStore = useLocaleStore()
 const toolbars = reactive<ToolbarNames[]>([
   "bold",
   "underline",
@@ -95,6 +93,7 @@ const MdEditorProps = reactive<any>({
   showCodeRowNumber: true,
   tableShape: [9, 9],
   footers: [],
+  language: "zh-cn",
   onUploadImg
 })
 const text = ref(props.text)
@@ -119,7 +118,6 @@ config({
 watchEffect(() => {
   MdEditorProps.theme = themeStore.isDarkMode ? "dark" : "light"
   MdEditorProps.codeTheme = themeStore.isDarkMode ? "atom" : "paraiso"
-  MdEditorProps.language = localeStore.current === "zh-cn" ? "zh-CN" : "en-US"
 })
 async function onUploadImg(files: File[], callback) {
   const res = await Promise.all(

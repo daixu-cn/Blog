@@ -10,32 +10,32 @@ import {
 export const adminMenus = [
   {
     path: "/system/article",
-    name: "menu.system.article",
+    name: "文章管理",
     icon: Notebook
   },
   {
     path: "/system/comments",
-    name: "menu.system.comments",
+    name: "评论/回复",
     icon: ChatDotSquare
   },
   {
     path: "/system/links",
-    name: "menu.system.links",
+    name: "友情链接",
     icon: Discount
   },
   {
     path: "/system/users",
-    name: "menu.system.users",
+    name: "用户管理",
     icon: User
   },
   {
     path: "/system/updates",
-    name: "menu.system.updates",
+    name: "更新管理",
     icon: Setting
   },
   {
     path: "/",
-    name: "menu.system.backHome",
+    name: "返回首页",
     icon: House
   }
 ]
@@ -43,22 +43,22 @@ export const adminMenus = [
 export default [
   {
     path: "/article",
-    name: "menu.article"
+    name: "首页"
   },
   {
     path: "/community",
-    name: "menu.community"
+    name: "互动社区"
   },
   {
     path: "/links",
-    name: "menu.links"
+    name: "友情链接"
   },
   {
     path: "/creations",
-    name: "menu.creations"
+    name: "创意空间"
   },
   {
     path: "/updates",
-    name: "menu.updates"
+    name: "站点动态"
   }
 ]

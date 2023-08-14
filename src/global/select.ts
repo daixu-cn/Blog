@@ -1,19 +1,19 @@
 // 文章分类
 export const categories = [
   {
-    label: "category.code",
+    label: "实验室",
     value: "CODE"
   },
   {
-    label: "category.tutorial",
+    label: "探索站",
     value: "TUTORIAL"
   },
   {
-    label: "category.leisure",
+    label: "咖啡屋",
     value: "LEISURE"
   },
   {
-    label: "category.journal",
+    label: "生活碎片",
     value: "JOURNAL"
   }
 ]

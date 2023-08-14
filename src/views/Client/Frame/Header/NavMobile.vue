@@ -17,7 +17,7 @@
           <el-image :src="getAssets('avatar.png')" fit="cover" class="avatar" />
           <div class="signature">
             <p>daixu</p>
-            <p>{{ $t("site.signature") }}</p>
+            <p>挣钱娶媳妇儿</p>
           </div>
         </div>
       </div>
@@ -28,12 +28,12 @@
           :index="item.path"
           @click="goToPage(item.path)"
         >
-          <span>{{ $t(item.name) }}</span>
+          <span>{{ item.name }}</span>
         </el-menu-item>
       </el-menu>
       <ul class="footer">
         <li v-if="!userStore.info" class="login" @click="goToPage('/login')">
-          {{ $t("login.login") }}
+          登录
         </li>
         <User v-else @router="drawer = false">
           <li>

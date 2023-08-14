@@ -11,7 +11,6 @@
       </div>
       <div class="shortcut">
         <FullScreen />
-        <Locale />
         <Theme />
         <Mode />
         <User />
@@ -27,7 +26,6 @@ import { useRouter } from "vue-router"
 import User from "@/views/Client/Frame/Header/User.vue"
 import NavMobile from "@/views/Client/Frame/Header/NavMobile.vue"
 import FullScreen from "@/views/Client/Frame/Header/FullScreen.vue"
-import Locale from "@/views/Client/Frame/Header/Locale.vue"
 import Theme from "@/views/Client/Frame/Header/Theme.vue"
 import Mode from "@/views/Client/Frame/Header/Mode.vue"
 

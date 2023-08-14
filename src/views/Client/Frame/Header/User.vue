@@ -16,14 +16,12 @@
             "
             @click="goToPage('/system')"
           >
-            {{ $t("menu.system.system") }}</el-dropdown-item
+            后台系统</el-dropdown-item
           >
           <el-dropdown-item @click="goToPage('/account')">
-            {{ $t("menu.account") }}</el-dropdown-item
+            账户中心</el-dropdown-item
           >
-          <el-dropdown-item @click="loginOut">
-            {{ $t("login.signOut") }}</el-dropdown-item
-          >
+          <el-dropdown-item @click="loginOut"> 退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>

@@ -2,57 +2,57 @@
   <div id="Community">
     <div class="site">
       <div class="about">
-        <h1>{{ $t("Community.aboutMe") }}</h1>
+        <h1>关于我</h1>
         <ul>
           <li>
-            <label>{{ $t("Community.nickName") }}</label>
+            <label>网名</label>
             <span class="colon">:</span>
             daixu
           </li>
           <li>
-            <label>{{ $t("Community.occupation") }}</label>
+            <label>职业</label>
             <span class="colon">:</span>
-            {{ $t("Community.engineer") }}
+            WEB开发工程师
           </li>
           <li>
-            <label>{{ $t("Community.contactQQ") }}</label>
+            <label>联系QQ</label>
             <span class="colon">:</span>
             2064889594
           </li>
           <li>
-            <label>{{ $t("Community.contactEmail") }}</label>
+            <label>联系邮箱</label>
             <span class="colon">:</span>
             daixu.cn@outlook.com
           </li>
         </ul>
       </div>
       <div class="about">
-        <h1>{{ $t("Community.aboutBlog") }}</h1>
+        <h1>关于博客</h1>
         <ul>
           <li>
-            <label>{{ $t("Community.domain") }}</label>
+            <label>网站域名</label>
             <span class="colon">:</span>
             daixu.cn
           </li>
           <li>
-            <label>{{ $t("Community.websiteTime") }}</label>
+            <label>上线时间</label>
             <span class="colon">:</span>
             {{ dayjs("2021/02/05").format("L") }}
           </li>
           <li>
-            <label>{{ $t("Community.staticPages") }}</label>
+            <label>静态页面</label>
             <span class="colon">:</span>
             Vite4 + Vue3 + Element-Plus + Media queries
           </li>
           <li>
-            <label>{{ $t("Community.systems") }}</label>
+            <label>后台系统</label>
             <span class="colon">:</span>
             Koa2 + Sequelize + Redis + BandwagonHost VPS + Aliyun OSS
           </li>
           <li>
-            <label>{{ $t("Community.website") }}</label>
+            <label>网站介绍</label>
             <span class="colon">:</span>
-            {{ $t("Community.siteDescription") }}
+            本站搭建主要目的于IT技术交流,日常生活记录。本站支持QQ、GitHub、Google进行快捷登录。
           </li>
         </ul>
       </div>

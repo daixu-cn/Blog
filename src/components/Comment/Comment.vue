@@ -7,7 +7,7 @@
       ref="mdEditor"
       :preview="false"
       :is-upload="false"
-      :placeholder="`${i18n.global.t('Comment.placeholder')}`"
+      placeholder="内容(支持 Markdown 语法)"
       :style="{ height: '300px' }"
     />
     <div class="submitComment">
@@ -17,11 +17,7 @@
         plain
         @click="submitComment"
       >
-        {{
-          props.articleId === "-1"
-            ? $t("Comment.submitMessage")
-            : $t("Comment.submitComment")
-        }}
+        {{ props.articleId === "-1" ? "提交留言" : "提交评论" }}
       </el-button>
     </div>
 
@@ -70,9 +66,9 @@
               <p class="user-row">
                 <span class="userName"
                   >{{ item.user.userName
-                  }}<i v-if="item.user.role === 0" class="admin">{{
-                    $t("Comment.admin")
-                  }}</i></span
+                  }}<i v-if="item.user.role === 0" class="admin"
+                    >管理员</i
+                  ></span
                 >
                 <span>
                   <i-ep-promotion
@@ -118,9 +114,9 @@
                   <p class="user-row">
                     <span class="userName"
                       >{{ reply.user.userName
-                      }}<i v-if="reply.user.role === 0" class="admin">{{
-                        $t("Comment.admin")
-                      }}</i></span
+                      }}<i v-if="reply.user.role === 0" class="admin"
+                        >管理员</i
+                      ></span
                     >
                     <span>
                       <i-ep-promotion
@@ -138,9 +134,7 @@
                   </p>
                   <p class="timer">
                     <span class="replyUser"
-                      >{{ $t("Comment.reply") }}@{{
-                        reply.parent.userName
-                      }}</span
+                      >回复@{{ reply.parent.userName }}</span
                     >{{ reply.createdAt }}
                   </p>
                 </div>
@@ -160,7 +154,7 @@
                 text
                 :loading="item.replyLoading"
                 @click="loadReply(item)"
-                >{{ $t("state.loadMore") }}</el-button
+                >加载更多</el-button
               >
             </div>
           </div>
@@ -183,7 +177,6 @@ import http from "@/server"
 import Loading from "@/components/Loading.vue"
 import MdEditor from "@/components/MdEditor.vue"
 import useUserStore from "@/store/user"
-import i18n from "@/locale"
 import ReplyDialog from "./ReplyDialog.vue"
 
 const props = defineProps({
@@ -194,9 +187,7 @@ const props = defineProps({
 })
 
 const type = computed(() =>
-  props.articleId === "-1"
-    ? i18n.global.t("Comment.allMessage")
-    : i18n.global.t("Comment.allComment")
+  props.articleId === "-1" ? "全部留言" : "全部评论"
 )
 const userStore = useUserStore()
 const mdEditor = ref()
@@ -279,12 +270,12 @@ getList()
 
 async function submitComment() {
   if (!userStore.token) {
-    ElMessage.warning(i18n.global.t("login.notLogged"))
+    ElMessage.warning("未登录")
     return
   }
   const content = mdEditor.value?.text
   if (!content) {
-    ElMessage.warning(i18n.global.t("Comment.rules.content"))
+    ElMessage.warning("回复内容不能为空")
     return
   }
 
@@ -294,13 +285,7 @@ async function submitComment() {
     content
   })
   if (res.code === 0) {
-    ElMessage.success(
-      `${i18n.global.t(
-        props.articleId === "-1"
-          ? "Comment.messageSuccess"
-          : "Comment.commentSuccess"
-      )}`
-    )
+    ElMessage.success(props.articleId === "-1" ? "留言成功" : "评论成功")
     mdEditor.value.text = ""
     getList(true)
   }
@@ -353,34 +338,30 @@ function replyHandler(comment, parentId?: string, userName?: string) {
  * @param {string} id 评论/回复ID
  */
 function deleteHandler(type: number, comment, id: string) {
-  ElMessageBox.confirm(
-    i18n.global.t("dialog.message"),
-    i18n.global.t("dialog.title"),
-    {
-      confirmButtonText: i18n.global.t("dialog.confirmButton"),
-      cancelButtonText: i18n.global.t("dialog.cancelButton"),
-      type: "warning",
-      beforeClose: async (action, instance, done) => {
-        if (action === "confirm") {
-          try {
-            instance.confirmButtonLoading = true
+  ElMessageBox.confirm("此操作将永久删除该记录,是否继续?", "警告", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+    beforeClose: async (action, instance, done) => {
+      if (action === "confirm") {
+        try {
+          instance.confirmButtonLoading = true
 
-            const res = await http.delete(
-              type === 0 ? `/comment/${id}` : `/reply/${id}`
-            )
-            if (res.code === 0) {
-              done()
-            }
-          } finally {
-            instance.confirmButtonLoading = false
+          const res = await http.delete(
+            type === 0 ? `/comment/${id}` : `/reply/${id}`
+          )
+          if (res.code === 0) {
+            done()
           }
-        } else {
-          done()
+        } finally {
+          instance.confirmButtonLoading = false
         }
+      } else {
+        done()
       }
     }
-  ).then(() => {
-    ElMessage.success(i18n.global.t("dialog.success"))
+  }).then(() => {
+    ElMessage.success("操作成功")
     if (type === 0) {
       getList(true)
     } else {

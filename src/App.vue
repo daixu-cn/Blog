@@ -1,7 +1,7 @@
 <template>
   <el-config-provider
     v-if="isRouterAlive"
-    :locale="localeStore.element"
+    :locale="zhCn"
     v-bind="ElConfigProviderConfig as ConfigProviderProps"
   >
     <router-view v-slot="{ Component }">
@@ -15,21 +15,18 @@
 <script lang="ts" setup>
 import { reactive, ref, nextTick, provide } from "vue"
 import type { ConfigProviderProps } from "element-plus"
+import zhCn from "element-plus/dist/locale/zh-cn.mjs"
 import useUserStore from "@/store/user"
 import useThemeStore from "@/store/theme"
-import useLocaleStore from "@/store/locale"
 
 const isRouterAlive = ref(true)
 const userStore = useUserStore()
 const themeStore = useThemeStore()
-const localeStore = useLocaleStore()
 
 // 初始化用户信息
 userStore.getUserInfo()
 // 初始化主题
 themeStore.setTheme()
-// 初始化语言
-localeStore.setLocale()
 
 const ElConfigProviderConfig = reactive({
   size: "default",

@@ -1,27 +1,19 @@
 <template>
   <div id="Login" class="module">
-    <h1 class="title">{{ $t("login.login") }}</h1>
+    <h1 class="title">登录</h1>
     <div class="form">
-      <input
-        v-model="form.email"
-        type="text"
-        :placeholder="$t('login.placeholder.email')"
-      />
+      <input v-model="form.email" type="text" placeholder="email" />
       <input
         v-model="form.password"
         type="password"
-        :placeholder="$t('login.placeholder.password')"
+        placeholder="password"
         @keyup.enter="login"
       />
     </div>
-    <el-button class="action" :loading="loading" @click="login">{{
-      $t("login.login")
-    }}</el-button>
+    <el-button class="action" :loading="loading" @click="login">登录</el-button>
     <div class="auth">
-      <span @click="goToPage('Forget')">{{ $t("login.forget") }}</span>
-      <p @click="goToPage('Register')">
-        {{ $t("login.noAccount") }}<span>{{ $t("login.goRegister") }}</span>
-      </p>
+      <span @click="goToPage('Forget')">忘记密码</span>
+      <p @click="goToPage('Register')">没有账号?<span>去注册</span></p>
     </div>
     <div class="OAuth">
       <Icon class="icon-qq" @click="OAuth('qq')" />
@@ -37,7 +29,6 @@ import { useRouter } from "vue-router"
 import { ElMessage } from "element-plus"
 import http from "@/server"
 import useUserStore from "@/store/user"
-import i18n from "@/locale"
 import { OAuth } from "@/global/env"
 
 const router = useRouter()
@@ -53,11 +44,11 @@ function goToPage(name: string) {
 }
 async function login() {
   if (!form.email.trim()) {
-    ElMessage.warning(i18n.global.t("login.message.verifyEmail"))
+    ElMessage.warning("请输入邮箱")
     return
   }
   if (!form.password.trim()) {
-    ElMessage.warning(i18n.global.t("login.message.verifyPassword"))
+    ElMessage.warning("请输入密码")
     return
   }
 
@@ -65,7 +56,7 @@ async function login() {
     loading.value = true
     const res = await http.post("/user/login", form)
     if (res.code === 0) {
-      ElMessage.success(i18n.global.t("login.message.successfullyLogin"))
+      ElMessage.success("登录成功")
       userStore.setUser(res.data.user)
       userStore.setToken(res.data.token)
       localStorage.setItem("email", form.email)

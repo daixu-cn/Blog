@@ -16,12 +16,10 @@
           <h1 :id="info?.title" class="title">{{ info?.title }}</h1>
           <ul class="article-info">
             <li># {{ info?.category }}</li>
-            <li>
-              {{ info?.views.toLocaleString() }} {{ $t("Article.views") }}
-            </li>
+            <li>{{ info?.views.toLocaleString() }} 访问</li>
             <li>
               {{ info?.comment_reply_total.toLocaleString() }}
-              {{ $t("Comment.comment") }}
+              评论
             </li>
             <li>{{ info?.createdAt }}</li>
           </ul>
@@ -40,7 +38,7 @@
 
     <div class="catalog-wrap">
       <div class="catalog">
-        <h1>{{ $t("Article.catalog") }}</h1>
+        <h1>目录</h1>
         <el-skeleton :loading="loading" animated>
           <template #template>
             <el-skeleton :rows="7" animated />
@@ -80,7 +78,6 @@ import Player from "@/components/Player.vue"
 import MdEditor from "@/components/MdEditor.vue"
 import Comment from "@/components/Comment/Comment.vue"
 import { categories } from "@/global/select"
-import i18n from "@/locale"
 import ImageViewer from "@/components/ImageViewer.vue"
 
 const route = useRoute()
@@ -94,9 +91,9 @@ async function getInfo() {
   const res = await http.get(`/article/info/${route.params?.articleId}`)
 
   if (res.code === 0) {
-    res.data.category = i18n.global.t(
-      categories.find(item => item.value === res.data.category)?.label as string
-    )
+    res.data.category = categories.find(
+      item => item.value === res.data.category
+    )?.label
 
     res.data.createdAt = dayjs(res.data.createdAt).fromNow()
 
@@ -122,9 +119,7 @@ function onGetCatalog(list: HeadList[]) {
       },
       ...list,
       {
-        text: `${i18n.global.t("Comment.allComment")}(${
-          info.value.comment_reply_total
-        })`,
+        text: `全部评论(${info.value.comment_reply_total})`,
         level: 1
       }
     ]
@@ -138,9 +133,7 @@ function onGetCatalog(list: HeadList[]) {
         level: 1
       },
       {
-        text: `${i18n.global.t("Comment.allComment")}(${
-          info.value.comment_reply_total
-        })`,
+        text: `全部评论(${info.value.comment_reply_total})`,
         level: 1
       }
     ]

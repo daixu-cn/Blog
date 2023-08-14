@@ -78,10 +78,7 @@ export default {
     searchResults: "搜索结果",
     noArticles: "未搜索到相关文章"
   },
-  plyr: {
-    speed: "速度",
-    normal: "正常"
-  },
+
   state: {
     loadEnd: "加载结束～",
     loadMore: "加载更多",

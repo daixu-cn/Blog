@@ -1,9 +1,5 @@
 <template>
-  <div
-    id="OAuth"
-    v-loading="true"
-    :element-loading-text="i18n.global.t('login.oauth')"
-  ></div>
+  <div id="OAuth" v-loading="true" element-loading-text="授权处理中..."></div>
 </template>
 
 <script lang="ts" setup>
@@ -12,7 +8,6 @@ import { ElMessage, ElNotification } from "element-plus"
 import queryString from "query-string"
 import http from "@/server"
 import useUserStore from "@/store/user"
-import i18n from "@/locale"
 
 const { query } = useRoute()
 const router = useRouter()
@@ -26,19 +21,14 @@ async function login(url, params) {
 
     if (res.data.newUser) {
       ElNotification({
-        title: i18n.global.t("login.message.successfullyRegister"),
-        message: i18n.global.t("login.newUser"),
+        title: "注册成功",
+        message:
+          "您的邮箱未进行绑定，如有需要可前往账户中心进行绑定，绑定之后可以接收文章发布推送、评论回复通知等信息。",
         type: "success",
         duration: 0
       })
     } else {
-      ElMessage.success(
-        i18n.global.t(
-          userStore.token
-            ? "login.message.bindSuccessfully"
-            : "login.message.successfullyLogin"
-        )
-      )
+      ElMessage.success(userStore.token ? "绑定成功" : "登录成功")
     }
   }
   router.replace(sessionStorage.getItem("redirect") ?? "/")

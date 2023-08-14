@@ -7,7 +7,6 @@
 <script lang="ts" setup>
 import { ref, watch, nextTick, onBeforeUnmount, reactive } from "vue"
 import Plyr from "plyr"
-import i18n from "@/locale"
 
 const emits = defineEmits(["play"])
 const props = defineProps({
@@ -23,8 +22,8 @@ const props = defineProps({
 const player = ref<Plyr>()
 const options = reactive<Plyr.Options>({
   i18n: {
-    speed: i18n.global.t("plyr.speed"),
-    normal: i18n.global.t("plyr.normal")
+    speed: "速度",
+    normal: "正常"
   }
 })
 

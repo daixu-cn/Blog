@@ -5,7 +5,7 @@
       <el-input
         ref="input"
         v-model="keyword"
-        :placeholder="$t('search.articleTitle')"
+        placeholder="文章标题"
         @input="getList"
       />
       <i-ep-close class="clearIcon" @click="keyword = ''" />
@@ -13,9 +13,7 @@
     <div class="result">
       <ul>
         <p>
-          {{
-            !keyword ? $t("search.popularArticles") : $t("search.searchResults")
-          }}
+          {{ !keyword ? "热门文章" : "搜索结果" }}
         </p>
         <el-skeleton :loading="loading" animated :count="6">
           <template #template>
@@ -53,7 +51,7 @@
               </ul>
               <el-empty
                 v-if="keyword && !searchList.length && !loading"
-                :description="$t('search.noArticles')"
+                description="未搜索到相关文章"
               />
             </el-scrollbar>
           </template>
@@ -68,7 +66,6 @@ import { ref, onMounted, watchEffect } from "vue"
 import { useRouter } from "vue-router"
 import http from "@/server"
 import { categories } from "@/global/select"
-import i18n from "@/locale"
 
 const router = useRouter()
 const props = defineProps({
@@ -129,10 +126,8 @@ async function getHotList() {
     hotList.value = res.data.list.map(item => {
       return {
         ...item,
-        category: i18n.global.t(
-          categories.find(category => category.value === item.category)
-            ?.label as string
-        )
+        category: categories.find(category => category.value === item.category)
+          ?.label
       }
     })
   } else {
@@ -152,10 +147,9 @@ async function getList() {
       searchList.value = res.data.map(item => {
         return {
           ...item,
-          category: i18n.global.t(
-            categories.find(category => category.value === item.category)
-              ?.label as string
-          )
+          category: categories.find(
+            category => category.value === item.category
+          )?.label
         }
       })
     } else {

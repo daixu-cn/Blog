@@ -25,7 +25,7 @@
     <div ref="footer" class="footer">
       <Loading :loading="loading" />
       <p v-if="list.length >= total && !skeletonLoading" class="loadingEnd">
-        {{ $t("state.loadEnd") }}
+        加载结束～
       </p>
     </div>
   </div>
