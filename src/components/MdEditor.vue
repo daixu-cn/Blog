@@ -181,6 +181,24 @@ defineExpose({
           object-fit: contain;
           cursor: pointer;
         }
+        h1 {
+          font-size: 2em;
+        }
+        h2 {
+          font-size: 1.8em;
+        }
+        h3 {
+          font-size: 1.6em;
+        }
+        h4 {
+          font-size: 1.4em;
+        }
+        h5 {
+          font-size: 1.2em;
+        }
+        h5 {
+          font-size: 1.1em;
+        }
       }
     }
     .md-editor-toolbar-wrapper {
