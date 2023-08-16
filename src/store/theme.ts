@@ -1,6 +1,7 @@
 import { defineStore } from "pinia"
 import { useCssVar, useDark, useToggle } from "@vueuse/core"
 import tinycolor from "tinycolor2"
+import zhCn from "element-plus/dist/locale/zh-cn.mjs"
 import themes, { ThemeType } from "@/global/theme"
 import { DEFAULE_THEME } from "@/global/env"
 
@@ -14,6 +15,13 @@ const colorTypes = [
   "--el-color-danger",
   "--el-color-info"
 ]
+
+/**
+ * @description 根据主色调生成派生颜色
+ * @param {string} prefix 生成生颜色的前缀
+ * @param {string} baseColor 主色调
+ * @return {ThemeColors}
+ */
 function generateDerivedColors(prefix: string, baseColor: string): ThemeColors {
   const derivedColors: ThemeColors = {}
   const isDark = useDark().value
@@ -38,6 +46,11 @@ function generateDerivedColors(prefix: string, baseColor: string): ThemeColors {
   return derivedColors
 }
 
+/**
+ * @description 设置 favicon 图标颜色
+ * @param {string} color 颜色
+ * @return
+ */
 function setFavicon(color: string) {
   document.querySelector("link[rel*='icon']")?.remove()
 
@@ -52,10 +65,25 @@ function setFavicon(color: string) {
 
 export default defineStore("theme", {
   state: () => ({
+    // 当前主题
     current: (localStorage.getItem("theme") ?? DEFAULE_THEME) as ThemeType,
-    isDarkMode: useDark()
+    // 是否黑暗模式
+    isDarkMode: useDark(),
+    // element-plus 组建库的全局配置（属性参考官网 <el-config-provider />）
+    ElConfigProviderConfig: {
+      locale: zhCn,
+      size: "default",
+      zIndex: 0,
+      button: {
+        autoInsertSpace: true
+      }
+    }
   }),
   actions: {
+    /**
+     * @description 设置主题
+     * @param {ThemeType} theme 主题的文件名
+     */
     setTheme(theme?: ThemeType) {
       return new Promise<void>(async (resolve, reject) => {
         try {
@@ -96,6 +124,11 @@ export default defineStore("theme", {
         }
       })
     },
+
+    /**
+     * @description 切换主题模式
+     * @param {boolean} mode 主题模式/如果不传默认取相反
+     */
     toggleThemeMode(mode?: boolean) {
       this.isDarkMode = mode ?? !this.isDarkMode
       useToggle(this.isDarkMode)

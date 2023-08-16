@@ -1,9 +1,5 @@
 <template>
-  <el-config-provider
-    v-if="isRouterAlive"
-    :locale="zhCn"
-    v-bind="ElConfigProviderConfig as ConfigProviderProps"
-  >
+  <el-config-provider v-bind="ElConfigProviderConfig as ConfigProviderProps">
     <router-view v-slot="{ Component }">
       <transition name="route" mode="out-in">
         <component :is="Component" />
@@ -13,36 +9,21 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, nextTick, provide } from "vue"
+import { computed } from "vue"
 import type { ConfigProviderProps } from "element-plus"
-import zhCn from "element-plus/dist/locale/zh-cn.mjs"
 import useUserStore from "@/store/user"
 import useThemeStore from "@/store/theme"
 
-const isRouterAlive = ref(true)
 const userStore = useUserStore()
 const themeStore = useThemeStore()
-
 // 初始化用户信息
 userStore.getUserInfo()
 // 初始化主题
 themeStore.setTheme()
 
-const ElConfigProviderConfig = reactive({
-  size: "default",
-  zIndex: 0,
-  button: {
-    autoInsertSpace: true
-  }
-})
-
-function reload() {
-  isRouterAlive.value = false
-  nextTick(() => {
-    isRouterAlive.value = true
-  })
-}
-provide("reload", reload)
+const ElConfigProviderConfig = computed(
+  () => themeStore.$state.ElConfigProviderConfig
+)
 </script>
 
 <style lang="scss">
