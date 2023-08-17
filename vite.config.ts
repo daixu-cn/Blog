@@ -8,10 +8,12 @@ import Icons from "unplugin-icons/vite"
 import IconsResolver from "unplugin-icons/resolver"
 import progress from "vite-plugin-progress"
 import viteCompression from "vite-plugin-compression"
+import setupExtend from "vite-plugin-vue-setup-extend"
 
 export default defineConfig({
   plugins: [
     vue(),
+    setupExtend(),
     AutoImport({
       resolvers: [
         ElementPlusResolver(),
