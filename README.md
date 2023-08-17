@@ -1,9 +1,6 @@
-### 运行环境
+## 完整文档
 
-- NodeJS版本：v18.16.0
-- NPM版本：V9.5.1
-
-`Node 版本最好跟我一样的，太高或者太低的话不知道会不会有啥问题。`
+DAIXU BLOG：[https://daixu.cn/article/213999943772434432](https://daixu.cn/article/213999943772434432)
 
 ### 项目指令
 
