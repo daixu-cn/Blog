@@ -13,7 +13,7 @@
     "preview": "vite preview",
     "prettier": "prettier --write .",
     "lint": "lint-staged",
-    "husky": "husky install && npx husky add .husky/commit-msg 'npm run lint && npx --no-install commitlint --edit $1'",
+    "husky-install": "husky install && npx husky add .husky/commit-msg 'npm run lint && npx --no-install commitlint --edit $1'",
     "commit": "cz"
   },
   "lint-staged": {
