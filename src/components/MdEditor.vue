@@ -2,24 +2,31 @@
   <div id="MdEditor">
     <MdPreview
       v-if="props.isPreview"
+      :id="id"
       :model-value="props.text"
       v-bind="MdEditorProps"
       @onGetCatalog="onGetCatalog"
     />
     <MdEditor
       v-else
+      v-bind="MdEditorProps"
+      :id="id"
       ref="Editor"
       v-model="text"
-      v-bind="MdEditorProps"
       :preview="preview"
       :placeholder="props.placeholder"
       @onChange="onChange"
+    />
+    <ImageViewer
+      :show="Boolean(previewImgUrl.length)"
+      :url-list="previewImgUrl"
+      @close="previewImgUrl = []"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watchEffect, reactive, onMounted } from "vue"
+import { ref, watchEffect, reactive, onMounted, computed } from "vue"
 import {
   MdPreview,
   MdEditor,
@@ -27,12 +34,18 @@ import {
   HeadList,
   config
 } from "md-editor-v3"
+import { nanoid } from "nanoid"
 import useThemeStore from "@/store/theme"
 import resumeUpload from "@/utils/resumeUpload"
 import "md-editor-v3/lib/style.css"
+import ImageViewer from "@/components/ImageViewer.vue"
 
+const previewImgUrl = ref<string[]>([])
 const emits = defineEmits(["onGetCatalog", "onChange"])
 const props = defineProps({
+  id: {
+    type: String
+  },
   // 预览模式
   isPreview: {
     type: Boolean,
@@ -60,6 +73,9 @@ const props = defineProps({
   }
 })
 
+const id = computed(() => {
+  return props.id ?? `MdEditor-${nanoid()}`
+})
 const Editor = ref()
 const preview = ref(props.preview)
 const themeStore = useThemeStore()
@@ -138,15 +154,29 @@ async function onUploadImg(files: File[], callback) {
   )
   callback(res.map(image => image))
 }
+
 onMounted(() => {
   Editor.value?.on("preview", (status: boolean) => (preview.value = status))
+  if (props.isPreview) {
+    const el = document.querySelector(`#${id.value}`)
+    el?.addEventListener("click", e => {
+      if (e.target instanceof HTMLImageElement) {
+        const src = e.target?.getAttribute("src")
+        if (src) {
+          previewImgUrl.value = [src]
+        }
+      }
+    })
+  }
 })
+
 function onGetCatalog(list: HeadList[]) {
   emits("onGetCatalog", list)
 }
 function onChange(value: string) {
   emits("onChange", value)
 }
+
 defineExpose({
   text,
   Editor
@@ -172,11 +202,11 @@ defineExpose({
       padding: 0;
       .md-editor-preview {
         padding: 0 20px;
-        figure:has(> .article-image) {
+        figure:has(> img) {
           width: 100%;
           display: inline-block;
         }
-        .article-image {
+        img {
           max-height: 600px;
           object-fit: contain;
           cursor: pointer;

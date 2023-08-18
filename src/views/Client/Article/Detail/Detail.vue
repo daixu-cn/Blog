@@ -29,7 +29,6 @@
             :is-preview="true"
             :text="info?.content"
             @onGetCatalog="onGetCatalog"
-            @vue:mounted="articleMounted"
           />
           <Comment :article-id="route.params?.articleId as string" />
         </template>
@@ -59,15 +58,10 @@
         </el-skeleton>
       </div>
     </div>
-    <ImageViewer
-      :show="Boolean(previewImgUrl.length)"
-      :url-list="previewImgUrl"
-      @close="previewImgUrl = []"
-    />
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="ArticleDetail">
 import { ref, nextTick, onBeforeUnmount, watchEffect } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { HeadList } from "md-editor-v3"
@@ -78,14 +72,12 @@ import Player from "@/components/Player.vue"
 import MdEditor from "@/components/MdEditor.vue"
 import Comment from "@/components/Comment/Comment.vue"
 import { categories } from "@/global/select"
-import ImageViewer from "@/components/ImageViewer.vue"
 
 const route = useRoute()
 const router = useRouter()
 const loading = ref(true)
 const info = ref()
 const catalog = ref<HeadList[]>([])
-const previewImgUrl = ref<string[]>([])
 async function getInfo() {
   loading.value = true
   const res = await http.get(`/article/info/${route.params?.articleId}`)
@@ -169,19 +161,6 @@ function goToAnchor(text: string) {
     top: Math.ceil(top) - 80,
     behavior: "smooth"
   })
-}
-function articleMounted() {
-  const images = document.querySelectorAll(".article-image")
-
-  for (const image of images) {
-    const src = image.getAttribute("src")
-
-    if (src) {
-      image.addEventListener("click", () => {
-        previewImgUrl.value = [src]
-      })
-    }
-  }
 }
 
 onBeforeUnmount(() => {

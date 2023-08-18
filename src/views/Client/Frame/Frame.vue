@@ -5,7 +5,7 @@
     <el-scrollbar wrap-class="Frame-main" noresize>
       <router-view v-slot="{ Component }">
         <transition name="route" mode="out-in">
-          <keep-alive>
+          <keep-alive :exclude="['ArticleDetail']">
             <component :is="Component" />
           </keep-alive>
         </transition>
