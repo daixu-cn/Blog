@@ -2,19 +2,21 @@
   <div id="MdEditor">
     <MdPreview
       v-if="props.isPreview"
-      :id="id"
+      :class="className"
       :model-value="props.text"
+      :no-img-zoom-in="true"
       v-bind="MdEditorProps"
       @onGetCatalog="onGetCatalog"
     />
     <MdEditor
       v-else
       v-bind="MdEditorProps"
-      :id="id"
       ref="Editor"
       v-model="text"
+      :class="className"
       :preview="preview"
       :placeholder="props.placeholder"
+      :no-img-zoom-in="true"
       @onChange="onChange"
     />
     <ImageViewer
@@ -27,13 +29,7 @@
 
 <script lang="ts" setup>
 import { ref, watchEffect, reactive, onMounted, computed } from "vue"
-import {
-  MdPreview,
-  MdEditor,
-  ToolbarNames,
-  HeadList,
-  config
-} from "md-editor-v3"
+import { MdPreview, MdEditor, ToolbarNames, HeadList } from "md-editor-v3"
 import { nanoid } from "nanoid"
 import useThemeStore from "@/store/theme"
 import resumeUpload from "@/utils/resumeUpload"
@@ -43,7 +39,7 @@ import ImageViewer from "@/components/ImageViewer.vue"
 const previewImgUrl = ref<string[]>([])
 const emits = defineEmits(["onGetCatalog", "onChange"])
 const props = defineProps({
-  id: {
+  className: {
     type: String
   },
   // 预览模式
@@ -73,8 +69,8 @@ const props = defineProps({
   }
 })
 
-const id = computed(() => {
-  return props.id ?? `MdEditor-${nanoid()}`
+const className = computed(() => {
+  return props.className ?? `MdEditor-${nanoid()}`
 })
 const Editor = ref()
 const preview = ref(props.preview)
@@ -113,24 +109,6 @@ const MdEditorProps = reactive<any>({
   onUploadImg
 })
 const text = ref(props.text)
-
-config({
-  markdownItPlugins(plugins) {
-    return plugins.map(plugin => {
-      if (plugin.type === "image") {
-        return {
-          ...plugin,
-          options: {
-            ...plugin.options,
-            classes: "article-image"
-          }
-        }
-      }
-      return plugin
-    })
-  }
-})
-
 watchEffect(() => {
   MdEditorProps.theme = themeStore.isDarkMode ? "dark" : "light"
   MdEditorProps.codeTheme = themeStore.isDarkMode ? "atom" : "paraiso"
@@ -158,7 +136,7 @@ async function onUploadImg(files: File[], callback) {
 onMounted(() => {
   Editor.value?.on("preview", (status: boolean) => (preview.value = status))
   if (props.isPreview) {
-    const el = document.querySelector(`#${id.value}`)
+    const el = document.querySelector(`.${className.value}`)
     el?.addEventListener("click", e => {
       if (e.target instanceof HTMLImageElement) {
         const src = e.target?.getAttribute("src")

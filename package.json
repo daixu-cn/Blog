@@ -35,7 +35,7 @@
     "dayjs": "^1.11.9",
     "devtools-detector": "^2.0.14",
     "element-plus": "^2.3.9",
-    "md-editor-v3": "^4.3.0",
+    "md-editor-v3": "^4.6.1",
     "nanoid": "^4.0.2",
     "nprogress": "^0.2.0",
     "path": "^0.12.7",

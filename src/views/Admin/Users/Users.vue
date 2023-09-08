@@ -64,7 +64,7 @@
           label="用户角色"
           align="center"
           show-overflow-tooltip
-          width="80px"
+          width="82px"
         />
         <el-table-column
           prop="emailService"
