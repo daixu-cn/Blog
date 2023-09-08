@@ -39,7 +39,7 @@ import ImageViewer from "@/components/ImageViewer.vue"
 const previewImgUrl = ref<string[]>([])
 const emits = defineEmits(["onGetCatalog", "onChange"])
 const props = defineProps({
-  className: {
+  class: {
     type: String
   },
   // 预览模式
@@ -70,7 +70,7 @@ const props = defineProps({
 })
 
 const className = computed(() => {
-  return props.className ?? `MdEditor-${nanoid()}`
+  return props.class ?? `MdEditor-${nanoid()}`
 })
 const Editor = ref()
 const preview = ref(props.preview)
