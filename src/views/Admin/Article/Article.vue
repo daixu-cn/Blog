@@ -122,6 +122,24 @@
           align="center"
           show-overflow-tooltip
         />
+        <el-table-column prop="disableComment" label="禁止评论" align="center">
+          <template #default="scope">
+            <el-switch
+              v-model="scope.row.disableComment"
+              :loading="scope.row.loading"
+              @change="statusChange('disableComment', scope.row)"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column prop="isPrivate" label="私有文章" align="center">
+          <template #default="scope">
+            <el-switch
+              v-model="scope.row.isPrivate"
+              :loading="scope.row.loading"
+              @change="statusChange('isPrivate', scope.row)"
+            />
+          </template>
+        </el-table-column>
         <el-table-column
           prop="updatedAt"
           label="更新时间"
@@ -236,6 +254,20 @@ async function getList(page = 1) {
   }
 }
 getList()
+
+async function statusChange(field: string, row) {
+  row.loading = true
+  const res = await http.patch("/article/update", {
+    articleId: row.articleId,
+    [field]: row[field] ? 1 : 0
+  })
+  if (res.code === 0) {
+    ElMessage.success("操作成功")
+  } else {
+    row[field] = !row[field]
+  }
+  row.loading = false
+}
 
 function reset() {
   formRef.value?.resetFields()

@@ -1,68 +1,76 @@
 <template>
   <div id="ArticleDetail">
-    <div class="article-view">
-      <el-skeleton :loading="loading" animated>
-        <template #template>
-          <el-skeleton-item variant="h3" style="width: 30%" class="title" />
-          <ul class="article-info">
-            <el-skeleton-item style="width: 50px" />
-            <el-skeleton-item style="width: 50px" />
-            <el-skeleton-item style="width: 50px" />
-            <el-skeleton-item style="width: 50px" />
-          </ul>
-          <el-skeleton :rows="10" animated />
-        </template>
-        <template #default>
-          <h1 :id="info?.title" class="title">{{ info?.title }}</h1>
-          <ul class="article-info">
-            <li># {{ info?.category }}</li>
-            <li>{{ info?.views.toLocaleString() }} 访问</li>
-            <li>
-              {{ info?.comment_reply_total.toLocaleString() }}
-              评论
-            </li>
-            <li>{{ info?.createdAt }}</li>
-          </ul>
-          <h6 class="description">{{ info?.description }}</h6>
-          <Player v-if="info?.video" :src="info?.video" />
-          <MdEditor
-            :is-preview="true"
-            :text="info?.content"
-            @onGetCatalog="onGetCatalog"
-          />
-          <Comment :article-id="route.params?.articleId as string" />
-        </template>
-      </el-skeleton>
+    <div v-if="info?.isPrivate && userStore.info?.role !== 0" class="isPrivate">
+      私有文章，您没有访问权限～
     </div>
 
-    <div class="catalog-wrap">
-      <div class="catalog">
-        <h1>目录</h1>
+    <template v-else>
+      <div class="article-view">
         <el-skeleton :loading="loading" animated>
           <template #template>
-            <el-skeleton :rows="7" animated />
+            <el-skeleton-item variant="h3" style="width: 30%" class="title" />
+            <ul class="article-info">
+              <el-skeleton-item style="width: 50px" />
+              <el-skeleton-item style="width: 50px" />
+              <el-skeleton-item style="width: 50px" />
+              <el-skeleton-item style="width: 50px" />
+            </ul>
+            <el-skeleton :rows="10" animated />
           </template>
           <template #default>
-            <el-scrollbar height="70vh" tag="ul">
-              <li
-                v-for="(item, index) of catalog"
-                :key="index"
-                :data-level="item.level"
-                :data-text="item.text"
-                @click="goToAnchor(item.text)"
-              >
-                {{ item.text }}
+            <h1 :id="info?.title" class="title">{{ info?.title }}</h1>
+            <ul class="article-info">
+              <li># {{ info?.category }}</li>
+              <li>{{ info?.views.toLocaleString() }} 访问</li>
+              <li>
+                {{ info?.comment_reply_total.toLocaleString() }}
+                评论
               </li>
-            </el-scrollbar>
+              <li>{{ info?.createdAt }}</li>
+            </ul>
+            <h6 class="description">{{ info?.description }}</h6>
+            <Player v-if="info?.video" :src="info?.video" />
+
+            <MdEditor
+              class="article-content"
+              :is-preview="true"
+              :text="info?.content"
+              @onGetCatalog="onGetCatalog"
+            />
+            <Comment :article-id="articleId" :disable="info.disableComment" />
           </template>
         </el-skeleton>
       </div>
-    </div>
+
+      <div class="catalog-wrap">
+        <div class="catalog">
+          <h1>目录</h1>
+          <el-skeleton :loading="loading" animated>
+            <template #template>
+              <el-skeleton :rows="7" animated />
+            </template>
+            <template #default>
+              <el-scrollbar height="70vh" tag="ul">
+                <li
+                  v-for="(item, index) of catalog"
+                  :key="index"
+                  :data-level="item.level"
+                  :data-text="item.text"
+                  @click="goToAnchor(item.text)"
+                >
+                  {{ item.text }}
+                </li>
+              </el-scrollbar>
+            </template>
+          </el-skeleton>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script lang="ts" setup name="ArticleDetail">
-import { ref, nextTick, onBeforeUnmount, watchEffect } from "vue"
+import { ref, nextTick, onBeforeUnmount, watchEffect, computed } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { HeadList } from "md-editor-v3"
 import { cloneDeep } from "lodash"
@@ -72,15 +80,21 @@ import Player from "@/components/Player.vue"
 import MdEditor from "@/components/MdEditor.vue"
 import Comment from "@/components/Comment/Comment.vue"
 import { categories } from "@/global/select"
+import useUserStore from "@/store/user"
 
+const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
 const loading = ref(true)
 const info = ref()
 const catalog = ref<HeadList[]>([])
+// 目录是否已加载
+const catalog_lock = ref(false)
+const articleId = computed(() => route.params?.articleId as string)
+
 async function getInfo() {
   loading.value = true
-  const res = await http.get(`/article/info/${route.params?.articleId}`)
+  const res = await http.get(`/article/info/${articleId.value}`)
 
   if (res.code === 0) {
     res.data.category = categories.find(
@@ -90,6 +104,14 @@ async function getInfo() {
     res.data.createdAt = dayjs(res.data.createdAt).fromNow()
 
     info.value = res.data
+
+    catalog_lock.value = false
+    catalog.value = [
+      {
+        text: info.value?.title,
+        level: 1
+      }
+    ]
   } else {
     router.replace("/404")
   }
@@ -97,41 +119,27 @@ async function getInfo() {
 }
 
 watchEffect(() => {
-  if (route.params?.articleId) {
+  if (articleId.value) {
     getInfo()
   }
 })
 
 function onGetCatalog(list: HeadList[]) {
-  if (list.length && list.length !== catalog.value.length - 2) {
-    catalog.value = [
-      {
-        text: info.value?.title,
-        level: 1
-      },
-      ...list,
-      {
+  if (!catalog_lock.value) {
+    catalog.value.push(...list)
+
+    if (!info.value?.disableComment) {
+      catalog.value.push({
         text: `全部评论(${info.value.comment_reply_total})`,
         level: 1
-      }
-    ]
+      })
+    }
+
     nextTick(() => {
       window.addEventListener("scroll", scrollHandler)
     })
-  } else if (list.length === 0 && catalog.value.length === 0) {
-    catalog.value = [
-      {
-        text: info.value?.title,
-        level: 1
-      },
-      {
-        text: `全部评论(${info.value.comment_reply_total})`,
-        level: 1
-      }
-    ]
-    nextTick(() => {
-      window.addEventListener("scroll", scrollHandler)
-    })
+
+    catalog_lock.value = true
   }
 }
 function scrollHandler() {
@@ -171,6 +179,12 @@ onBeforeUnmount(() => {
 <style lang="scss">
 #ArticleDetail {
   width: 100%;
+  .isPrivate {
+    height: calc(100vh - 80px);
+    color: $color-primary;
+    font-size: 1.5em;
+    @include flex-center;
+  }
   .article-view {
     width: calc(100% - 320px);
     margin-top: 20px;
@@ -222,15 +236,13 @@ onBeforeUnmount(() => {
       color: $font-color-secondary;
       margin-bottom: 20px;
     }
-    & > #MdEditor {
+    .article-content {
       margin: 50px 0;
-      .md-editor {
-        box-shadow: none;
-        background-color: transparent;
-        .md-editor-preview-wrapper {
-          .md-editor-preview {
-            padding: 0;
-          }
+      box-shadow: none;
+      background-color: transparent;
+      .md-editor-preview-wrapper {
+        .md-editor-preview {
+          padding: 0;
         }
       }
     }

@@ -1,8 +1,9 @@
 <template>
-  <div id="Community-Comment">
+  <div v-if="!props.disable" id="Community-Comment">
     <h1 :id="`${type}(${allTotal})`" class="total">
       {{ type }}({{ allTotal }})
     </h1>
+
     <MdEditor
       ref="mdEditor"
       :preview="false"
@@ -23,139 +24,147 @@
 
     <el-skeleton :loading="skeletonLoading && page === 1" animated :count="3">
       <template #template>
-        <div class="comment-item">
-          <el-skeleton-item variant="image" class="avatar" />
-          <div class="comment-content">
-            <div class="info">
+        <div class="comment-container">
+          <div class="comment-item">
+            <el-skeleton-item variant="image" class="avatar" />
+            <div class="comment-info">
+              <div class="info">
+                <el-skeleton-item
+                  variant="text"
+                  class="userName"
+                  style="width: 100px"
+                />
+                <el-skeleton-item
+                  variant="text"
+                  class="timer"
+                  style="width: 60px"
+                />
+              </div>
               <el-skeleton-item
                 variant="text"
-                class="userName"
-                style="width: 100px"
-              />
-              <el-skeleton-item
-                variant="text"
-                class="timer"
-                style="width: 60px"
+                class="content"
+                style="height: 80px"
               />
             </div>
-            <el-skeleton-item
-              variant="text"
-              class="content"
-              style="height: 80px"
-            />
           </div>
         </div>
       </template>
       <template #default>
-        <div v-for="item of list" :key="item.commentId" class="comment-item">
-          <el-image
-            :src="item.user.avatar"
-            :preview-src-list="[item.user.avatar]"
-            fit="cover"
-            preview-teleported
-            class="avatar"
-          >
-            <template #error>
-              <div class="image-slot">
-                <i-ep-picture />
-              </div>
-            </template>
-          </el-image>
-          <div class="comment-content">
-            <div class="info">
-              <p class="user-row">
-                <span class="userName"
-                  >{{ item.user.userName
-                  }}<i v-if="item.user.role === 0" class="admin"
-                    >管理员</i
-                  ></span
-                >
-                <span>
-                  <i-ep-promotion
-                    class="reply-icon"
-                    @click="replyHandler(item, undefined, item.user.userName)"
-                  />
-                  <i-ep-deleteFilled
-                    v-if="userStore.info?.userId === item.user.userId"
-                    class="delete-icon"
-                    @click="deleteHandler(0, item, item.commentId)"
-                  />
-                </span>
-              </p>
-              <p class="timer">{{ item.createdAt }}</p>
-            </div>
-            <MdEditor
-              class="content"
-              :is-preview="true"
-              :text="item.content"
-              :style="{ maxHeight: '300px' }"
-            />
-
-            <div
-              v-for="reply of item.replies"
-              :key="reply.replyId"
-              class="comment-item reply-item"
+        <div class="comment-container">
+          <div v-for="item of list" :key="item.commentId" class="comment-item">
+            <el-image
+              :src="item.user.avatar"
+              :preview-src-list="[item.user.avatar]"
+              fit="cover"
+              preview-teleported
+              class="avatar"
             >
-              <el-image
-                :src="reply.user.avatar"
-                :preview-src-list="[reply.user.avatar]"
-                fit="cover"
-                preview-teleported
-                class="avatar"
-              >
-                <template #error>
-                  <div class="image-slot">
-                    <i-ep-picture />
-                  </div>
-                </template>
-              </el-image>
-              <div class="comment-content">
-                <div class="info">
-                  <p class="user-row">
-                    <span class="userName"
-                      >{{ reply.user.userName
-                      }}<i v-if="reply.user.role === 0" class="admin"
-                        >管理员</i
-                      ></span
-                    >
-                    <span>
-                      <i-ep-promotion
-                        class="reply-icon"
-                        @click="
-                          replyHandler(item, reply.replyId, reply.user.userName)
-                        "
-                      />
-                      <i-ep-deleteFilled
-                        v-if="userStore.info?.userId === reply.user.userId"
-                        class="delete-icon"
-                        @click="deleteHandler(1, item, reply.replyId)"
-                      />
-                    </span>
-                  </p>
-                  <p class="timer">
-                    <span class="replyUser"
-                      >回复@{{ reply.parent.userName }}</span
-                    >{{ reply.createdAt }}
-                  </p>
+              <template #error>
+                <div class="image-slot">
+                  <i-ep-picture />
                 </div>
-                <MdEditor
-                  class="content"
-                  :is-preview="true"
-                  :text="reply.content"
-                  :style="{ maxHeight: '300px' }"
-                />
+              </template>
+            </el-image>
+            <div class="comment-info">
+              <div class="info">
+                <p class="user-row">
+                  <span class="userName"
+                    >{{ item.user.userName
+                    }}<i v-if="item.user.role === 0" class="admin"
+                      >管理员</i
+                    ></span
+                  >
+                  <span>
+                    <i-ep-promotion
+                      class="reply-icon"
+                      @click="replyHandler(item, undefined, item.user.userName)"
+                    />
+                    <i-ep-deleteFilled
+                      v-if="userStore.info?.userId === item.user.userId"
+                      class="delete-icon"
+                      @click="deleteHandler(0, item, item.commentId)"
+                    />
+                  </span>
+                </p>
+                <p class="timer">{{ item.createdAt }}</p>
               </div>
-            </div>
+              <MdEditor
+                class="comment-content"
+                :is-preview="true"
+                :text="item.content"
+                :style="{ maxHeight: '300px' }"
+              />
 
-            <div class="loadMore">
-              <el-button
-                v-if="item.replies.length < item.replyTotal"
-                type="primary"
-                text
-                :loading="item.replyLoading"
-                @click="loadReply(item)"
-                >加载更多</el-button
+              <div
+                v-for="reply of item.replies"
+                :key="reply.replyId"
+                class="comment-item reply-item"
               >
+                <el-image
+                  :src="reply.user.avatar"
+                  :preview-src-list="[reply.user.avatar]"
+                  fit="cover"
+                  preview-teleported
+                  class="avatar"
+                >
+                  <template #error>
+                    <div class="image-slot">
+                      <i-ep-picture />
+                    </div>
+                  </template>
+                </el-image>
+                <div class="comment-info">
+                  <div class="info">
+                    <p class="user-row">
+                      <span class="userName"
+                        >{{ reply.user.userName
+                        }}<i v-if="reply.user.role === 0" class="admin"
+                          >管理员</i
+                        ></span
+                      >
+                      <span>
+                        <i-ep-promotion
+                          class="reply-icon"
+                          @click="
+                            replyHandler(
+                              item,
+                              reply.replyId,
+                              reply.user.userName
+                            )
+                          "
+                        />
+                        <i-ep-deleteFilled
+                          v-if="userStore.info?.userId === reply.user.userId"
+                          class="delete-icon"
+                          @click="deleteHandler(1, item, reply.replyId)"
+                        />
+                      </span>
+                    </p>
+                    <p class="timer">
+                      <span class="replyUser"
+                        >回复@{{ reply.parent.userName }}</span
+                      >{{ reply.createdAt }}
+                    </p>
+                  </div>
+                  <MdEditor
+                    class="comment-content"
+                    :is-preview="true"
+                    :text="reply.content"
+                    :style="{ maxHeight: '300px' }"
+                  />
+                </div>
+              </div>
+
+              <div class="loadMore">
+                <el-button
+                  v-if="item.replies.length < item.replyTotal"
+                  type="primary"
+                  text
+                  :loading="item.replyLoading"
+                  @click="loadReply(item)"
+                  >加载更多</el-button
+                >
+              </div>
             </div>
           </div>
         </div>
@@ -183,6 +192,11 @@ const props = defineProps({
   articleId: {
     type: String,
     default: "-1"
+  },
+  // 禁止评论
+  disable: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -385,90 +399,100 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
 
 <style lang="scss">
 #Community-Comment {
+  --padding-space: 8px;
+
   .total {
     font-size: 1.1em;
     font-weight: bold;
     margin-bottom: 30px;
   }
-
+  > #MdEditor {
+    box-sizing: border-box;
+    padding: var(--padding-space);
+  }
   .submitComment {
     display: flex;
     justify-content: flex-end;
     margin: 20px 0 50px 0;
+    box-sizing: border-box;
+    padding: var(--padding-space);
     .el-button {
       width: 100%;
     }
   }
-  .comment-item {
-    display: flex;
-    justify-content: space-between;
-    &:last-child {
-      margin-bottom: 0;
-    }
 
-    .avatar {
-      width: 46px;
-      height: 46px;
-      object-fit: contain;
-      border-radius: $border-radius;
-      .image-slot {
-        width: 100%;
-        height: 100%;
-        background-color: var(--el-text-color-disabled);
-        color: white;
-        @include flex-center;
+  .comment-container {
+    box-sizing: border-box;
+    padding: var(--padding-space);
+    .comment-item {
+      display: flex;
+      justify-content: space-between;
+      &:last-child {
+        margin-bottom: 0;
       }
-    }
-    .comment-content {
-      width: calc(100% - 56px);
-      .info {
+
+      .avatar {
+        width: 46px;
         height: 46px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        margin-bottom: 15px;
-        .user-row {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          .userName {
-            display: inline-block;
-            max-width: calc(100% - 60px);
-            @include text-ellipsis;
-            .admin {
-              color: $color-primary;
-              font-size: calc(1em - 2px);
-              font-style: italic;
-              margin-left: 5px;
-            }
-          }
-          .reply-icon,
-          .delete-icon {
-            cursor: pointer;
-            color: $font-color-secondary;
-            transition: color $duration;
-            &:hover {
-              color: $color-primary;
-            }
-          }
-          .delete-icon {
-            margin-left: 10px;
-          }
-        }
-        .timer {
-          color: $font-color-placeholder;
-          .replyUser {
-            display: inline-block;
-            max-width: calc(100% - 100px);
-            color: $color-primary;
-            margin-right: 10px;
-            @include text-ellipsis;
-          }
+        object-fit: contain;
+        border-radius: $border-radius;
+        .image-slot {
+          width: 100%;
+          height: 100%;
+          background-color: var(--el-text-color-disabled);
+          color: white;
+          @include flex-center;
         }
       }
-      .content {
-        margin-bottom: 25px;
-        .md-editor {
+      .comment-info {
+        width: calc(100% - 56px);
+        .info {
+          height: 46px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          margin-bottom: 15px;
+          .user-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .userName {
+              display: inline-block;
+              max-width: calc(100% - 60px);
+              @include text-ellipsis;
+              .admin {
+                color: $color-primary;
+                font-size: calc(1em - 2px);
+                font-style: italic;
+                margin-left: 5px;
+              }
+            }
+            .reply-icon,
+            .delete-icon {
+              cursor: pointer;
+              color: $font-color-secondary;
+              transition: color $duration;
+              &:hover {
+                color: $color-primary;
+              }
+            }
+            .delete-icon {
+              margin-left: 10px;
+            }
+          }
+          .timer {
+            color: $font-color-placeholder;
+            .replyUser {
+              display: inline-block;
+              max-width: calc(100% - 100px);
+              color: $color-primary;
+              margin-right: 10px;
+              @include text-ellipsis;
+            }
+          }
+        }
+        .comment-content {
+          margin-bottom: 25px;
           box-shadow: none;
           background-color: transparent;
           .md-editor-preview-wrapper {
@@ -476,19 +500,23 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
           }
         }
       }
-    }
-    .loadMore {
-      margin-bottom: 25px;
-      @include flex-center;
-      .el-button {
-        color: $font-color-placeholder;
-        background-color: transparent;
+      .loadMore {
+        margin-bottom: 25px;
+        @include flex-center;
+        .el-button {
+          color: $font-color-placeholder;
+          background-color: transparent;
+        }
       }
     }
   }
-
   .footer {
     margin-bottom: 20px;
+  }
+}
+@media screen and (max-width: 1250) {
+  #Community-Comment {
+    --padding-space: 0;
   }
 }
 </style>

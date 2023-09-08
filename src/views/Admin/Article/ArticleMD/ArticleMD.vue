@@ -15,6 +15,18 @@
       status-icon
       label-width="90px"
     >
+      <el-form-item label="是否评论" prop="disableComment">
+        <el-radio-group v-model="article.disableComment">
+          <el-radio :label="0">允许评论</el-radio>
+          <el-radio :label="1">禁止评论</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="是否私有" prop="isPrivate">
+        <el-radio-group v-model="article.isPrivate">
+          <el-radio :label="0">公开</el-radio>
+          <el-radio :label="1">私有</el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item label="文章类别" prop="category">
         <el-select v-model="article.category" placeholder="请选择文章类别">
           <el-option
@@ -119,7 +131,9 @@ const article = reactive({
   description: "",
   poster: "",
   video: "",
-  content: ""
+  content: "",
+  disableComment: 0,
+  isPrivate: 0
 })
 const rules = reactive<FormRules>({
   title: [{ required: true, message: "文章标题不能为空", trigger: "blur" }],
@@ -127,6 +141,20 @@ const rules = reactive<FormRules>({
     {
       required: true,
       message: "文章种类不能为空",
+      trigger: "change"
+    }
+  ],
+  disableComment: [
+    {
+      required: true,
+      message: "选择是否禁止评论",
+      trigger: "change"
+    }
+  ],
+  isPrivate: [
+    {
+      required: true,
+      message: "选择是否为私有文章",
       trigger: "change"
     }
   ]
@@ -189,6 +217,8 @@ async function getArticleInfo() {
       article.description = res.data.description
       article.poster = res.data.poster
       article.video = res.data.video
+      article.disableComment = res.data.disableComment ? 1 : 0
+      article.isPrivate = res.data.isPrivate ? 1 : 0
       article.content = res.data.content
       articleOriginContent.value = res.data.content
 
