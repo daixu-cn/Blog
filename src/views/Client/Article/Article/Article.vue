@@ -44,7 +44,13 @@
               class="article-item"
             >
               <div class="article-info">
-                <img :src="item.user.avatar" class="avatar" />
+                <el-image
+                  :src="item.poster ?? item.user.avatar"
+                  class="avatar"
+                  :preview-src-list="[item.poster ?? item.user.avatar]"
+                  fit="cover"
+                  :z-index="10"
+                />
                 <div class="header">
                   <h1
                     @click="
@@ -150,6 +156,7 @@ async function getList(page = article.page) {
     })
 
     if (res.code === 0) {
+      console.log(res.data.list)
       for (const item of res.data.list) {
         item.categoryFormat = categories.find(
           category => category.value === item.category
