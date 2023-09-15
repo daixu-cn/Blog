@@ -156,7 +156,6 @@ async function getList(page = article.page) {
     })
 
     if (res.code === 0) {
-      console.log(res.data.list)
       for (const item of res.data.list) {
         item.categoryFormat = categories.find(
           category => category.value === item.category
