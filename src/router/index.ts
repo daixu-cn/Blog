@@ -188,7 +188,9 @@ const router = createRouter({
 })
 
 router.beforeEach((to, _, next) => {
-  NProgress.start()
+  if (!NProgress.isStarted()) {
+    NProgress.start()
+  }
 
   document.title = to.meta?.title
     ? `${to.meta?.title} -- DAIXU BLOG`
