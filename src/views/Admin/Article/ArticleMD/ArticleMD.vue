@@ -93,10 +93,12 @@
         />
       </el-form-item>
       <el-form-item label-width="0">
-        <MdEditor ref="MdEditorRef" @on-change="contentChange" />
+        <MdEditor ref="MdEditorRef" @on-save="saveArticle" />
       </el-form-item>
       <el-form-item label-width="0" class="button-container">
-        <el-button type="primary" @click="saveArticle">保存</el-button>
+        <el-button type="primary" @click="MdEditorRef?.Editor?.triggerSave()"
+          >保存</el-button
+        >
       </el-form-item>
     </el-form>
   </div>
@@ -119,11 +121,10 @@ const router = useRouter()
 const userStore = useUserStore()
 const articleRef = ref<FormInstance>()
 const { articleId } = route.params
-const MdEditorRef = ref()
+const MdEditorRef = ref<InstanceType<typeof MdEditor>>()
 const loading = ref(false)
 const isProgress = ref(false)
 const percentage = ref(0)
-const articleOriginContent = ref("")
 const article = reactive({
   articleId,
   category: "",
@@ -220,35 +221,38 @@ async function getArticleInfo() {
       article.disableComment = res.data.disableComment ? 1 : 0
       article.isPrivate = res.data.isPrivate ? 1 : 0
       article.content = res.data.content
-      articleOriginContent.value = res.data.content
 
-      MdEditorRef.value.text = res.data.content
+      MdEditorRef.value?.Editor?.insert(() => {
+        return {
+          targetValue: res.data.content,
+          select: false,
+          deviationStart: 0,
+          deviationEnd: 0
+        }
+      })
     }
     loading.value = false
   }
 }
 getArticleInfo()
 
-function contentChange(content: string) {
-  article.content = content
-}
-
-async function saveArticle() {
+async function saveArticle(content: string) {
   try {
     const valid = await articleRef.value?.validate()
     if (valid) {
-      if (!article.content) {
+      if (!content) {
         ElMessage.error("文章正文不能为空")
         return
       }
+
       loading.value = true
+      article.content = content
 
       const url = articleId === "0" ? "/article/create" : "/article/update"
       const methods = articleId === "0" ? "put" : "patch"
       const res = await http[methods](url, article)
 
       if (res.code === 0) {
-        articleOriginContent.value = article.content
         router.replace({ name: "SystemArticle" })
         ElMessage.success("操作成功")
       }
@@ -259,7 +263,7 @@ async function saveArticle() {
 }
 
 function hasUnsavedChanges() {
-  return article.content === articleOriginContent.value
+  return MdEditorRef.value?.text === article.content
 }
 onBeforeRouteLeave((_to, _form, next) => {
   if (!hasUnsavedChanges()) {

@@ -2,10 +2,10 @@
   <div id="MdEditor">
     <MdPreview
       v-if="props.isPreview"
+      v-bind="MdEditorProps"
       :class="className"
       :model-value="props.text"
       :no-img-zoom-in="true"
-      v-bind="MdEditorProps"
       @onGetCatalog="onGetCatalog"
     />
     <MdEditor
@@ -18,6 +18,7 @@
       :placeholder="props.placeholder"
       :no-img-zoom-in="true"
       @onChange="onChange"
+      @onSave="onSave"
     />
     <ImageViewer
       :show="Boolean(previewImgUrl.length)"
@@ -30,6 +31,7 @@
 <script lang="ts" setup>
 import { ref, watchEffect, reactive, onMounted, computed } from "vue"
 import { MdPreview, MdEditor, ToolbarNames, HeadList } from "md-editor-v3"
+import type { ExposeParam } from "md-editor-v3"
 import { nanoid } from "nanoid"
 import useThemeStore from "@/store/theme"
 import resumeUpload from "@/utils/resumeUpload"
@@ -37,7 +39,7 @@ import "md-editor-v3/lib/style.css"
 import ImageViewer from "@/components/ImageViewer.vue"
 
 const previewImgUrl = ref<string[]>([])
-const emits = defineEmits(["onGetCatalog", "onChange"])
+const emits = defineEmits(["onGetCatalog", "onChange", "onSave"])
 const props = defineProps({
   class: {
     type: String
@@ -72,7 +74,7 @@ const props = defineProps({
 const className = computed(() => {
   return props.class ?? `MdEditor-${nanoid()}`
 })
-const Editor = ref()
+const Editor = ref<ExposeParam>()
 const preview = ref(props.preview)
 const themeStore = useThemeStore()
 const toolbars = reactive<ToolbarNames[]>([
@@ -106,6 +108,7 @@ const MdEditorProps = reactive<any>({
   tableShape: [9, 9],
   footers: [],
   language: "zh-cn",
+  editorId: `MdEditor-${Math.random().toString(16).slice(2)}`,
   onUploadImg
 })
 const text = ref(props.text)
@@ -154,9 +157,16 @@ function onGetCatalog(list: HeadList[]) {
 function onChange(value: string) {
   emits("onChange", value)
 }
+async function onSave(value: string, html: Promise<string>) {
+  emits("onSave", value, await Promise.resolve(html))
+}
+function reset() {
+  text.value = ""
+}
 
 defineExpose({
   text,
+  reset,
   Editor
 })
 </script>
