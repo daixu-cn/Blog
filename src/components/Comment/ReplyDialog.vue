@@ -3,18 +3,23 @@
     id="ReplyDialog"
     v-model="show"
     :title="`@${reply?.userName}`"
-    @opened="mdEditor?.Editor?.focus()"
+    @opened="MdEditorRef?.Editor?.focus()"
     @close="reset"
   >
     <MdEditor
-      ref="mdEditor"
+      ref="MdEditorRef"
       :preview="false"
       :is-upload="false"
       placeholder="回复内容(支持 Markdown 语法)"
+      @on-save="confirm"
     />
     <template #footer>
       <span class="dialog-footer">
-        <el-button type="primary" :loading="loading" @click="confirm">
+        <el-button
+          type="primary"
+          :loading="loading"
+          @click="MdEditorRef?.Editor?.triggerSave()"
+        >
           提交回复
         </el-button>
       </span>
@@ -31,31 +36,33 @@ import MdEditor from "@/components/MdEditor.vue"
 
 const emits = defineEmits(["confirm"])
 const userStore = useUserStore()
-const mdEditor = ref<InstanceType<typeof MdEditor> | null>(null)
+const MdEditorRef = ref<InstanceType<typeof MdEditor>>()
 const show = ref(false)
 const loading = ref(false)
 const comment = ref()
-const reply = reactive<any>({
+const reply = reactive({
   userName: null,
-  content: null,
   commentId: null,
   parentId: null
 })
 
-async function confirm() {
+async function confirm(content: string, html: string) {
   if (!userStore.token) {
     ElMessage.warning("未登录")
     return
   }
-  reply.content = mdEditor.value?.text
 
-  if (!reply.content) {
+  if (!content) {
     ElMessage.warning("回复内容不能为空")
     return
   }
 
   loading.value = true
-  const res = await http.put("/reply/create", reply)
+  const res = await http.put("/reply/create", {
+    ...reply,
+    content,
+    html
+  })
   if (res.code === 0) {
     ElMessage.success("回复成功")
     emits("confirm", comment.value, true)
@@ -63,10 +70,9 @@ async function confirm() {
   }
   loading.value = false
 }
+
 function reset() {
-  mdEditor.value!.text = ""
-  reply.user = null
-  reply.content = null
+  MdEditorRef.value?.reset()
   reply.commentId = null
   reply.parentId = null
   show.value = false

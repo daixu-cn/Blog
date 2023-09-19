@@ -5,18 +5,19 @@
     </h1>
 
     <MdEditor
-      ref="mdEditor"
+      ref="MdEditorRef"
       :preview="false"
       :is-upload="false"
       placeholder="内容(支持 Markdown 语法)"
       :style="{ height: '300px' }"
+      @on-save="submitComment"
     />
     <div class="submitComment">
       <el-button
         type="primary"
         :loading="commentLoading"
         plain
-        @click="submitComment"
+        @click="MdEditorRef?.Editor?.triggerSave()"
       >
         {{ props.articleId === "-1" ? "提交留言" : "提交评论" }}
       </el-button>
@@ -204,7 +205,7 @@ const type = computed(() =>
   props.articleId === "-1" ? "全部留言" : "全部评论"
 )
 const userStore = useUserStore()
-const mdEditor = ref()
+const MdEditorRef = ref<InstanceType<typeof MdEditor>>()
 const replyDialog = ref()
 const footer = ref()
 const list = ref<any[]>([])
@@ -282,12 +283,11 @@ async function getList(refresh = false) {
 }
 getList()
 
-async function submitComment() {
+async function submitComment(content: string, html: string) {
   if (!userStore.token) {
     ElMessage.warning("未登录")
     return
   }
-  const content = mdEditor.value?.text
   if (!content) {
     ElMessage.warning("回复内容不能为空")
     return
@@ -296,16 +296,16 @@ async function submitComment() {
   commentLoading.value = true
   const res = await http.put("/comment/create", {
     articleId: props.articleId,
-    content
+    content,
+    html
   })
   if (res.code === 0) {
     ElMessage.success(props.articleId === "-1" ? "留言成功" : "评论成功")
-    mdEditor.value.text = ""
+    MdEditorRef.value?.reset()
     getList(true)
   }
   commentLoading.value = false
 }
-
 async function loadReply(comment, refresh = false) {
   comment.replyLoading = true
   const res = await http.post("/reply/list", {
