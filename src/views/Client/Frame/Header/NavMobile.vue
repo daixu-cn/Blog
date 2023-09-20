@@ -9,9 +9,9 @@
     >
       <div class="user">
         <el-image
-          :src="getAssets('mobileBg.png')"
+          :src="getAssets('mobile-bg.png')"
           fit="cover"
-          class="mobileBg"
+          class="mobile-bg"
         />
         <div class="user-info">
           <el-image :src="getAssets('avatar.png')" fit="cover" class="avatar" />
@@ -80,7 +80,7 @@ defineExpose({ drawer })
         position: relative;
         width: 100%;
         height: 150px;
-        .mobileBg {
+        .mobile-bg {
           width: 100%;
           height: 100%;
         }

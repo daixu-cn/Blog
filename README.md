@@ -31,7 +31,7 @@ BLOG
 │   ├── assets      #静态资源
 │   │   ├── image   #图片
 │   │   │   ├── avatar.png
-│   │   │   └── mobileBg.png
+│   │   │   └── mobile-bg.png
 │   │   └── style   #样式
 │   │       └── scss
 │   │           ├── theme   #主题文件
