@@ -30,7 +30,6 @@ BLOG
 ├── src             #项目主目录
 │   ├── assets      #静态资源
 │   │   ├── image   #图片
-│   │   │   ├── avatar.png
 │   │   │   └── mobile-bg.png
 │   │   └── style   #样式
 │   │       └── scss

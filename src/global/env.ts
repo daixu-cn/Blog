@@ -1,5 +1,7 @@
 // 请求地址
 export const BASE_API = import.meta.env.VITE_APP_BASE_API
+// 静态网络文件前缀
+export const FILE_PREFIX = import.meta.env.VITE_APP_BASE_API
 // 默认主题
 export const DEFAULE_THEME = import.meta.env.VITE_APP_DEFAULE_THEME
 
