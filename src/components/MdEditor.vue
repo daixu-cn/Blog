@@ -13,6 +13,7 @@
       v-bind="MdEditorProps"
       ref="Editor"
       v-model="text"
+      v-loading="loading"
       :class="className"
       :preview="preview"
       :placeholder="props.placeholder"
@@ -57,9 +58,10 @@ const props = defineProps({
     type: Boolean,
     default: true
   },
-  isUpload: {
+  // 上传的图片使用base64显示，如果为false则使用url显示
+  imageBase64: {
     type: Boolean,
-    default: true
+    default: false
   },
   placeholder: {
     type: String,
@@ -68,6 +70,10 @@ const props = defineProps({
   style: {
     type: Object,
     default: () => {}
+  },
+  imageAlign: {
+    type: String,
+    default: "center"
   }
 })
 
@@ -92,7 +98,7 @@ const toolbars = reactive<ToolbarNames[]>([
   "codeRow",
   "code",
   "link",
-  props.isUpload ? "image" : -1,
+  "image",
   "table",
   "mermaid",
   "katex",
@@ -112,28 +118,37 @@ const MdEditorProps = reactive<any>({
   onUploadImg
 })
 const text = ref(props.text)
+const loading = ref(false)
+
 watchEffect(() => {
   MdEditorProps.theme = themeStore.isDarkMode ? "dark" : "light"
   MdEditorProps.codeTheme = themeStore.isDarkMode ? "atom" : "paraiso"
 })
 async function onUploadImg(files: File[], callback) {
-  const res = await Promise.all(
-    files.map(file => {
-      return new Promise(resolve => {
-        resumeUpload(file, {
-          url: "/upload/file",
-          methods: "put",
-          params: {
-            module: "0"
-          },
-          onSuccess(image) {
-            resolve(image)
-          }
+  loading.value = true
+
+  try {
+    const res = await Promise.all(
+      files.map(file => {
+        return new Promise(resolve => {
+          resumeUpload(file, {
+            url: props.imageBase64 ? "/upload/image/to/base64" : "/upload/file",
+            methods: props.imageBase64 ? "post" : "put",
+            params: {
+              module: "0"
+            },
+            onSuccess(image) {
+              resolve(image)
+            }
+          })
         })
       })
-    })
-  )
-  callback(res.map(image => image))
+    )
+
+    callback(res.map(image => image))
+  } finally {
+    loading.value = false
+  }
 }
 
 onMounted(() => {
@@ -193,6 +208,7 @@ defineExpose({
         figure:has(> img) {
           width: 100%;
           display: inline-block;
+          text-align: v-bind("props.imageAlign");
         }
         img {
           max-height: 600px;

@@ -7,7 +7,7 @@
     <MdEditor
       ref="MdEditorRef"
       :preview="false"
-      :is-upload="false"
+      :image-base64="true"
       placeholder="内容(支持 Markdown 语法)"
       :style="{ height: '300px' }"
       @on-save="submitComment"
@@ -90,7 +90,7 @@
                 <p class="timer">{{ item.createdAt }}</p>
               </div>
               <MdEditor
-                class="comment-content"
+                image-align="left"
                 :is-preview="true"
                 :text="item.content"
                 :style="{ maxHeight: '300px' }"
@@ -148,7 +148,7 @@
                     </p>
                   </div>
                   <MdEditor
-                    class="comment-content"
+                    image-align="left"
                     :is-preview="true"
                     :text="reply.content"
                     :style="{ maxHeight: '300px' }"
@@ -491,7 +491,7 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
             }
           }
         }
-        .comment-content {
+        .md-editor-previewOnly {
           margin-bottom: 25px;
           box-shadow: none;
           background-color: transparent;
