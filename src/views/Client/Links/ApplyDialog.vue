@@ -23,6 +23,11 @@
         https://api.daixu.cn/favicon.png
       </li>
       <li>
+        <label>头像</label>
+        <span class="colon">:</span>
+        https://api.daixu.cn/image/avatar.png
+      </li>
+      <li>
         <label>描述</label>
         <span class="colon">:</span>
         daixu个人博客 - 记录学习、分享生活, 本站用于IT技术交流,
@@ -126,6 +131,7 @@ defineExpose({
 
 <style lang="scss">
 #ApplyDialog {
+  width: 420px;
   .el-dialog__body {
     padding-bottom: 0;
     .siteInfo {
@@ -155,6 +161,11 @@ defineExpose({
     .el-button {
       width: 100%;
     }
+  }
+}
+@media screen and (max-width: 450px) {
+  #ApplyDialog {
+    width: calc(100% - $space);
   }
 }
 </style>
