@@ -143,6 +143,8 @@ defineExpose({
         margin-bottom: $space;
         line-height: 1.5em;
         color: $font-color-secondary;
+        word-break: break-all;
+
         &:last-child {
           margin-bottom: 0;
         }
