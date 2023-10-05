@@ -1,5 +1,5 @@
 <template>
-  <div id="Player">
+  <div id="Player" v-loading="loading" element-loading-text="加载中...">
     <video id="player" playsinline controls :data-poster="props.poster" />
   </div>
 </template>
@@ -19,6 +19,8 @@ const props = defineProps({
     default: ""
   }
 })
+
+const loading = ref(false)
 const player = ref<Plyr>()
 const options = reactive<Plyr.Options>({
   i18n: {
@@ -26,6 +28,8 @@ const options = reactive<Plyr.Options>({
     normal: "正常"
   }
 })
+// 记录上次的播放时间
+let playLastTime = 0
 
 watch(
   () => props.src,
@@ -43,8 +47,31 @@ watch(
           }
         ]
       }
-      player.value.on("play", () => {
-        emits("play")
+      player.value.on("play", event => {
+        emits("play", event.detail.plyr)
+      })
+
+      player.value.on("seeking", event => {
+        const instance = event.detail.plyr
+
+        if (instance.currentTime > playLastTime) {
+          loading.value = true
+          instance.play()
+        }
+
+        playLastTime = instance.currentTime
+      })
+      player.value.on("timeupdate", event => {
+        const { currentTime } = event.detail.plyr
+
+        if (currentTime > playLastTime && loading.value) {
+          loading.value = false
+        }
+
+        playLastTime = currentTime
+      })
+      player.value.on("waiting", () => {
+        loading.value = true
       })
     })
   },
