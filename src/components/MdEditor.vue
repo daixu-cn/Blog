@@ -194,12 +194,7 @@ defineExpose({
     border: 0;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     font-family: $font-family;
-    & ::-webkit-scrollbar-corner,
-    & ::-webkit-scrollbar-track {
-      background-color: v-bind(
-        "preview?(themeStore.isDarkMode?'#2d2d2d':'#e2e2e2'):'transparent'"
-      );
-    }
+    @include scrollbar;
 
     .md-editor-preview-wrapper {
       padding: 0;

@@ -20,49 +20,12 @@ html {
       }
     }
   }
+
+  @include scrollbar;
 }
 
 /*文档中被用户高亮的部分*/
 ::selection {
   background-color: $color-primary;
   color: #fff;
-}
-
-/*滚动条上的按钮 (上下箭头)*/
-::-webkit-scrollbar-button {
-  width: 0;
-  height: 0;
-}
-
-/*垂直滚动条和水平滚动条同时出现时右下角交汇的部分*/
-::-webkit-scrollbar-corner {
-  background-color: transparent;
-}
-
-/*整个滚动条*/
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-  background-color: transparent;
-}
-
-/*滚动条上的滚动滑块*/
-::-webkit-scrollbar-thumb {
-  $scrollbar-color: #909399;
-  background-color: rgba($scrollbar-color, 0.3);
-  border-radius: 4px;
-  transition: all 0.2s ease-in-out;
-  &:hover {
-    background-color: rgba($scrollbar-color, 0.5);
-  }
-}
-
-.dark {
-  $scrollbar-color: #a3a6ad;
-  ::-webkit-scrollbar-thumb {
-    background-color: rgba($scrollbar-color, 0.3);
-    &:hover {
-      background-color: rgba($scrollbar-color, 0.5);
-    }
-  }
 }

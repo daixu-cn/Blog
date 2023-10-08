@@ -32,10 +32,56 @@
   align-items: center;
 }
 
+// 滚动条-滑块配置
+@mixin scrollbar-thumb($scrollbar-color: $scrollbar-color) {
+  background-color: rgba($scrollbar-color, 0.3);
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background-color: rgba($scrollbar-color, 0.5);
+  }
+}
 // 滚动条配置
-@mixin scrollbar($height: 100%) {
-  height: $height;
-  overflow: overlay;
+@mixin scrollbar(
+  $width: 6px,
+  $height: 100%,
+  $scrollbar-color: $scrollbar-color,
+  $dark-scrollbar-color: $dark-scrollbar-color
+) {
+  /*滚动条上的按钮 (上下箭头)*/
+  ::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+  }
+
+  /*垂直滚动条和水平滚动条同时出现时右下角交汇的部分*/
+  ::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+
+  /*滚动条轨道*/
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  /*整个滚动条*/
+  ::-webkit-scrollbar {
+    width: $width;
+    height: $height;
+    background-color: transparent;
+    overflow: overlay;
+  }
+
+  /*滚动条上的滚动滑块*/
+  ::-webkit-scrollbar-thumb {
+    @include scrollbar-thumb($scrollbar-color);
+  }
+
+  &[class*="dark"] {
+    ::-webkit-scrollbar-thumb {
+      @include scrollbar-thumb($dark-scrollbar-color);
+    }
+  }
 }
 
 // 主宽度适配
