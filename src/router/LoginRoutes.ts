@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from "vue-router"
 
-// 后台系统路由
+// 登录相关路由
 const LoginRoutes: RouteRecordRaw = {
   path: "/loginFrame",
   name: "LoginFrame",
