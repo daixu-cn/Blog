@@ -52,11 +52,7 @@
                   :z-index="10"
                 />
                 <div class="header">
-                  <h1
-                    @click="
-                      goToPage('ArticleDetail', { articleId: item.articleId })
-                    "
-                  >
+                  <h1 @click="goToDetail(item)">
                     {{ item.title }}
                   </h1>
                   <ul>
@@ -71,12 +67,7 @@
                   </ul>
                 </div>
               </div>
-              <p
-                class="description"
-                @click="
-                  goToPage('ArticleDetail', { articleId: item.articleId })
-                "
-              >
+              <p class="description" @click="goToDetail(item)">
                 {{ item.description }}
               </p>
               <Player
@@ -85,19 +76,22 @@
                 :poster="item.poster"
                 @play.once="videoPlay(item.articleId)"
               />
-              <ul
-                class="views"
-                @click="
-                  goToPage('ArticleDetail', { articleId: item.articleId })
-                "
-              >
+              <ul class="views" @click="goToDetail(item)">
                 <li>
                   <i-ep-view />
                   <span>{{ item.views.toLocaleString() }}</span>
                 </li>
                 <li>
                   <i-ep-chatDotSquare />
-                  <span>{{ item.comment_reply_total.toLocaleString() }}</span>
+                  <span>{{
+                    item.disableComment
+                      ? "--"
+                      : item.comment_reply_total.toLocaleString()
+                  }}</span>
+                </li>
+                <li v-if="item.isPrivate">
+                  <i-ep-lock />
+                  <span>私有文章</span>
                 </li>
               </ul>
             </div>
@@ -122,11 +116,14 @@ import { reactive, ref, nextTick } from "vue"
 import { useRouter } from "vue-router"
 import dayjs from "dayjs"
 import { useIntersectionObserver } from "@vueuse/core"
+import { ElMessage } from "element-plus"
 import http from "@/server"
 import Loading from "@/components/Loading.vue"
 import { categories } from "@/global/select"
 import Player from "@/components/Player.vue"
+import useUserStore from "@/store/user"
 
+const userStore = useUserStore()
 const router = useRouter()
 const footer = ref()
 const search = reactive({
@@ -217,8 +214,15 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
   }
 })
 
-function goToPage(name, params) {
-  router.push({ name, params })
+function goToDetail(article) {
+  if (article.isPrivate && userStore.info?.role !== 0) {
+    ElMessage.warning("私有文章，您没有访问权限～")
+  } else {
+    router.push({
+      name: "ArticleDetail",
+      params: { articleId: article.articleId }
+    })
+  }
 }
 </script>
 

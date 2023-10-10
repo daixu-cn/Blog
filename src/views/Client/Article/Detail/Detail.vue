@@ -23,7 +23,11 @@
               <li># {{ info?.category }}</li>
               <li>{{ info?.views.toLocaleString() }} 访问</li>
               <li>
-                {{ info?.comment_reply_total.toLocaleString() }}
+                {{
+                  info?.disableComment
+                    ? "--"
+                    : info?.comment_reply_total.toLocaleString()
+                }}
                 评论
               </li>
               <li>{{ info?.createdAt }}</li>
