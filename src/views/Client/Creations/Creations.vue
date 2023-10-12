@@ -71,6 +71,13 @@ const list: Creation[] = [
     descriptions: ["REST API 文档", "自动生成测试", "支持多种语言和框架"],
     img: getAssets("creations/swagger.png"),
     link: "https://api.daixu.cn/swagger"
+  },
+  {
+    title: "最终选择",
+    synopsis: "摆脱困难选择症，随机为您做出选择",
+    descriptions: ["不再选择，心情更美好！"],
+    img: getAssets("creations/final-choice.png"),
+    link: "/creations/final-choice"
   }
 ]
 </script>
