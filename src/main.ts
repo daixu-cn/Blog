@@ -3,6 +3,7 @@ import "@/assets/style/scss/global.scss"
 import { createPinia } from "pinia"
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate"
 
+import "web-animations-js"
 import dayjs from "dayjs"
 import "dayjs/locale/zh-cn"
 import localizedFormat from "dayjs/plugin/localizedFormat"
