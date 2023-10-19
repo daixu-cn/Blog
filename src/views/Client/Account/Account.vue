@@ -158,10 +158,12 @@ function emailServiceChange(value) {
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+
       &:last-child {
         margin-bottom: 0;
       }
       label {
+        flex-shrink: 0;
         width: 100px;
         margin-right: 20px;
         text-align: right;
@@ -209,6 +211,7 @@ function emailServiceChange(value) {
         justify-content: flex-start;
       }
       #EditableInput {
+        flex-shrink: 0;
         width: calc(100% - 100px);
       }
     }
