@@ -1,10 +1,13 @@
 <template>
   <div id="EditableInput">
     <div v-if="!form.isEditable" class="notEdit">
-      <span>{{ defaultValue }} </span>
-      <el-icon v-show="!props.isRead" @click="edit">
-        <i-ep-edit />
-      </el-icon>
+      <span class="defaultValue">{{ defaultValue }} </span>
+      <div class="suffix">
+        <span v-if="props.unit" class="unit">{{ props.unit }}</span>
+        <el-icon v-if="!props.isRead" class="edit-icon" @click="edit">
+          <i-ep-edit />
+        </el-icon>
+      </div>
     </div>
     <el-input
       v-if="form.isEditable"
@@ -71,6 +74,16 @@ const props = defineProps({
   method: {
     type: String,
     default: "patch"
+  },
+  // 数据单位
+  unit: {
+    type: String,
+    default: ""
+  },
+  // 当该组件为可编辑状态下，并且该值为 true 则编辑按钮只会在鼠标移入该组件下显示
+  editOnHover: {
+    type: Boolean,
+    default: false
   }
 })
 const emits = defineEmits(["save", "cancel", "customEditing"])
@@ -129,10 +142,35 @@ function cancel() {
     padding: 0 11px;
     box-sizing: border-box;
 
-    span {
+    .defaultValue {
       display: inline-block;
-      width: calc(100% - 30px);
       @include text-ellipsis;
+    }
+
+    .suffix {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .edit-icon {
+        margin-left: $space;
+        transition: all $duration;
+        opacity: v-bind("props.editOnHover ? 0 : 1");
+      }
+
+      .unit {
+        color: $font-color-placeholder;
+        user-select: none;
+        margin-left: $space;
+      }
+    }
+
+    &:hover {
+      .suffix {
+        .edit-icon {
+          opacity: 1;
+        }
+      }
     }
   }
   .el-input {
