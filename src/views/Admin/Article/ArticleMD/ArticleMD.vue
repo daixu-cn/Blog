@@ -50,54 +50,32 @@
         />
       </el-form-item>
       <el-form-item label="预览图片" prop="poster">
-        <el-upload
-          :action="`${BASE_API}/upload/file`"
-          method="put"
-          :headers="{ Authorization: `Bearer ${userStore.token}` }"
-          :data="{ module: 0, replaceFiles: article.poster }"
-          :before-upload="beforePosterUpload"
-          :on-success="posterUploadSuccess"
-          :show-file-list="false"
-        >
-          <el-button text bg>上传图片</el-button>
-        </el-upload>
-        <el-link
-          v-if="article.poster"
-          class="fileLink"
-          type="primary"
-          :href="article.poster"
-          target="_blank"
-          >{{ article.poster }}</el-link
-        >
+        <Poster
+          :poster-url="article.poster"
+          @on-success="posterUploadSuccess"
+          @on-loading="loading => (control.posterLoading = loading)"
+        />
       </el-form-item>
       <el-form-item label="视频文件" prop="video">
-        <el-upload
-          :on-change="videoUploadChange"
-          :auto-upload="false"
-          :show-file-list="false"
-        >
-          <el-button text bg>上传视频</el-button>
-        </el-upload>
-        <el-link
-          v-if="article.video"
-          class="fileLink"
-          type="primary"
-          :href="article.video"
-          target="_blank"
-          >{{ article.video }}</el-link
-        >
-        <el-progress
-          v-if="isProgress"
-          :percentage="percentage"
-          :format="progressFormat"
+        <Video
+          :video-url="article.video"
+          @on-success="videoUploadSuccess"
+          @on-loading="loading => (control.videoLoading = loading)"
         />
       </el-form-item>
       <el-form-item label-width="0">
-        <MdEditor ref="MdEditorRef" @on-save="saveArticle" />
+        <MdEditor
+          ref="MdEditorRef"
+          @on-save="saveArticle"
+          @on-loading="loading => (control.MdEditorLoading = loading)"
+        />
       </el-form-item>
       <el-form-item label-width="0" class="button-container">
-        <el-button type="primary" @click="MdEditorRef?.Editor?.triggerSave()"
-          >保存</el-button
+        <el-button
+          type="primary"
+          :loading="control.saveLoading"
+          @click="MdEditorRef?.Editor?.triggerSave()"
+          >{{ control.saveText }}</el-button
         >
       </el-form-item>
     </el-form>
@@ -105,26 +83,30 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onUnmounted } from "vue"
+import { ref, reactive, onUnmounted, watchEffect } from "vue"
 import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router"
 import { ElMessage, ElMessageBox } from "element-plus"
-import type { FormInstance, FormRules, UploadProps } from "element-plus"
+import type { FormInstance, FormRules } from "element-plus"
 import { categories } from "@/global/select"
-import resumeUpload from "@/utils/resumeUpload"
-import { BASE_API } from "@/global/env"
-import useUserStore from "@/store/user"
 import http from "@/server"
 import MdEditor from "@/components/MdEditor.vue"
+import Video from "./Video.vue"
+import Poster from "./Poster.vue"
 
 const route = useRoute()
 const router = useRouter()
-const userStore = useUserStore()
 const articleRef = ref<FormInstance>()
 const { articleId } = route.params
 const MdEditorRef = ref<InstanceType<typeof MdEditor>>()
 const loading = ref(false)
-const isProgress = ref(false)
-const percentage = ref(0)
+const control = reactive({
+  change: 0,
+  posterLoading: false,
+  videoLoading: false,
+  MdEditorLoading: false,
+  saveLoading: false,
+  saveText: "保存"
+})
 const article = reactive({
   articleId,
   category: "",
@@ -161,49 +143,20 @@ const rules = reactive<FormRules>({
   ]
 })
 
-const beforePosterUpload: UploadProps["beforeUpload"] = rawFile => {
-  if (!rawFile.type.startsWith("image")) {
-    ElMessage.error("图片格式异常")
-    return false
-  }
-  if (rawFile.size / 1024 / 1024 > 2) {
-    ElMessage.error("图片格式不能超过2MB!")
-    return false
-  }
-  return true
-}
-const posterUploadSuccess: UploadProps["onSuccess"] = res => {
-  if (res.code === 0) {
-    article.poster = res.data
-  } else {
-    ElMessage.error(res.message)
-  }
-}
+watchEffect(() => {
+  const isUpload =
+    control.posterLoading || control.videoLoading || control.MdEditorLoading
 
-function progressFormat(percentage: number) {
-  return percentage === 100 ? "100%" : `${percentage.toFixed(2)}%`
+  control.change++
+  control.saveLoading = isUpload
+  control.saveText = isUpload ? "请等待资源操作完成..." : "保存"
+})
+
+function posterUploadSuccess(posterUrl: string) {
+  article.poster = posterUrl
 }
-const videoUploadChange: UploadProps["onChange"] = rawFile => {
-  if (rawFile.raw?.type.startsWith("video")) {
-    isProgress.value = true
-    resumeUpload(rawFile.raw, {
-      url: "/upload/file",
-      methods: "put",
-      params: {
-        replaceFiles: article.video
-      },
-      onProgress(currentChunk, chunks) {
-        percentage.value = (currentChunk / chunks) * 100
-      },
-      onSuccess(video) {
-        article.video = video
-        isProgress.value = false
-        percentage.value = 0
-      }
-    })
-  } else {
-    ElMessage.error("视频格式异常")
-  }
+function videoUploadSuccess(videoUrl: string) {
+  article.video = videoUrl
 }
 
 async function getArticleInfo() {
@@ -262,11 +215,21 @@ async function saveArticle(content: string) {
   }
 }
 
-function hasUnsavedChanges() {
-  return MdEditorRef.value?.text === article.content
+// 判断文章内容和文件资源是否存在编辑
+function hasArticleChanges() {
+  return MdEditorRef.value?.text !== article.content || control.change > 1
 }
+// 监听离开页面时间
+function onbeforeunload(event: BeforeUnloadEvent) {
+  if (hasArticleChanges()) {
+    event.preventDefault()
+    event.returnValue = "您有未保存的更改，确定要离开此页面吗？"
+  }
+}
+window.addEventListener("beforeunload", onbeforeunload)
+// 监听路由切换回调
 onBeforeRouteLeave((_to, _form, next) => {
-  if (!hasUnsavedChanges()) {
+  if (hasArticleChanges()) {
     ElMessageBox.confirm("您有未保存的更改，确定要离开此页面吗？", "警告", {
       confirmButtonText: "确认",
       cancelButtonText: "取消",
@@ -284,16 +247,8 @@ onBeforeRouteLeave((_to, _form, next) => {
   }
 })
 
-function onbeforeunload(event: BeforeUnloadEvent) {
-  if (!hasUnsavedChanges()) {
-    event.preventDefault()
-    event.returnValue = "您有未保存的更改，确定要离开此页面吗？"
-  }
-}
-
-window.addEventListener("beforeunload", onbeforeunload)
-
 onUnmounted(() => {
+  // 移除监听事件
   window.removeEventListener("beforeunload", onbeforeunload)
 })
 </script>
@@ -313,18 +268,27 @@ onUnmounted(() => {
         }
       }
     }
-    .el-progress {
-      margin-top: 10px;
-    }
-    .el-link {
-      display: block;
-      width: 100%;
-      height: 32px;
-      line-height: 32px;
-      .el-link__inner {
-        display: inline-block;
-        width: 100%;
-        @include text-ellipsis;
+
+    .link-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .el-link {
+        display: block;
+        width: calc(100% - 50px);
+        height: 32px;
+        line-height: 32px;
+        transition: all $duration;
+        .el-link__inner {
+          display: inline-block;
+          width: 100%;
+          @include text-ellipsis;
+        }
+      }
+      .remove {
+        color: $color-primary;
+        cursor: pointer;
       }
     }
 
