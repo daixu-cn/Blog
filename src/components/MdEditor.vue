@@ -40,7 +40,7 @@ import "md-editor-v3/lib/style.css"
 import ImageViewer from "@/components/ImageViewer.vue"
 
 const previewImgUrl = ref<string[]>([])
-const emits = defineEmits(["onGetCatalog", "onChange", "onSave"])
+const emits = defineEmits(["onGetCatalog", "onChange", "onSave", "onLoading"])
 const props = defineProps({
   class: {
     type: String
@@ -125,6 +125,7 @@ watchEffect(() => {
   MdEditorProps.codeTheme = themeStore.isDarkMode ? "atom" : "paraiso"
 })
 async function onUploadImg(files: File[], callback) {
+  emits("onLoading", true)
   loading.value = true
 
   try {
@@ -148,6 +149,7 @@ async function onUploadImg(files: File[], callback) {
     callback(res.map(image => image))
   } finally {
     loading.value = false
+    emits("onLoading", false)
   }
 }
 
