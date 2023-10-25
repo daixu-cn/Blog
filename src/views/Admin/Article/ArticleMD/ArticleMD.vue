@@ -206,6 +206,8 @@ async function saveArticle(content: string) {
       const res = await http[methods](url, article)
 
       if (res.code === 0) {
+        // 重置文件上传状态，否则路由跳转会被拦截
+        control.change = 0
         router.replace({ name: "SystemArticle" })
         ElMessage.success("操作成功")
       }
