@@ -93,7 +93,7 @@
                 image-align="left"
                 :is-preview="true"
                 :text="item.content"
-                :style="{ maxHeight: '300px' }"
+                :style="{ maxHeight: '400px' }"
               />
 
               <div
@@ -151,7 +151,7 @@
                     image-align="left"
                     :is-preview="true"
                     :text="reply.content"
-                    :style="{ maxHeight: '300px' }"
+                    :style="{ maxHeight: '400px' }"
                   />
                 </div>
               </div>
@@ -497,6 +497,16 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
           background-color: transparent;
           .md-editor-preview-wrapper {
             padding: 0;
+            img {
+              max-height: 200px;
+            }
+            p,
+            figure {
+              margin: 0;
+              &:not(:last-child) {
+                margin: 0 0 $space 0;
+              }
+            }
           }
         }
       }
