@@ -35,6 +35,7 @@
 import { reactive, ref, nextTick } from "vue"
 import dayjs from "dayjs"
 import { useIntersectionObserver } from "@vueuse/core"
+import nzh from "nzh"
 import http from "@/server"
 import Loading from "@/components/Loading.vue"
 
@@ -60,8 +61,19 @@ async function getList() {
     if (res.code === 0) {
       list.push(
         ...res.data.list.map(item => {
+          const contentList = item.content.split("\t")
+          const content =
+            contentList.length <= 1
+              ? item.content
+              : contentList
+                  .map((content: string, index: number) => {
+                    return `${nzh.cn.encodeS(index + 1)}、${content}`
+                  })
+                  .join("<br />")
+
           return {
             ...item,
+            content,
             createdAt: dayjs(item.createdAt).format("L LTS"),
             updatedAt: dayjs(item.updatedAt).format("L LTS")
           }

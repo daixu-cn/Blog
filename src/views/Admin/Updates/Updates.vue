@@ -72,7 +72,7 @@
               type="primary"
               :icon="Plus"
               class="operator"
-              @click="actionDialogRef.show = true"
+              @click="actionDialogRef && actionDialogRef.openDialog()"
               >创建更新</el-button
             >
           </template>
@@ -113,7 +113,7 @@ import http from "@/server"
 import ActionDialog from "./ActionDialog.vue"
 
 const formRef = ref<FormInstance>()
-const actionDialogRef = ref()
+const actionDialogRef = ref<InstanceType<typeof ActionDialog>>()
 const loading = ref(false)
 const formSearch = reactive({
   keyword: "",
@@ -158,10 +158,12 @@ function reset() {
 }
 
 function editAction(row) {
-  for (const key in actionDialogRef.value.form) {
-    actionDialogRef.value.form[key] = row[key]
+  if (actionDialogRef.value) {
+    const { list } = actionDialogRef.value
+    list.splice(0, list.length, ...row.content.split("\t"), "")
+    actionDialogRef.value.updateId = row.updateId
+    actionDialogRef.value.openDialog()
   }
-  actionDialogRef.value.show = true
 }
 function deleteAction(updateId) {
   ElMessageBox.confirm("此操作将永久删除该更新，是否继续?", "提示", {

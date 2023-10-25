@@ -2,26 +2,20 @@
   <el-dialog
     id="SystemUpdates-ActionDialog"
     v-model="show"
-    :title="form.updateId ? '编辑更新' : '新建更新'"
+    :title="updateId ? '编辑更新' : '新建更新'"
     @close="reset"
   >
-    <el-form
-      ref="formRef"
-      :model="form"
-      :rules="rules"
-      status-icon
-      label-width="100px"
-    >
-      <el-form-item prop="content" label-width="0">
+    <ul class="updates-list">
+      <li v-for="(_, index) of list" :key="index">
         <el-input
-          v-model="form.content"
-          placeholder="请输入更新内容"
-          :autosize="{ minRows: 4 }"
-          :rows="4"
+          v-model="list[index]"
+          :placeholder="`第 ${nzh.cn.encodeS(index + 1)} 条更新:`"
+          autosize
           type="textarea"
+          @input="lastListChange(index)"
         />
-      </el-form-item>
-    </el-form>
+      </li>
+    </ul>
     <template #footer>
       <span class="dialog-footer">
         <el-button type="primary" :loading="loading" @click="confirm">
@@ -33,47 +27,68 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from "vue"
+import { reactive, ref } from "vue"
 import { ElMessage } from "element-plus"
-import type { FormInstance, FormRules } from "element-plus"
+import nzh from "nzh"
 import http from "@/server"
 
 const emits = defineEmits(["confirm"])
 const show = ref(false)
 const loading = ref(false)
-const form = reactive({
-  updateId: "",
-  content: ""
-})
-const formRef = ref<FormInstance>()
-const rules = reactive<FormRules>({
-  content: [{ required: true, message: "更新内容不能为空", trigger: "blur" }]
-})
+const updateId = ref("")
+const list = reactive<string[]>([""])
 
+function openDialog() {
+  show.value = true
+}
+function lastListChange(index: number) {
+  if (index === list.length - 1 && list[index]) {
+    list.push("")
+    return
+  }
+  if (index !== list.length - 1 && !list[index]) {
+    list.splice(index, 1)
+  }
+}
 async function confirm() {
-  const valid = await formRef.value?.validate()
-  if (valid) {
+  const content = list
+    .map(content => content.trim())
+    .join("\t")
+    .slice(0, -1)
+
+  if (!content) {
+    ElMessage.error("请至少输入一条更新内容")
+    return
+  }
+
+  try {
     loading.value = true
-    const url = form.updateId ? "/update/update" : "/update/create"
-    const methods = form.updateId ? "patch" : "put"
-    const res = await http[methods](url, form)
+
+    const url = updateId.value ? "/update/update" : "/update/create"
+    const methods = updateId.value ? "patch" : "put"
+    const res = await http[methods](url, {
+      updateId: updateId.value,
+      content
+    })
+
     if (res.code === 0) {
       ElMessage.success("操作成功")
       show.value = false
       emits("confirm")
     }
+  } finally {
     loading.value = false
   }
 }
-
 function reset() {
-  form.updateId = ""
-  form.content = ""
+  updateId.value = ""
+  list.splice(0, list.length, "")
 }
 
 defineExpose({
-  show,
-  form
+  openDialog,
+  updateId,
+  list
 })
 </script>
 
@@ -81,6 +96,17 @@ defineExpose({
 #SystemUpdates-ActionDialog {
   .el-dialog__body {
     padding-bottom: 0;
+    .updates-list {
+      li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: $space;
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
   }
   .dialog-footer {
     width: 100%;
