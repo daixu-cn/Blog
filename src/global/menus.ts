@@ -4,7 +4,8 @@ import {
   Discount,
   User,
   Setting,
-  House
+  House,
+  Files
 } from "@element-plus/icons-vue"
 
 export const adminMenus = [
@@ -32,6 +33,11 @@ export const adminMenus = [
     path: "/system/updates",
     name: "更新管理",
     icon: Setting
+  },
+  {
+    path: "/system/files",
+    name: "文件管理",
+    icon: Files
   },
   {
     path: "/",

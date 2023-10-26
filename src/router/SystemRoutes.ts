@@ -63,6 +63,15 @@ const SystemRoutes: RouteRecordRaw = {
         role: 0,
         title: "更新管理"
       }
+    },
+    {
+      path: "/system/files",
+      name: "SystemFiles",
+      component: () => import("@/views/Admin/Files/Files.vue"),
+      meta: {
+        role: 0,
+        title: "更新管理"
+      }
     }
   ]
 }
