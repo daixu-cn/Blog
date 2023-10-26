@@ -33,6 +33,7 @@
     "@vavt/md-editor-extension": "^3.0.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "axios": "^1.4.0",
+    "byte-size": "^8.1.1",
     "dayjs": "^1.11.9",
     "devtools-detector": "^2.0.14",
     "element-plus": "^2.3.9",
