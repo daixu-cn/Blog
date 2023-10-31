@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
+    "@formkit/auto-animate": "^0.8.0",
     "@types/web-animations-js": "^2.2.15",
     "@vavt/md-editor-extension": "^3.0.0",
     "@vitejs/plugin-vue": "^4.2.3",
