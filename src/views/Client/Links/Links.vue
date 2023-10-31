@@ -14,7 +14,7 @@
         </div>
       </template>
       <template #default>
-        <div class="link-container">
+        <div v-auto-animate class="link-container">
           <a
             v-for="item in list"
             :key="item.linkId"

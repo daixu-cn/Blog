@@ -51,7 +51,7 @@
         </div>
       </template>
       <template #default>
-        <div class="comment-container">
+        <div v-auto-animate class="comment-container">
           <div v-for="item of list" :key="item.commentId" class="comment-item">
             <el-image
               :src="item.user.avatar"
@@ -66,7 +66,7 @@
                 </div>
               </template>
             </el-image>
-            <div class="comment-info">
+            <div v-auto-animate class="comment-info">
               <div class="info">
                 <p class="user-row">
                   <span class="userName"

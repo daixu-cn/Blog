@@ -5,12 +5,12 @@
     :title="updateId ? '编辑更新' : '新建更新'"
     @close="reset"
   >
-    <ul class="updates-list">
+    <ul v-auto-animate class="updates-list">
       <li v-for="(_, index) of list" :key="index">
         <el-input
           v-model="list[index]"
           :placeholder="`第 ${nzh.cn.encodeS(index + 1)} 条更新:`"
-          autosize
+          :autosize="{ maxRows: 3 }"
           type="textarea"
           @input="lastListChange(index)"
         />

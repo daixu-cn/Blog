@@ -11,7 +11,7 @@
         </el-timeline>
       </template>
       <template #default>
-        <el-timeline>
+        <el-timeline v-auto-animate>
           <el-timeline-item
             v-for="item in list"
             :key="item.updateId"

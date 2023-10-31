@@ -37,7 +37,7 @@
       </template>
       <template #default>
         <div class="article-container">
-          <div class="article-list">
+          <div v-auto-animate class="article-list">
             <div
               v-for="item of article.list"
               :key="item.articleId"
