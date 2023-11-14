@@ -83,7 +83,7 @@ const onChange: UploadProps["onChange"] = rawFile => {
       url: "/upload/file",
       methods: "put",
       params: {
-        replaceFiles: props.videoUrl
+        replaceFile: props.videoUrl
       },
       onProgress(currentChunk, chunks) {
         video.percentage = (currentChunk / chunks) * 100

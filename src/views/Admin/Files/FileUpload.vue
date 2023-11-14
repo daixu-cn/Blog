@@ -17,9 +17,8 @@ import NProgress from "nprogress"
 import resumeUpload from "@/utils/resumeUpload"
 
 const props = defineProps({
-  replaceFiles: {
-    type: String,
-    default: ""
+  replaceFile: {
+    type: String
   }
 })
 const emits = defineEmits(["onSuccess", "onLoading"])
@@ -36,8 +35,7 @@ const onChange: UploadProps["onChange"] = rawFile => {
     url: "/upload/file",
     methods: "put",
     params: {
-      replaceFiles: props.replaceFiles,
-      module: -1
+      replaceFile: props.replaceFile
     },
     onProgress(currentChunk, chunks) {
       NProgress.set(currentChunk / chunks)

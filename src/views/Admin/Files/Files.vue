@@ -7,13 +7,21 @@
       class="form-search"
       label-width="70px"
     >
+      <el-form-item label="关键字" prop="keyword">
+        <el-input
+          v-model="formSearch.keyword"
+          :disabled="loading"
+          placeholder="文件名"
+          @keydown.enter="getList(1)"
+        />
+      </el-form-item>
       <el-form-item label="文件目录" prop="directorie">
         <el-cascader
           v-model="formSearch.directorie"
           :disabled="loading"
           :options="directories"
           :props="{ checkStrictly: true }"
-          clearable
+          :clearable="false"
           @change="getList(1)"
         />
       </el-form-item>
@@ -71,7 +79,7 @@
           <template #default="scope">
             <div class="table-operator">
               <FileUpload
-                :replace-files="scope.row.path"
+                :replace-file="scope.row.path"
                 @on-success="refuresh"
                 @on-loading="_loading => (loading = _loading)"
               >
@@ -117,8 +125,9 @@ const formRef = ref<FormInstance>()
 const loading = ref(false)
 const uploadLogin = ref(false)
 const directories = ref([])
-const formSearch = reactive<{ directorie: string[] }>({
-  directorie: []
+const formSearch = reactive<{ keyword: string; directorie: string[] }>({
+  keyword: "",
+  directorie: ["/image"]
 })
 const table = reactive({
   list: [],
@@ -175,11 +184,7 @@ async function getList(page = 1) {
     loading.value = false
   }
 }
-function refuresh(path?: string) {
-  if (path) {
-    formSearch.directorie = ["/upload", "/*"]
-  }
-
+function refuresh() {
   getDirectorys()
   getList()
 }

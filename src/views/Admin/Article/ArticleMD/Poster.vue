@@ -4,7 +4,7 @@
       :action="`${BASE_API}/upload/file`"
       method="put"
       :headers="{ Authorization: `Bearer ${userStore.token}` }"
-      :data="{ module: 0, replaceFiles: props.posterUrl }"
+      :data="{ replaceFile: props.posterUrl }"
       :before-upload="beforeUpload"
       :on-success="onSuccess"
       :on-error="onError"

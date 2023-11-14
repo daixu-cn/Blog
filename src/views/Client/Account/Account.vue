@@ -8,7 +8,6 @@
           :action="`${BASE_API}/upload/file`"
           method="put"
           :headers="{ Authorization: `Bearer ${userStore.token}` }"
-          :data="{ module: 1 }"
           :before-upload="beforeUpload"
           :on-success="uploadSuccess"
           :show-file-list="false"

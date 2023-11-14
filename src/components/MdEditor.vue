@@ -135,9 +135,7 @@ async function onUploadImg(files: File[], callback) {
           resumeUpload(file, {
             url: props.imageBase64 ? "/upload/image/to/base64" : "/upload/file",
             methods: props.imageBase64 ? "post" : "put",
-            params: {
-              module: "0"
-            },
+            params: {},
             onSuccess(image) {
               resolve(image)
             }
