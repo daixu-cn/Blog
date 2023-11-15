@@ -47,7 +47,7 @@
           <li>
             <label>后台系统</label>
             <span class="colon">:</span>
-            Koa2 + Sequelize + Redis + BandwagonHost VPS + Aliyun OSS
+            Koa2 + Sequelize + Redis
           </li>
           <li>
             <label>网站介绍</label>

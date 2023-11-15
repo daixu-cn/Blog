@@ -20,12 +20,12 @@
       <li>
         <label>图标</label>
         <span class="colon">:</span>
-        https://api.daixu.cn/favicon.png
+        {{ `${ASSET_PREFIX}/image/favicon.png` }}
       </li>
       <li>
         <label>头像</label>
         <span class="colon">:</span>
-        https://api.daixu.cn/image/avatar.png
+        {{ `${ASSET_PREFIX}/image/avatar.png` }}
       </li>
       <li>
         <label>描述</label>
@@ -75,6 +75,7 @@ import { ref, reactive } from "vue"
 import { ElMessage } from "element-plus"
 import type { FormInstance, FormRules } from "element-plus"
 import http from "@/server"
+import { ASSET_PREFIX } from "@/global/env"
 
 const show = ref(false)
 const loading = ref(false)
@@ -131,7 +132,7 @@ defineExpose({
 
 <style lang="scss">
 #ApplyDialog {
-  width: 420px;
+  width: 500px;
   .el-dialog__body {
     padding-bottom: 0;
     .siteInfo {
@@ -165,7 +166,7 @@ defineExpose({
     }
   }
 }
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 500px) {
   #ApplyDialog {
     width: calc(100% - $space);
   }

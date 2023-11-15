@@ -96,7 +96,10 @@ export default async function resumeUpload(file: File, options: Options) {
         formData.append("chunks", String(chunks))
         formData.append("hash", chunkHash)
         for (const key in options.params) {
-          formData.append(key, options.params[key])
+          const value = options.params[key]
+          if (value !== undefined || value !== null) {
+            formData.append(key, value)
+          }
         }
 
         const res = await http[options.methods](options.url, formData)

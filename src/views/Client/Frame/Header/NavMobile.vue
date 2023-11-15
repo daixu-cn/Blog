@@ -15,7 +15,7 @@
         />
         <div class="user-info">
           <el-image
-            :src="`${FILE_PREFIX}/image/avatar.png`"
+            :src="`${ASSET_PREFIX}/image/avatar.png`"
             fit="cover"
             class="avatar"
           />
@@ -57,7 +57,7 @@ import { useRoute, useRouter } from "vue-router"
 import menus, { adminMenus } from "@/global/menus"
 import useUserStore from "@/store/user"
 import { getAssets } from "@/utils/util"
-import { FILE_PREFIX } from "@/global/env"
+import { ASSET_PREFIX } from "@/global/env"
 import User from "./User.vue"
 
 const route = useRoute()
