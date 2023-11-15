@@ -6,7 +6,7 @@ interface Options {
   url: string
   methods: Methods
   // 额外参数
-  params: {
+  params?: {
     [key: string]: any
   }
   // 拆分的分片大小 默认2MB

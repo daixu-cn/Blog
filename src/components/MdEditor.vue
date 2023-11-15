@@ -58,11 +58,6 @@ const props = defineProps({
     type: Boolean,
     default: true
   },
-  // 上传的图片使用base64显示，如果为false则使用url显示
-  imageBase64: {
-    type: Boolean,
-    default: false
-  },
   placeholder: {
     type: String,
     default: ""
@@ -133,9 +128,8 @@ async function onUploadImg(files: File[], callback) {
       files.map(file => {
         return new Promise(resolve => {
           resumeUpload(file, {
-            url: props.imageBase64 ? "/upload/image/to/base64" : "/upload/file",
-            methods: props.imageBase64 ? "post" : "put",
-            params: {},
+            url: "/upload/file",
+            methods: "put",
             onSuccess(image) {
               resolve(image)
             }

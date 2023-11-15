@@ -7,7 +7,6 @@
     <MdEditor
       ref="MdEditorRef"
       :preview="false"
-      :image-base64="true"
       placeholder="内容(支持 Markdown 语法)"
       :style="{ height: '300px' }"
       @on-save="submitComment"

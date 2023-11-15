@@ -9,7 +9,6 @@
     <MdEditor
       ref="MdEditorRef"
       :preview="false"
-      :image-base64="true"
       placeholder="回复内容(支持 Markdown 语法)"
       @on-save="confirm"
     />
