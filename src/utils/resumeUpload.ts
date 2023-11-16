@@ -97,7 +97,7 @@ export default async function resumeUpload(file: File, options: Options) {
         formData.append("hash", chunkHash)
         for (const key in options.params) {
           const value = options.params[key]
-          if (value !== undefined || value !== null) {
+          if (value !== undefined && value !== null) {
             formData.append(key, value)
           }
         }
