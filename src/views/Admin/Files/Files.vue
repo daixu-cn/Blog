@@ -5,7 +5,6 @@
       :inline="true"
       :model="formSearch"
       class="form-search"
-      label-width="70px"
     >
       <el-form-item label="关键字" prop="keyword">
         <el-input
@@ -15,13 +14,12 @@
           @keydown.enter="getList(1)"
         />
       </el-form-item>
-      <el-form-item label="文件目录" prop="directorie">
+      <el-form-item label="目录" prop="directory">
         <el-cascader
-          v-model="formSearch.directorie"
+          v-model="formSearch.directory"
           :disabled="loading"
           :options="directories"
           :props="{ checkStrictly: true }"
-          :clearable="false"
           @change="getList(1)"
         />
       </el-form-item>
@@ -40,24 +38,44 @@
     </el-form>
     <div v-loading="loading" class="table">
       <el-table :data="table.list">
+        <el-table-column prop="name" label="" width="50px" align="center">
+          <template #header>
+            <div
+              v-if="formSearch.directory.length"
+              class="icon back"
+              @click="back"
+            >
+              <Icon class="icon-back" size="1.3em" />
+            </div>
+          </template>
+          <template #default="scope">
+            <div class="icon">
+              <Icon :class="scope.row.icon" size="23px" />
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column prop="name" label="文件名" show-overflow-tooltip>
           <template #default="scope">
-            <el-link :href="scope.row.path" target="_blank" type="primary">{{
-              scope.row.name
-            }}</el-link>
+            <el-link
+              target="_blank"
+              type="primary"
+              @click="jumpTo(scope.row)"
+              >{{ scope.row.name }}</el-link
+            >
           </template>
         </el-table-column>
         <el-table-column
           prop="size"
           label="文件大小"
           sortable
-          show-overflow-tooltip
+          width="120px"
           :formatter="sizeFormatter"
         />
         <el-table-column
           prop="ctimeMs"
           label="更新时间"
           align="center"
+          width="200px"
           sortable
           show-overflow-tooltip
         />
@@ -77,7 +95,7 @@
             </FileUpload>
           </template>
           <template #default="scope">
-            <div class="table-operator">
+            <div v-if="!scope.row.directory" class="table-operator">
               <FileUpload
                 :replace-file="scope.row.path"
                 @on-success="refuresh"
@@ -94,6 +112,7 @@
                 删除
               </el-button>
             </div>
+            <div v-else>-</div>
           </template>
         </el-table-column>
       </el-table>
@@ -125,9 +144,9 @@ const formRef = ref<FormInstance>()
 const loading = ref(false)
 const uploadLogin = ref(false)
 const directories = ref([])
-const formSearch = reactive<{ keyword: string; directorie: string[] }>({
+const formSearch = reactive<{ keyword: string; directory: string[] }>({
   keyword: "",
-  directorie: ["/image"]
+  directory: []
 })
 const table = reactive({
   list: [],
@@ -164,13 +183,16 @@ async function getList(page = 1) {
     loading.value = true
     const res = await http.post("/file/list", {
       ...formSearch,
-      directorie: formSearch.directorie.join(""),
+      directorie: formSearch.directory?.join(""),
       page,
       pageSize: table.pageSize
     })
-
     if (res.code === 0) {
       for (const item of res.data.list) {
+        item.icon = item.directory
+          ? "icon-folder"
+          : `icon-${item.name.split(".").pop().toUpperCase()}`
+        item.name = item.directory ? `${item.name}/` : item.name
         item.ctimeMs = dayjs(item.ctimeMs).format("L LTS")
 
         const size = byteSize(item.size)
@@ -183,6 +205,23 @@ async function getList(page = 1) {
   } finally {
     loading.value = false
   }
+}
+
+function jumpTo(row) {
+  if (row.directory) {
+    formSearch.directory = row.path
+      .split("/")
+      .slice(1)
+      .map((name: string) => `/${name}`)
+
+    getList(1)
+  } else {
+    window.open(row.url)
+  }
+}
+function back() {
+  formSearch.directory.pop()
+  getList(1)
 }
 function refuresh() {
   getDirectorys()
@@ -227,6 +266,16 @@ function deleteAction(path: string) {
     }
     .el-button:last-child {
       margin-left: 12px;
+    }
+  }
+  .icon {
+    @include flex-center;
+  }
+  .back {
+    cursor: pointer;
+    transition: all $duration;
+    &:hover {
+      color: $color-primary;
     }
   }
 }
