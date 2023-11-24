@@ -72,6 +72,15 @@ const SystemRoutes: RouteRecordRaw = {
         role: 0,
         title: "更新管理"
       }
+    },
+    {
+      path: "/system/lemon",
+      name: "SystemLemon",
+      component: () => import("@/views/Admin/Lemon/Lemon.vue"),
+      meta: {
+        role: 0,
+        title: "柠檬管理"
+      }
     }
   ]
 }

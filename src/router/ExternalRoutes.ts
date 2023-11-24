@@ -14,6 +14,14 @@ const ExternalRoutes: RouteRecordRaw = {
       meta: {
         title: "最终选择 - 摆脱困难选择症，随机为您做出选择"
       }
+    },
+    {
+      path: "/creations/lemon",
+      name: "Creations-Lemon",
+      component: () => import("@/views/External/Lemon/Lemon.vue"),
+      meta: {
+        title: "柠檬时光机 - 柠檬的快乐瞬间，探索它的可爱世界"
+      }
     }
   ]
 }

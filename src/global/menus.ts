@@ -5,7 +5,8 @@ import {
   User,
   Setting,
   House,
-  Files
+  Files,
+  Box
 } from "@element-plus/icons-vue"
 
 export const adminMenus = [
@@ -38,6 +39,11 @@ export const adminMenus = [
     path: "/system/files",
     name: "文件管理",
     icon: Files
+  },
+  {
+    path: "/system/lemon",
+    name: "柠檬管理",
+    icon: Box
   },
   {
     path: "/",
