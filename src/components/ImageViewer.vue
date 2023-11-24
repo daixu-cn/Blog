@@ -3,6 +3,7 @@
     <el-image-viewer
       v-if="props.show"
       :url-list="props.urlList"
+      :initial-index="props.initialIndex"
       teleported
       @close="emits('close')"
     />
@@ -22,6 +23,10 @@ const props = defineProps({
     default() {
       return []
     }
+  },
+  initialIndex: {
+    type: Number,
+    default: 0
   }
 })
 const emits = defineEmits(["close"])

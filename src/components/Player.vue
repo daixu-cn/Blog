@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, nextTick, onBeforeUnmount, reactive } from "vue"
+import { ref, watch, nextTick, onBeforeUnmount, reactive, PropType } from "vue"
 import Plyr from "plyr"
 
 const emits = defineEmits(["play"])
@@ -17,6 +17,10 @@ const props = defineProps({
   poster: {
     type: String,
     default: ""
+  },
+  plyrProps: {
+    type: Object as PropType<Plyr.Options>,
+    default: () => ({})
   }
 })
 
@@ -26,7 +30,8 @@ const options = reactive<Plyr.Options>({
   i18n: {
     speed: "速度",
     normal: "正常"
-  }
+  },
+  ...props.plyrProps
 })
 // 记录上次的播放时间
 let playLastTime = 0
