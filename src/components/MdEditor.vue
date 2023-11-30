@@ -31,15 +31,21 @@
 
 <script lang="ts" setup>
 import { ref, watchEffect, reactive, onMounted, computed } from "vue"
-import { MdPreview, MdEditor, ToolbarNames, HeadList } from "md-editor-v3"
+import {
+  MdPreview,
+  MdEditor,
+  ToolbarNames,
+  HeadList,
+  config
+} from "md-editor-v3"
 import type { ExposeParam } from "md-editor-v3"
 import { nanoid } from "nanoid"
 import useThemeStore from "@/store/theme"
 import resumeUpload from "@/utils/resumeUpload"
 import "md-editor-v3/lib/style.css"
 import ImageViewer from "@/components/ImageViewer.vue"
+import TargetBlankExtension from "@/plugins/TargetBlankExtension"
 
-const previewImgUrl = ref<string[]>([])
 const emits = defineEmits(["onGetCatalog", "onChange", "onSave", "onLoading"])
 const props = defineProps({
   class: {
@@ -75,6 +81,7 @@ const props = defineProps({
 const className = computed(() => {
   return props.class ?? `MdEditor-${nanoid()}`
 })
+const previewImgUrl = ref<string[]>([])
 const Editor = ref<ExposeParam>()
 const preview = ref(props.preview)
 const themeStore = useThemeStore()
@@ -111,6 +118,11 @@ const MdEditorProps = reactive<any>({
   language: "zh-cn",
   editorId: `MdEditor-${Math.random().toString(16).slice(2)}`,
   onUploadImg
+})
+config({
+  markdownItConfig(md) {
+    md.use(TargetBlankExtension)
+  }
 })
 const text = ref(props.text)
 const loading = ref(false)
