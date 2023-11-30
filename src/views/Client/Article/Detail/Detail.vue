@@ -30,7 +30,7 @@
                 }}
                 评论
               </li>
-              <li>{{ info?.createdAt }}</li>
+              <li>{{ info?.createdAt }} - {{ info?.updatedAt }}</li>
             </ul>
             <h6 class="description">{{ info?.description }}</h6>
             <Player v-if="info?.video" :src="info?.video" />
@@ -84,7 +84,8 @@ async function getInfo() {
       item => item.value === res.data.category
     )?.label
 
-    res.data.createdAt = dayjs(res.data.createdAt).fromNow()
+    res.data.createdAt = dayjs(res.data.createdAt).format("YYYY.MM.DD")
+    res.data.updatedAt = dayjs(res.data.updatedAt).format("YYYY.MM.DD")
 
     info.value = res.data
 
@@ -191,6 +192,7 @@ onBeforeUnmount(() => {
         color: $font-color-placeholder;
         margin-right: 5px;
         font-size: 12px;
+        line-height: 1.5em;
         &:last-child {
           &::after {
             content: "";
