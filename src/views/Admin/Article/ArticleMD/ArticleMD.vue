@@ -49,6 +49,15 @@
           placeholder="请输入文章描述"
         />
       </el-form-item>
+      <el-form-item label="解锁时间" prop="unlockAt">
+        <el-date-picker
+          v-model="article.unlockAt"
+          type="datetime"
+          placeholder="请选择解锁时间"
+          value-format="YYYY-MM-DDTHH:mm:ss.sssZZ"
+          :teleported="false"
+        />
+      </el-form-item>
       <el-form-item label="预览图片" prop="poster">
         <Poster
           :poster-url="article.poster"
@@ -112,6 +121,7 @@ const article = reactive({
   category: "",
   title: "",
   description: "",
+  unlockAt: undefined,
   poster: "",
   video: "",
   content: "",
@@ -166,14 +176,11 @@ async function getArticleInfo() {
       disableViewsIncrement: true
     })
     if (res.code === 0) {
-      article.title = res.data.title
-      article.category = res.data.category
-      article.description = res.data.description
-      article.poster = res.data.poster
-      article.video = res.data.video
+      for (const key in article) {
+        article[key] = res.data[key]
+      }
       article.disableComment = res.data.disableComment ? 1 : 0
       article.isPrivate = res.data.isPrivate ? 1 : 0
-      article.content = res.data.content
 
       MdEditorRef.value?.Editor?.insert(() => {
         return {

@@ -31,6 +31,18 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="文章状态" prop="status">
+        <el-select
+          v-model="formSearch.status"
+          :disabled="loading"
+          placeholder="请选择文章状态"
+          clearable
+          @change="getList(1)"
+        >
+          <el-option label="锁定" :value="1" />
+          <el-option label="解锁" :value="0" />
+        </el-select>
+      </el-form-item>
       <el-form-item label="开始时间" prop="startTime">
         <el-date-picker
           v-model="formSearch.startTime"
@@ -141,18 +153,33 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="unlockAt"
+          label="解锁状态"
+          align="center"
+          width="190"
+        >
+          <template #default="scope">
+            <span
+              :style="{
+                color: scope.row.isLock ? 'var(--el-color-danger)' : undefined
+              }"
+              >{{ scope.row.unlockAt }}</span
+            >
+          </template>
+        </el-table-column>
+        <el-table-column
           prop="updatedAt"
           label="更新时间"
           align="center"
-          show-overflow-tooltip
+          width="190"
         />
         <el-table-column
           prop="createdAt"
           label="创建时间"
           align="center"
-          show-overflow-tooltip
+          width="190"
         />
-        <el-table-column label="操作" align="center" width="165">
+        <el-table-column label="操作" align="center" width="165" fixed="right">
           <template #header>
             <el-button
               type="primary"
@@ -216,7 +243,8 @@ const formSearch = reactive({
   keyword: "",
   category: "",
   startTime: "",
-  endTime: ""
+  endTime: "",
+  status: ""
 })
 const table = reactive({
   list: [],
@@ -242,6 +270,8 @@ async function getList(page = 1) {
             category => category.value === item.category
           )?.label,
           views: item.views.toLocaleString(),
+          isLock: dayjs().isBefore(item.unlockAt),
+          unlockAt: dayjs(item.unlockAt).format("L LTS"),
           updatedAt: dayjs(item.updatedAt).format("L LTS"),
           createdAt: dayjs(item.createdAt).format("L LTS")
         }

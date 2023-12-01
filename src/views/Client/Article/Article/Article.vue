@@ -45,9 +45,9 @@
             >
               <div class="article-info">
                 <el-image
-                  :src="item.poster ?? item.user.avatar"
+                  :src="item.poster ?? item.user?.avatar"
                   class="avatar"
-                  :preview-src-list="[item.poster ?? item.user.avatar]"
+                  :preview-src-list="[item.poster ?? item.user?.avatar]"
                   fit="cover"
                   :z-index="10"
                 />
@@ -90,8 +90,12 @@
                   }}</span>
                 </li>
                 <li v-if="item.isPrivate">
-                  <i-ep-lock />
+                  <i-ep-knifeFork />
                   <span>私有文章</span>
+                </li>
+                <li v-if="item.isLock">
+                  <i-ep-unlock />
+                  <span>{{ item.unlockAt }}</span>
                 </li>
               </ul>
             </div>
@@ -157,6 +161,8 @@ async function getList(page = article.page) {
         item.categoryFormat = categories.find(
           category => category.value === item.category
         )?.label
+        item.isLock = dayjs().isBefore(item.unlockAt)
+        item.unlockAt = dayjs(item.unlockAt).format("L LTS")
         item.createdAt = dayjs(item.createdAt).fromNow()
         item.updatedAt = dayjs(item.updatedAt).fromNow()
       }
@@ -217,6 +223,8 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
 function goToDetail(article) {
   if (article.isPrivate && userStore.info?.role !== 0) {
     ElMessage.warning("私有文章，您没有访问权限～")
+  } else if (article.isLock && userStore.info?.role !== 0) {
+    ElMessage.warning(`该文章将在 ${article.unlockAt} 解锁`)
   } else {
     router.push({
       name: "ArticleDetail",

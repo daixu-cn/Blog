@@ -28,9 +28,14 @@
                     ? "--"
                     : info?.comment_reply_total.toLocaleString()
                 }}
-                评论
+                <span>评论</span>
               </li>
-              <li>{{ info?.createdAt }} - {{ info?.updatedAt }}</li>
+              <li>
+                {{ info?.createdAt }}
+                <span v-show="info?.createdAt !== info?.updatedAt">
+                  - {{ info?.updatedAt }}
+                </span>
+              </li>
             </ul>
             <h6 class="description">{{ info?.description }}</h6>
             <Player v-if="info?.video" :src="info?.video" />
