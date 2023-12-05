@@ -331,7 +331,7 @@ function goToDetail(article) {
           cursor: pointer;
           transition: color $duration;
         }
-        #Player {
+        [id^="Player"] {
           margin-bottom: $space;
         }
         .views {

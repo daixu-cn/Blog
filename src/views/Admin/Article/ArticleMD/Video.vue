@@ -27,7 +27,6 @@ import { watch, reactive } from "vue"
 import { ElMessage } from "element-plus"
 import type { UploadProps } from "element-plus"
 import resumeUpload from "@/utils/resumeUpload"
-import http from "@/server"
 
 const props = defineProps({
   videoUrl: {
@@ -104,17 +103,8 @@ const onChange: UploadProps["onChange"] = rawFile => {
   }
 }
 
-async function remove() {
-  try {
-    emits("onLoading", true)
-
-    const res = await http.delete("/upload/file", { path: props.videoUrl })
-    if (res.code === 0) {
-      emits("onSuccess", "")
-    }
-  } finally {
-    emits("onLoading", false)
-  }
+function remove() {
+  emits("onSuccess", null)
 }
 </script>
 

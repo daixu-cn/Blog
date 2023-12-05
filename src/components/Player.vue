@@ -1,7 +1,5 @@
 <template>
-  <div id="Player">
-    <div :id="PlayerID" />
-  </div>
+  <div :id="PlayerID" />
 </template>
 
 <script lang="ts" setup>
@@ -40,9 +38,11 @@ watch(
           id: PlayerID.value,
           url: props.src, // 视频地址
           poster: props.poster, // 封面图
+          width: "100%",
+          height: document.body.clientWidth * 0.6,
+          fluid: true,
           playsinline: true, // 内联模式
           videoInit: true, // 显示视频首帧
-          fluid: true, // 流式布局
           rotateFullscreen: true, // 横屏全屏
           // 视频旋转
           rotate: {
@@ -69,10 +69,3 @@ onBeforeUnmount(() => {
   player.value?.destroy()
 })
 </script>
-
-<style lang="scss">
-#Player {
-  width: 100%;
-  max-height: 600px;
-}
-</style>
