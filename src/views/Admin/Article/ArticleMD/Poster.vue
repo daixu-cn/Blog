@@ -31,7 +31,6 @@ import type { UploadProps } from "element-plus"
 import { ElMessage } from "element-plus"
 import { BASE_API } from "@/global/env"
 import useUserStore from "@/store/user"
-import http from "@/server"
 
 const props = defineProps({
   posterUrl: {
@@ -69,16 +68,7 @@ const onError: UploadProps["onError"] = () => {
   emits("onLoading", false)
 }
 
-async function remove() {
-  try {
-    emits("onLoading", true)
-
-    const res = await http.delete("/upload/file", { path: props.posterUrl })
-    if (res.code === 0) {
-      emits("onSuccess", "")
-    }
-  } finally {
-    emits("onLoading", false)
-  }
+function remove() {
+  emits("onSuccess", null)
 }
 </script>

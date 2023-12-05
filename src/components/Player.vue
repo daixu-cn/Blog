@@ -1,12 +1,14 @@
 <template>
-  <div id="Player" v-loading="loading" element-loading-text="加载中...">
-    <video id="player" playsinline controls :data-poster="props.poster" />
+  <div id="Player">
+    <div :id="PlayerID" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, nextTick, onBeforeUnmount, reactive, PropType } from "vue"
-import Plyr from "plyr"
+import { ref, watch, computed, nextTick, onBeforeUnmount, PropType } from "vue"
+import { nanoid } from "nanoid"
+import Player, { IPlayerOptions } from "xgplayer"
+import HlsJsPlayer from "xgplayer-hls.js"
 
 const emits = defineEmits(["play"])
 const props = defineProps({
@@ -18,65 +20,43 @@ const props = defineProps({
     type: String,
     default: ""
   },
-  plyrProps: {
-    type: Object as PropType<Plyr.Options>,
+  options: {
+    type: Object as PropType<IPlayerOptions>,
     default: () => ({})
   }
 })
 
-const loading = ref(false)
-const player = ref<Plyr>()
-const options = reactive<Plyr.Options>({
-  i18n: {
-    speed: "速度",
-    normal: "正常"
-  },
-  ...props.plyrProps
+const PlayerID = computed(() => {
+  return `Player-${nanoid()}`
 })
-// 记录上次的播放时间
-let playLastTime = 0
+const player = ref<Player>()
 
 watch(
   () => props.src,
   () => {
     nextTick(() => {
       if (!player.value) {
-        player.value = new Plyr("#player", options)
+        player.value = new Player({
+          id: PlayerID.value,
+          url: props.src, // 视频地址
+          poster: props.poster, // 封面图
+          playsinline: true, // 内联模式
+          videoInit: true, // 显示视频首帧
+          fluid: true, // 流式布局
+          rotateFullscreen: true, // 横屏全屏
+          // 视频旋转
+          rotate: {
+            clockwise: false, // 旋转方向是否为顺时针
+            innerRotate: true // 只旋转内部video
+          },
+          playbackRate: [0.5, 1, 1.5, 2, 4], // 倍速播放
+          plugins: [HlsJsPlayer],
+          ...props.options
+        })
       }
-      player.value.source = {
-        type: "video",
-        sources: [
-          {
-            src: props.src,
-            type: "video/mp4"
-          }
-        ]
-      }
-      player.value.on("play", event => {
-        emits("play", event.detail.plyr)
-      })
 
-      player.value.on("seeking", event => {
-        const instance = event.detail.plyr
-
-        if (instance.currentTime > playLastTime) {
-          loading.value = true
-          instance.play()
-        }
-
-        playLastTime = instance.currentTime
-      })
-      player.value.on("timeupdate", event => {
-        const { currentTime } = event.detail.plyr
-
-        if (currentTime > playLastTime && loading.value) {
-          loading.value = false
-        }
-
-        playLastTime = currentTime
-      })
-      player.value.on("waiting", () => {
-        loading.value = true
+      player.value.once("play", () => {
+        emits("play")
       })
     })
   },
@@ -93,24 +73,6 @@ onBeforeUnmount(() => {
 <style lang="scss">
 #Player {
   width: 100%;
-  .plyr {
-    &:fullscreen {
-      video {
-        max-height: initial;
-      }
-    }
-    video {
-      height: 100%;
-      max-height: 600px;
-    }
-  }
-
-  @media screen and (max-width: 750px) {
-    .plyr {
-      video {
-        max-height: initial;
-      }
-    }
-  }
+  max-height: 600px;
 }
 </style>
