@@ -25,7 +25,6 @@
                 <Player
                   :src="item.path"
                   :plyr-props="{ controls: ['play-large'] }"
-                  :options="{ fluid: true }"
                 />
               </div>
             </div>

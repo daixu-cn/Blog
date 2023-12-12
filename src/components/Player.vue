@@ -1,12 +1,23 @@
 <template>
-  <div :id="PlayerID" />
+  <div id="Player" v-loading="loading" element-loading-text="加载中...">
+    <video :id="id" playsinline controls :data-poster="props.poster" />
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, computed, nextTick, onBeforeUnmount, PropType } from "vue"
+import {
+  ref,
+  watch,
+  nextTick,
+  onBeforeUnmount,
+  reactive,
+  PropType,
+  computed
+} from "vue"
+import Plyr from "plyr"
+import Hls from "hls.js"
+import { ElMessage } from "element-plus"
 import { nanoid } from "nanoid"
-import Player, { IPlayerOptions } from "xgplayer"
-import HlsJsPlayer from "xgplayer-hls.js"
 
 const emits = defineEmits(["play"])
 const props = defineProps({
@@ -18,46 +29,48 @@ const props = defineProps({
     type: String,
     default: ""
   },
-  options: {
-    type: Object as PropType<IPlayerOptions>,
+  plyrProps: {
+    type: Object as PropType<Plyr.Options>,
     default: () => ({})
   }
 })
 
-const PlayerID = computed(() => {
-  return `Player-${nanoid()}`
+const id = computed(() => {
+  return `player-${nanoid()}`
 })
-const player = ref<Player>()
+const loading = ref(false)
+const player = ref<Plyr>()
+const options = reactive<Plyr.Options>({
+  i18n: {
+    speed: "速度",
+    normal: "正常"
+  },
+  captions: {
+    active: true,
+    language: "auto",
+    update: true
+  },
+  ...props.plyrProps
+})
 
 watch(
   () => props.src,
   () => {
     nextTick(() => {
-      if (!player.value) {
-        player.value = new Player({
-          id: PlayerID.value,
-          url: props.src, // 视频地址
-          poster: props.poster, // 封面图
-          width: "100%",
-          height: document.body.clientWidth * 0.6,
-          fluid: true,
-          playsinline: true, // 内联模式
-          videoInit: true, // 显示视频首帧
-          rotateFullscreen: true, // 横屏全屏
-          // 视频旋转
-          rotate: {
-            clockwise: false, // 旋转方向是否为顺时针
-            innerRotate: true // 只旋转内部video
-          },
-          playbackRate: [0.5, 1, 1.5, 2, 4], // 倍速播放
-          plugins: [HlsJsPlayer],
-          ...props.options
-        })
+      if (Hls.isSupported()) {
+        const video = document.getElementById(id.value) as HTMLMediaElement
+        if (!player.value) {
+          player.value = new Plyr(video, options)
+          player.value.on("play", event => {
+            emits("play", event.detail.plyr)
+          })
+        }
+        const hls = new Hls()
+        hls.loadSource(props.src)
+        hls.attachMedia(video)
+      } else {
+        ElMessage.error("不支持本站视频，建议更换谷歌浏览器")
       }
-
-      player.value.once("play", () => {
-        emits("play")
-      })
     })
   },
   {
@@ -69,3 +82,28 @@ onBeforeUnmount(() => {
   player.value?.destroy()
 })
 </script>
+
+<style lang="scss">
+#Player {
+  width: 100%;
+  .plyr {
+    &:fullscreen {
+      video {
+        max-height: initial;
+      }
+    }
+    video {
+      height: 100%;
+      max-height: 600px;
+    }
+  }
+
+  @media screen and (max-width: 750px) {
+    .plyr {
+      video {
+        max-height: initial;
+      }
+    }
+  }
+}
+</style>
