@@ -1,7 +1,7 @@
 <template>
   <div id="Article">
     <el-skeleton
-      :loading="article.skeletonLoading && article.page === 1"
+      :loading="article.skeleton && article.page === 1"
       animated
       :count="5"
     >
@@ -36,105 +36,100 @@
         </div>
       </template>
       <template #default>
-        <div class="article-container">
-          <div v-auto-animate class="article-list">
-            <div
-              v-for="item of article.list"
-              :key="item.articleId"
-              class="article-item"
-            >
-              <div class="article-info">
-                <el-image
-                  :src="item.poster ?? item.user?.avatar"
-                  class="avatar"
-                  :preview-src-list="[item.poster ?? item.user?.avatar]"
-                  fit="cover"
-                  :z-index="10"
-                />
-                <div class="header">
-                  <h1 @click="goToDetail(item)">
-                    {{ item.title }}
-                  </h1>
-                  <ul>
-                    <li
-                      class="category"
-                      :class="{ active: item.category === search.category }"
-                      @click="categoryChange(item.category)"
-                    >
-                      @{{ item.categoryFormat }}
-                    </li>
-                    <li>{{ item.createdAt }}</li>
-                  </ul>
+        <InfiniteScroll
+          :loading="article.loading"
+          :is-over="article.list.length >= article.total"
+          @on-load="getList"
+        >
+          <div class="article-container">
+            <div v-auto-animate class="article-list">
+              <div
+                v-for="item of article.list"
+                :key="item.articleId"
+                class="article-item"
+              >
+                <div class="article-info">
+                  <el-image
+                    :src="item.poster ?? item.user?.avatar"
+                    class="avatar"
+                    :preview-src-list="[item.poster ?? item.user?.avatar]"
+                    fit="cover"
+                    :z-index="10"
+                  />
+                  <div class="header">
+                    <h1 @click="goToDetail(item)">
+                      {{ item.title }}
+                    </h1>
+                    <ul>
+                      <li
+                        class="category"
+                        :class="{ active: item.category === search.category }"
+                        @click="categoryChange(item.category)"
+                      >
+                        @{{ item.categoryFormat }}
+                      </li>
+                      <li>{{ item.createdAt }}</li>
+                    </ul>
+                  </div>
                 </div>
+                <p class="description" @click="goToDetail(item)">
+                  {{ item.description }}
+                </p>
+                <Player
+                  v-if="item.video"
+                  :src="item.video"
+                  :poster="item.poster"
+                  @play.once="videoPlay(item.articleId)"
+                />
+                <ul class="views" @click="goToDetail(item)">
+                  <li>
+                    <i-ep-view />
+                    <span>{{ item.views.toLocaleString() }}</span>
+                  </li>
+                  <li>
+                    <i-ep-chatDotSquare />
+                    <span>{{
+                      item.disableComment
+                        ? "--"
+                        : item.comment_reply_total.toLocaleString()
+                    }}</span>
+                  </li>
+                  <li v-if="item.isPrivate">
+                    <i-ep-knifeFork />
+                    <span>私有文章</span>
+                  </li>
+                  <li v-if="item.isLock">
+                    <i-ep-unlock />
+                    <span>{{ item.unlockAt }}</span>
+                  </li>
+                </ul>
               </div>
-              <p class="description" @click="goToDetail(item)">
-                {{ item.description }}
-              </p>
-              <Player
-                v-if="item.video"
-                :src="item.video"
-                :poster="item.poster"
-                @play.once="videoPlay(item.articleId)"
-              />
-              <ul class="views" @click="goToDetail(item)">
-                <li>
-                  <i-ep-view />
-                  <span>{{ item.views.toLocaleString() }}</span>
-                </li>
-                <li>
-                  <i-ep-chatDotSquare />
-                  <span>{{
-                    item.disableComment
-                      ? "--"
-                      : item.comment_reply_total.toLocaleString()
-                  }}</span>
-                </li>
-                <li v-if="item.isPrivate">
-                  <i-ep-knifeFork />
-                  <span>私有文章</span>
-                </li>
-                <li v-if="item.isLock">
-                  <i-ep-unlock />
-                  <span>{{ item.unlockAt }}</span>
-                </li>
-              </ul>
             </div>
           </div>
-        </div>
+        </InfiniteScroll>
       </template>
     </el-skeleton>
-    <div ref="footer" class="footer">
-      <Loading :loading="article.loading" />
-      <p
-        v-if="article.list.length >= article.total && !article.skeletonLoading"
-        class="loadingEnd"
-      >
-        加载结束～
-      </p>
-    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, nextTick } from "vue"
+import { reactive } from "vue"
 import { useRouter } from "vue-router"
 import dayjs from "dayjs"
-import { useIntersectionObserver } from "@vueuse/core"
 import { ElMessage } from "element-plus"
 import http from "@/server"
-import Loading from "@/components/Loading.vue"
 import { categories } from "@/global/select"
 import Player from "@/components/Player.vue"
 import useUserStore from "@/store/user"
+import InfiniteScroll from "@/components/InfiniteScroll.vue"
 
 const userStore = useUserStore()
 const router = useRouter()
-const footer = ref()
 const search = reactive({
   category: ""
 })
 const article = reactive<any>({
-  skeletonLoading: true,
+  skeleton: true,
   loading: false,
   list: [],
   page: 1,
@@ -146,14 +141,14 @@ async function getList(page = article.page) {
 
   try {
     if (page === 1) {
-      article.skeletonLoading = true
+      article.skeleton = true
     } else {
       article.loading = true
     }
     const res = await http.post("/article/list", {
       ...search,
       page,
-      pageSize: 20
+      pageSize: 10
     })
 
     if (res.code === 0) {
@@ -174,30 +169,11 @@ async function getList(page = article.page) {
       }
 
       article.total = res.data.total
-
-      nextTick(() => {
-        const { stop } = useIntersectionObserver(
-          footer,
-          ([{ isIntersecting }]) => {
-            stop()
-            if (isIntersecting) {
-              if (article.list.length < article.total && page !== 1) {
-                getList()
-              }
-            }
-          }
-        )
-      })
     }
   } finally {
-    if (article.page === 1) {
-      article.skeletonLoading = false
-    } else {
-      article.loading = false
-    }
-    if (article.list.length >= article.total) {
-      stop()
-    }
+    article.skeleton = false
+    article.loading = false
+
     article.page++
   }
 }
@@ -211,14 +187,6 @@ function categoryChange(category: string) {
 async function videoPlay(articleId: string) {
   http.get(`/article/info/${articleId}`)
 }
-
-const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
-  if (isIntersecting) {
-    if (article.list.length < article.total) {
-      getList()
-    }
-  }
-})
 
 function goToDetail(article) {
   if (article.isPrivate && userStore.info?.role !== 0) {
@@ -351,13 +319,6 @@ function goToDetail(article) {
           }
         }
       }
-    }
-  }
-  .footer {
-    margin-bottom: 20px;
-    .loadingEnd {
-      text-align: center;
-      color: var(--el-text-color-secondary);
     }
   }
 }

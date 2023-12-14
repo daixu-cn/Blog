@@ -1,6 +1,6 @@
 <template>
   <div id="Updates">
-    <el-skeleton :loading="skeletonLoading && page === 1" animated>
+    <el-skeleton :loading="skeleton && page === 1" animated>
       <template #template>
         <el-timeline>
           <el-timeline-item v-for="item of 8" :key="item">
@@ -11,51 +11,52 @@
         </el-timeline>
       </template>
       <template #default>
-        <el-timeline v-auto-animate>
-          <el-timeline-item
-            v-for="item in list"
-            :key="item.updateId"
-            :timestamp="item.createdAt"
-          >
-            <span v-html="item.content"></span>
-          </el-timeline-item>
-        </el-timeline>
+        <InfiniteScroll
+          id="UpdatesList"
+          :loading="loading"
+          :is-over="list.length >= total"
+          :show-end="false"
+          :mutation-options="{ subtree: true }"
+          @on-load="getList"
+        >
+          <el-timeline id="UpdatesList" v-auto-animate>
+            <el-timeline-item
+              v-for="item in list"
+              :key="item.updateId"
+              :timestamp="item.createdAt"
+            >
+              <span v-html="item.content"></span>
+            </el-timeline-item>
+          </el-timeline>
+        </InfiniteScroll>
       </template>
     </el-skeleton>
-    <div ref="footer" class="footer">
-      <Loading :loading="loading" />
-      <p v-if="list.length >= total && !skeletonLoading" class="loadingEnd">
-        加载结束～
-      </p>
-    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, nextTick } from "vue"
+import { reactive, ref } from "vue"
 import dayjs from "dayjs"
-import { useIntersectionObserver } from "@vueuse/core"
 import nzh from "nzh"
 import http from "@/server"
-import Loading from "@/components/Loading.vue"
+import InfiniteScroll from "@/components/InfiniteScroll.vue"
 
-const footer = ref()
-const list = reactive<any[]>([])
-const skeletonLoading = ref(true)
+const skeleton = ref(true)
 const loading = ref(false)
+const list = reactive<any[]>([])
 const page = ref(1)
 const total = ref(0)
 
 async function getList() {
   try {
     if (page.value === 1) {
-      skeletonLoading.value = true
+      skeleton.value = true
     } else {
       loading.value = true
     }
     const res = await http.post("/update/list", {
       page: page.value,
-      pageSize: 20
+      pageSize: 10
     })
 
     if (res.code === 0) {
@@ -80,42 +81,15 @@ async function getList() {
         })
       )
       total.value = res.data.total
-
-      nextTick(() => {
-        const { stop } = useIntersectionObserver(
-          footer,
-          ([{ isIntersecting }]) => {
-            stop()
-            if (isIntersecting) {
-              if (list.length < total.value) {
-                getList()
-              }
-            }
-          }
-        )
-      })
     }
   } finally {
-    if (page.value === 1) {
-      skeletonLoading.value = false
-    } else {
-      loading.value = false
-    }
-    if (list.length >= total.value) {
-      stop()
-    }
+    skeleton.value = false
+    loading.value = false
+
     page.value++
   }
 }
 getList()
-
-const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
-  if (isIntersecting) {
-    if (list.length < total.value) {
-      getList()
-    }
-  }
-})
 </script>
 
 <style lang="scss">
@@ -128,13 +102,6 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
   }
   .el-timeline-item__content {
     line-height: 1.5em;
-  }
-  .footer {
-    margin-bottom: 20px;
-    .loadingEnd {
-      text-align: center;
-      color: var(--el-text-color-secondary);
-    }
   }
 }
 </style>

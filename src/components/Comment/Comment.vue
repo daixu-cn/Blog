@@ -22,7 +22,7 @@
       </el-button>
     </div>
 
-    <el-skeleton :loading="skeletonLoading && page === 1" animated :count="3">
+    <el-skeleton :loading="skeleton && page === 1" animated :count="3">
       <template #template>
         <div class="comment-container">
           <div class="comment-item">
@@ -50,142 +50,153 @@
         </div>
       </template>
       <template #default>
-        <div v-auto-animate class="comment-container">
-          <div v-for="item of list" :key="item.commentId" class="comment-item">
-            <el-image
-              :src="item.user.avatar"
-              :preview-src-list="[item.user.avatar]"
-              fit="cover"
-              preview-teleported
-              class="avatar"
+        <InfiniteScroll
+          id="comment-container"
+          :loading="loading"
+          :is-over="list.length >= total"
+          :show-end="false"
+          @on-load="getList"
+        >
+          <div id="comment-container" v-auto-animate class="comment-container">
+            <div
+              v-for="item of list"
+              :key="item.commentId"
+              class="comment-item"
             >
-              <template #error>
-                <div class="image-slot">
-                  <i-ep-picture />
-                </div>
-              </template>
-            </el-image>
-            <div v-auto-animate class="comment-info">
-              <div class="info">
-                <p class="user-row">
-                  <span class="userName"
-                    >{{ item.user.userName
-                    }}<i v-if="item.user.role === 0" class="admin"
-                      >管理员</i
-                    ></span
-                  >
-                  <span>
-                    <i-ep-promotion
-                      class="reply-icon"
-                      @click="replyHandler(item, undefined, item.user.userName)"
-                    />
-                    <i-ep-deleteFilled
-                      v-if="userStore.info?.userId === item.user.userId"
-                      class="delete-icon"
-                      @click="deleteHandler(0, item, item.commentId)"
-                    />
-                  </span>
-                </p>
-                <p class="timer">{{ item.createdAt }}</p>
-              </div>
-              <MdEditor
-                image-align="left"
-                :is-preview="true"
-                :text="item.content"
-                :style="{ maxHeight: '400px' }"
-              />
-
-              <div
-                v-for="reply of item.replies"
-                :key="reply.replyId"
-                class="comment-item reply-item"
+              <el-image
+                :src="item.user.avatar"
+                :preview-src-list="[item.user.avatar]"
+                fit="cover"
+                preview-teleported
+                class="avatar"
               >
-                <el-image
-                  :src="reply.user.avatar"
-                  :preview-src-list="[reply.user.avatar]"
-                  fit="cover"
-                  preview-teleported
-                  class="avatar"
-                >
-                  <template #error>
-                    <div class="image-slot">
-                      <i-ep-picture />
-                    </div>
-                  </template>
-                </el-image>
-                <div class="comment-info">
-                  <div class="info">
-                    <p class="user-row">
-                      <span class="userName"
-                        >{{ reply.user.userName
-                        }}<i v-if="reply.user.role === 0" class="admin"
-                          >管理员</i
-                        ></span
-                      >
-                      <span>
-                        <i-ep-promotion
-                          class="reply-icon"
-                          @click="
-                            replyHandler(
-                              item,
-                              reply.replyId,
-                              reply.user.userName
-                            )
-                          "
-                        />
-                        <i-ep-deleteFilled
-                          v-if="userStore.info?.userId === reply.user.userId"
-                          class="delete-icon"
-                          @click="deleteHandler(1, item, reply.replyId)"
-                        />
-                      </span>
-                    </p>
-                    <p class="timer">
-                      <span class="replyUser"
-                        >回复@{{ reply.parent.userName }}</span
-                      >{{ reply.createdAt }}
-                    </p>
+                <template #error>
+                  <div class="image-slot">
+                    <i-ep-picture />
                   </div>
-                  <MdEditor
-                    image-align="left"
-                    :is-preview="true"
-                    :text="reply.content"
-                    :style="{ maxHeight: '400px' }"
-                  />
+                </template>
+              </el-image>
+              <div v-auto-animate class="comment-info">
+                <div class="info">
+                  <p class="user-row">
+                    <span class="userName"
+                      >{{ item.user.userName
+                      }}<i v-if="item.user.role === 0" class="admin"
+                        >管理员</i
+                      ></span
+                    >
+                    <span>
+                      <i-ep-promotion
+                        class="reply-icon"
+                        @click="
+                          replyHandler(item, undefined, item.user.userName)
+                        "
+                      />
+                      <i-ep-deleteFilled
+                        v-if="userStore.info?.userId === item.user.userId"
+                        class="delete-icon"
+                        @click="deleteHandler(0, item, item.commentId)"
+                      />
+                    </span>
+                  </p>
+                  <p class="timer">{{ item.createdAt }}</p>
                 </div>
-              </div>
+                <MdEditor
+                  image-align="left"
+                  :is-preview="true"
+                  :text="item.content"
+                  :style="{ maxHeight: '400px' }"
+                />
 
-              <div class="loadMore">
-                <el-button
-                  v-if="item.replies.length < item.replyTotal"
-                  type="primary"
-                  text
-                  :loading="item.replyLoading"
-                  @click="loadReply(item)"
-                  >加载更多</el-button
+                <div
+                  v-for="reply of item.replies"
+                  :key="reply.replyId"
+                  class="comment-item reply-item"
                 >
+                  <el-image
+                    :src="reply.user.avatar"
+                    :preview-src-list="[reply.user.avatar]"
+                    fit="cover"
+                    preview-teleported
+                    class="avatar"
+                  >
+                    <template #error>
+                      <div class="image-slot">
+                        <i-ep-picture />
+                      </div>
+                    </template>
+                  </el-image>
+                  <div class="comment-info">
+                    <div class="info">
+                      <p class="user-row">
+                        <span class="userName"
+                          >{{ reply.user.userName
+                          }}<i v-if="reply.user.role === 0" class="admin"
+                            >管理员</i
+                          ></span
+                        >
+                        <span>
+                          <i-ep-promotion
+                            class="reply-icon"
+                            @click="
+                              replyHandler(
+                                item,
+                                reply.replyId,
+                                reply.user.userName
+                              )
+                            "
+                          />
+                          <i-ep-deleteFilled
+                            v-if="userStore.info?.userId === reply.user.userId"
+                            class="delete-icon"
+                            @click="deleteHandler(1, item, reply.replyId)"
+                          />
+                        </span>
+                      </p>
+                      <p class="timer">
+                        <span class="replyUser"
+                          >回复@{{ reply.parent.userName }}</span
+                        >{{ reply.createdAt }}
+                      </p>
+                    </div>
+                    <MdEditor
+                      image-align="left"
+                      :is-preview="true"
+                      :text="reply.content"
+                      :style="{ maxHeight: '400px' }"
+                    />
+                  </div>
+                </div>
+
+                <div class="loadMore">
+                  <el-button
+                    v-if="item.replies.length < item.replyTotal"
+                    type="primary"
+                    text
+                    :loading="item.replyLoading"
+                    @click="loadReply(item)"
+                    >加载更多</el-button
+                  >
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </InfiniteScroll>
       </template>
     </el-skeleton>
-    <div ref="footer" class="footer">
-      <Loading :loading="loading" />
-    </div>
+
     <ReplyDialog ref="replyDialog" @confirm="loadReply" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, nextTick, computed } from "vue"
+import { ref, computed } from "vue"
 import dayjs from "dayjs"
-import { useIntersectionObserver } from "@vueuse/core"
 import { ElMessage, ElMessageBox } from "element-plus"
 import http from "@/server"
-import Loading from "@/components/Loading.vue"
 import MdEditor from "@/components/MdEditor.vue"
 import useUserStore from "@/store/user"
+import InfiniteScroll from "@/components/InfiniteScroll.vue"
 import ReplyDialog from "./ReplyDialog.vue"
 
 const props = defineProps({
@@ -206,9 +217,8 @@ const type = computed(() =>
 const userStore = useUserStore()
 const MdEditorRef = ref<InstanceType<typeof MdEditor>>()
 const replyDialog = ref()
-const footer = ref()
 const list = ref<any[]>([])
-const skeletonLoading = ref(true)
+const skeleton = ref(true)
 const commentLoading = ref(false)
 const loading = ref(false)
 const page = ref(1)
@@ -220,7 +230,7 @@ const allTotal = ref(0)
 async function getList(refresh = false) {
   try {
     if (page.value === 1) {
-      skeletonLoading.value = true
+      skeleton.value = true
     } else {
       loading.value = true
     }
@@ -251,30 +261,11 @@ async function getList(refresh = false) {
           ]
       total.value = res.data.total
       allTotal.value = res.data.comment_reply_total
-
-      nextTick(() => {
-        const { stop } = useIntersectionObserver(
-          footer,
-          ([{ isIntersecting }]) => {
-            stop()
-            if (isIntersecting) {
-              if (list.value.length < total.value && res.data.list.length) {
-                getList()
-              }
-            }
-          }
-        )
-      })
     }
   } finally {
-    if (page.value === 1) {
-      skeletonLoading.value = false
-    } else {
-      loading.value = false
-    }
-    if (list.value.length >= total.value) {
-      stop()
-    }
+    skeleton.value = false
+    loading.value = false
+
     if (!refresh) {
       page.value++
     }
@@ -386,14 +377,6 @@ function deleteHandler(type: number, comment, id: string) {
     }
   })
 }
-
-const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
-  if (isIntersecting) {
-    if (list.value.length < total.value) {
-      getList()
-    }
-  }
-})
 </script>
 
 <style lang="scss">
@@ -518,9 +501,6 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
         }
       }
     }
-  }
-  .footer {
-    margin-bottom: 20px;
   }
 }
 @media screen and (max-width: 1250) {

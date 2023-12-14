@@ -1,8 +1,8 @@
 <template>
   <div id="Links">
-    <el-skeleton :loading="skeletonLoading && page === 1" animated>
+    <el-skeleton :loading="skeleton && page === 1" animated>
       <template #template>
-        <div class="link-container">
+        <div id="link-container">
           <div v-for="item of 10" :key="item" class="link-item">
             <el-skeleton-item variant="image" class="logo" />
             <div class="info">
@@ -14,70 +14,73 @@
         </div>
       </template>
       <template #default>
-        <div v-auto-animate class="link-container">
-          <a
-            v-for="item in list"
-            :key="item.linkId"
-            class="link-item"
-            target="_blank"
-            :href="item.url"
-          >
-            <el-image class="logo" :src="item.logo ?? ''" fit="contain">
-              <template #error>
-                <div class="image-slot">
-                  <i-ep-picture />
-                </div>
-              </template>
-            </el-image>
+        <InfiniteScroll
+          id="link-container"
+          :loading="loading"
+          :is-over="list.length >= total"
+          :show-end="false"
+          @on-load="getList"
+        >
+          <div id="link-container" v-auto-animate>
+            <a
+              v-for="item in list"
+              :key="item.linkId"
+              class="link-item"
+              target="_blank"
+              :href="item.url"
+            >
+              <el-image class="logo" :src="item.logo ?? ''" fit="contain">
+                <template #error>
+                  <div class="image-slot">
+                    <i-ep-picture />
+                  </div>
+                </template>
+              </el-image>
 
-            <div class="info">
-              <p class="name">{{ item.name }}</p>
-              <div class="description">{{ item.description }}</div>
-            </div>
-          </a>
-          <a class="link-item apply" @click="applyDialog.show = true">
-            <i-ep-plus />友联申请
-          </a>
+              <div class="info">
+                <p class="name">{{ item.name }}</p>
+                <div class="description">{{ item.description }}</div>
+              </div>
+            </a>
+            <a class="link-item apply" @click="applyDialog.show = true">
+              <i-ep-plus />友联申请
+            </a>
 
-          <i v-for="item of 4" :key="item" class="placeholder" />
-        </div>
+            <i v-for="item of 4" :key="item" class="placeholder" />
+          </div>
+        </InfiniteScroll>
       </template>
     </el-skeleton>
 
-    <div ref="footer" class="footer">
-      <Loading :loading="loading" />
-    </div>
     <ApplyDialog ref="applyDialog" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, nextTick } from "vue"
+import { reactive, ref } from "vue"
 import dayjs from "dayjs"
-import { useIntersectionObserver } from "@vueuse/core"
 import http from "@/server"
-import Loading from "@/components/Loading.vue"
+import InfiniteScroll from "@/components/InfiniteScroll.vue"
 import ApplyDialog from "./ApplyDialog.vue"
 
-const footer = ref()
 const applyDialog = ref()
-const list = reactive<any[]>([])
-const skeletonLoading = ref(true)
+const skeleton = ref(true)
 const loading = ref(false)
+const list = reactive<any[]>([])
 const page = ref(1)
 const total = ref(0)
 
 async function getList() {
   try {
     if (page.value === 1) {
-      skeletonLoading.value = true
+      skeleton.value = true
     } else {
       loading.value = true
     }
     const res = await http.post("/link/list", {
       check: 1,
       page: page.value,
-      pageSize: 20
+      pageSize: 10
     })
 
     if (res.code === 0) {
@@ -91,49 +94,22 @@ async function getList() {
         })
       )
       total.value = res.data.total
-
-      nextTick(() => {
-        const { stop } = useIntersectionObserver(
-          footer,
-          ([{ isIntersecting }]) => {
-            stop()
-            if (isIntersecting) {
-              if (list.length < total.value) {
-                getList()
-              }
-            }
-          }
-        )
-      })
     }
   } finally {
-    if (page.value === 1) {
-      skeletonLoading.value = false
-    } else {
-      loading.value = false
-    }
-    if (list.length >= total.value) {
-      stop()
-    }
+    skeleton.value = false
+    loading.value = false
+
     page.value++
   }
 }
 getList()
-
-const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
-  if (isIntersecting) {
-    if (list.length < total.value) {
-      getList()
-    }
-  }
-})
 </script>
 
 <style lang="scss">
 #Links {
   --shadow-color: #c8d0e7;
 
-  .link-container {
+  #link-container {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -205,12 +181,8 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
     }
   }
 
-  .footer {
-    margin-bottom: 20px;
-  }
-
   @media screen and (max-width: 1000px) {
-    .link-container {
+    #link-container {
       .link-item,
       .placeholder {
         width: calc(100% / 3 - 20px);
@@ -218,7 +190,7 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
     }
   }
   @media screen and (max-width: 800px) {
-    .link-container {
+    #link-container {
       .link-item,
       .placeholder {
         width: calc(50% - 10px);
@@ -226,7 +198,7 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
     }
   }
   @media screen and (max-width: 550px) {
-    .link-container {
+    #link-container {
       .link-item,
       .placeholder {
         width: 100%;

@@ -1,6 +1,6 @@
 <template>
   <div id="Lemon">
-    <el-skeleton :loading="skeletonLoading && page === 1" animated>
+    <el-skeleton :loading="skeleton && page === 1" animated>
       <template #template>
         <Waterfall :list="skeletonList" v-bind="waterfallProps">
           <template #item="{ item }">
@@ -9,27 +9,35 @@
         </Waterfall>
       </template>
       <template #default>
-        <Waterfall :list="list" v-bind="waterfallProps">
-          <template #item="{ item, index }">
-            <div class="card" @click="handleAsset(item, index)">
-              <div v-if="item.mediaType === 'IMAGE'" class="asset-img">
-                <LazyImg :url="item.path" />
-                <div class="summary">
-                  <p v-if="item.description" class="description">
-                    {{ item.description }}
-                  </p>
-                  <p class="time">{{ item.createdAt }}</p>
+        <InfiniteScroll
+          id="Lemon-container"
+          :loading="loading"
+          :is-over="list.length >= total"
+          :show-end="false"
+          @on-load="getList"
+        >
+          <Waterfall id="Lemon-container" :list="list" v-bind="waterfallProps">
+            <template #item="{ item, index }">
+              <div class="card" @click="handleAsset(item, index)">
+                <div v-if="item.mediaType === 'IMAGE'" class="asset-img">
+                  <LazyImg :url="item.path" />
+                  <div class="summary">
+                    <p v-if="item.description" class="description">
+                      {{ item.description }}
+                    </p>
+                    <p class="time">{{ item.createdAt }}</p>
+                  </div>
+                </div>
+                <div v-else-if="item.mediaType === 'VIDEO'" class="asset-video">
+                  <Player
+                    :src="item.path"
+                    :plyr-props="{ controls: ['play-large'] }"
+                  />
                 </div>
               </div>
-              <div v-else-if="item.mediaType === 'VIDEO'" class="asset-video">
-                <Player
-                  :src="item.path"
-                  :plyr-props="{ controls: ['play-large'] }"
-                />
-              </div>
-            </div>
-          </template>
-        </Waterfall>
+            </template>
+          </Waterfall>
+        </InfiniteScroll>
       </template>
     </el-skeleton>
 
@@ -39,9 +47,6 @@
       :initial-index="viewer.index"
       @close="viewer.show = false"
     />
-    <div ref="footer" class="footer">
-      <Loading :loading="loading" />
-    </div>
   </div>
 </template>
 
@@ -49,13 +54,12 @@
 import { ref, computed, reactive } from "vue"
 import { LazyImg, Waterfall } from "vue-waterfall-plugin-next"
 import dayjs from "dayjs"
-import { useIntersectionObserver } from "@vueuse/core"
 import ImageViewer from "@/components/ImageViewer.vue"
 import Player from "@/components/Player.vue"
 import http from "@/server"
-import Loading from "@/components/Loading.vue"
 import { getRandomIntInclusive } from "@/utils/util"
 import { ASSET_PREFIX } from "@/global/env"
+import InfiniteScroll from "@/components/InfiniteScroll.vue"
 
 const waterfallProps = {
   rowKey: "lemonId",
@@ -95,8 +99,7 @@ const viewer = reactive({
   show: false,
   index: 0
 })
-const footer = ref()
-const skeletonLoading = ref(true)
+const skeleton = ref(true)
 const loading = ref(false)
 const page = ref(1)
 const total = ref(0)
@@ -116,7 +119,7 @@ async function getList() {
 
     const res = await http.post("/lemon/list", {
       page: page.value,
-      pageSize: 20
+      pageSize: 10
     })
     if (res.code === 0) {
       list.push(
@@ -130,27 +133,14 @@ async function getList() {
       total.value = res.data.total
     }
   } finally {
-    if (page.value === 1) {
-      skeletonLoading.value = false
-    } else {
-      loading.value = false
-    }
-    if (list.length >= total.value) {
-      stop()
-    }
+    skeleton.value = false
+    loading.value = false
+
     page.value++
     loading.value = false
   }
 }
 getList()
-
-const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
-  if (isIntersecting) {
-    if (list.length < total.value) {
-      getList()
-    }
-  }
-})
 </script>
 
 <style lang="scss">
@@ -197,9 +187,6 @@ const { stop } = useIntersectionObserver(footer, ([{ isIntersecting }]) => {
         font-size: 12px;
       }
     }
-  }
-  .footer {
-    margin-bottom: 20px;
   }
 }
 </style>
