@@ -80,10 +80,11 @@ async function login() {
     #Icon {
       font-size: 30px;
       color: $font-color-secondary;
+      opacity: 0.7;
       transition: all 0.3s;
       cursor: pointer;
       &:hover {
-        color: #fbc2eb;
+        color: rgba(#45d6bb, 0.5);
       }
     }
   }

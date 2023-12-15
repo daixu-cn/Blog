@@ -1,6 +1,6 @@
 <template>
   <div id="Forget" class="module">
-    <h1 class="title">忘记密码</h1>
+    <h1 class="title">重置</h1>
     <div class="form">
       <input v-model="form.email" type="text" placeholder="邮箱" />
       <div class="code-container">
