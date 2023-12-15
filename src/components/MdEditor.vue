@@ -44,7 +44,7 @@ import useThemeStore from "@/store/theme"
 import resumeUpload from "@/utils/resumeUpload"
 import "md-editor-v3/lib/style.css"
 import ImageViewer from "@/components/ImageViewer.vue"
-import TargetBlankExtension from "@/plugins/TargetBlankExtension"
+import TargetBlankExtension from "@/plugins/MdEditor/TargetBlankExtension"
 
 const emits = defineEmits(["onGetCatalog", "onChange", "onSave", "onLoading"])
 const props = defineProps({
@@ -270,3 +270,4 @@ defineExpose({
   background: rgba(0, 0, 0, 0.05) !important;
 }
 </style>
+@/plugins/MdEditor/TargetBlankExtension
