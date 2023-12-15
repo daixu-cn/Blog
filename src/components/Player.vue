@@ -57,17 +57,20 @@ watch(
   () => props.src,
   () => {
     nextTick(() => {
+      const video = document.getElementById(id.value) as HTMLMediaElement
+      if (!player.value) {
+        player.value = new Plyr(video, options)
+        player.value.on("play", event => {
+          emits("play", event.detail.plyr)
+        })
+      }
+
       if (Hls.isSupported()) {
-        const video = document.getElementById(id.value) as HTMLMediaElement
-        if (!player.value) {
-          player.value = new Plyr(video, options)
-          player.value.on("play", event => {
-            emits("play", event.detail.plyr)
-          })
-        }
         const hls = new Hls()
         hls.loadSource(props.src)
         hls.attachMedia(video)
+      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        video.src = props.src
       } else {
         ElMessage.error("不支持本站视频，建议更换谷歌浏览器")
       }
