@@ -22,6 +22,15 @@ const ExternalRoutes: RouteRecordRaw = {
       meta: {
         title: "柠檬时光机 - 柠檬的快乐瞬间，探索它的可爱世界"
       }
+    },
+    {
+      path: "/creations/chat-ai",
+      name: "Creations-ChatAI",
+      component: () => import("@/views/External/ChatAI/ChatAI.vue"),
+      meta: {
+        role: 1,
+        title: "Gemini AI"
+      }
     }
   ]
 }
