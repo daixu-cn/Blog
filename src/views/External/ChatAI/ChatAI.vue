@@ -11,7 +11,7 @@
           <MdEditor :is-preview="true" :text="item.parts" />
         </li>
       </ul>
-      <el-empty description="来和AI聊聊吧!" />
+      <el-empty v-show="history.length === 0" description="来和AI聊聊吧!" />
     </el-scrollbar>
     <div v-loading="loading" class="chat">
       <div v-auto-animate class="images">
@@ -28,8 +28,10 @@
       </div>
 
       <el-input
+        ref="input"
         v-model="message"
         placeholder="请输入聊天内容"
+        autofocus
         :disabled="loading"
         @keyup.enter="send"
       >
@@ -62,6 +64,7 @@ import { ElMessage, ElUpload } from "element-plus"
 import { History } from "./types"
 
 const scrollbar = ref<InstanceType<typeof ElScrollbar>>()
+const input = ref()
 const loading = ref(false)
 const message = ref("")
 const height = ref(window.innerHeight - 230)
@@ -159,10 +162,11 @@ async function send() {
       scrollToBottom()
     }
   } finally {
-    message.value = ""
+    loading.value = false
     files.splice(0)
     images.splice(0)
-    loading.value = false
+    message.value = ""
+    input.value?.focus()
   }
 }
 </script>
