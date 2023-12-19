@@ -14,8 +14,14 @@
           :params="{ replaceFile: form.path }"
           @on-success="uploadSuccess"
         >
-          <p v-if="form.path" class="path">{{ form.path }}</p>
-          <el-button v-else type="primary" plain>上传</el-button>
+          <template #default="scope">
+            <p v-if="form.path" v-loading="scope.loading" class="path">
+              {{ form.path }}
+            </p>
+            <el-button v-else type="primary" :loading="scope.loading" plain
+              >上传</el-button
+            >
+          </template>
         </media-upload>
       </el-form-item>
       <el-form-item label="记录描述" prop="description">

@@ -1,13 +1,13 @@
 <template>
   <div id="MediaUpload">
     <el-upload
-      v-loading="loading"
+      :disabled="loading"
       :on-change="onChange"
       :auto-upload="false"
       :show-file-list="false"
       v-bind="props.elUploadProps"
     >
-      <slot />
+      <slot :loading="loading" />
     </el-upload>
 
     <el-progress
@@ -49,7 +49,13 @@ const props = defineProps({
     type: Array as PropType<string[]>
   }
 })
-const emits = defineEmits(["onChange", "onSuccess", "onError", "onProgress"])
+const emits = defineEmits([
+  "onChange",
+  "onSuccess",
+  "onError",
+  "onProgress",
+  "onLoading"
+])
 
 const loading = ref(false)
 // 进度条相关处理

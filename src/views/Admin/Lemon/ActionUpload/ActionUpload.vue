@@ -8,10 +8,17 @@
       @on-success="uploadSuccess"
       @on-error="uploadError"
     >
-      <el-button type="primary" :icon="Upload" class="operator"
-        >媒体上传</el-button
-      >
+      <template #default="{ loading }">
+        <el-button
+          class="operator"
+          type="primary"
+          :icon="Upload"
+          :loading="loading"
+          >媒体上传</el-button
+        >
+      </template>
     </media-upload>
+
     <result-dialog :show="result.show" :result="result.list" @close="reset" />
   </div>
 </template>
