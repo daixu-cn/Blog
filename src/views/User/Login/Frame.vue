@@ -80,6 +80,7 @@ import Snowflake from "@/components/Snowflake.vue"
         margin-top: 20px;
         background-color: #fff;
         border-radius: 20px;
+        color: $font-color-secondary;
         &:first-child {
           margin-top: 0;
         }
@@ -165,6 +166,7 @@ import Snowflake from "@/components/Snowflake.vue"
       }
       p {
         cursor: pointer;
+        color: rgba(#000, 0.3);
         span {
           margin-left: 5px;
         }
