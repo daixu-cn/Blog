@@ -14,9 +14,12 @@ html {
       margin-right: 0;
       border-bottom: 1px solid $border-color;
       .el-dialog__title {
+        display: inline-block;
+        max-width: calc(100% - 50px);
         font-size: 15px;
         position: relative;
         font-weight: 700;
+        @include text-ellipsis;
         &::after {
           content: "";
           display: inline-block;
@@ -25,7 +28,7 @@ html {
           background-color: $color-primary;
           position: absolute;
           left: 0;
-          bottom: -3px;
+          bottom: 0;
         }
       }
     }

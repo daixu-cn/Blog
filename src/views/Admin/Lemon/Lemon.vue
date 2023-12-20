@@ -1,5 +1,5 @@
 <template>
-  <div id="SystemArticle" class="system-page">
+  <div id="SystemLemon" class="system-page">
     <el-form
       ref="formRef"
       :inline="true"
@@ -69,7 +69,34 @@
           label="媒体文件"
           align="center"
           show-overflow-tooltip
-        />
+        >
+          <template #default="scope">
+            <el-link :href="scope.row.path" target="_blank" type="primary">{{
+              scope.row.path
+            }}</el-link>
+          </template>
+        </el-table-column>
+        <el-table-column prop="poster" label="预览" align="center">
+          <template #default="scope">
+            <el-image
+              v-if="scope.row.mediaType === 'IMAGE'"
+              style="width: 50px; max-height: 50px"
+              :src="scope.row.path"
+              :preview-src-list="[scope.row.path]"
+              fit="contain"
+              preview-teleported
+            >
+              <template #error>
+                <div class="image-slot">
+                  <i-ep-picture />
+                </div>
+              </template>
+            </el-image>
+            <el-link v-else type="primary" @click="play(scope.row)"
+              >查看视频</el-link
+            >
+          </template>
+        </el-table-column>
         <el-table-column
           prop="mediaType"
           label="文件类型"
@@ -122,6 +149,7 @@
       />
     </div>
     <EditDialog ref="editDialogRef" @confirm="getList" />
+    <PlayerPopup v-bind="player" @on-close="player.show = false" />
   </div>
 </template>
 
@@ -132,6 +160,7 @@ import type { FormInstance } from "element-plus"
 import dayjs from "dayjs"
 import http from "@/server"
 import { lemonMediaType } from "@/global/select"
+import PlayerPopup from "@/components/PlayerPopup.vue"
 import EditDialog from "./EditDialog.vue"
 import ActionUpload from "./ActionUpload/ActionUpload.vue"
 
@@ -150,6 +179,17 @@ const table = reactive({
   pageSize: 10,
   total: 0
 })
+const player = reactive({
+  show: false,
+  src: "",
+  poster: ""
+})
+
+function play(row) {
+  player.src = row.path
+  player.poster = row.poster
+  player.show = true
+}
 
 async function getList(page = 1) {
   try {
