@@ -42,16 +42,6 @@ import { Creation } from "./types"
 
 const list: Creation[] = [
   {
-    title: "Netdata",
-    synopsis: "Linux 系统性能实时监控工具",
-    descriptions: [
-      "Netdata 可以实时监控系统的各种指标，并将数据显示在 Web 界面上，帮助用户及时发现系统异常。"
-    ],
-    img: getAssets("creations/netdata.gif"),
-    link: "https://netdata.daixu.cn",
-    align: "left"
-  },
-  {
     title: "Swagger",
     synopsis: "可视化 RESTful 风格的 Web 文档服务",
     descriptions: ["REST API 文档", "自动生成测试", "支持多种语言和框架"],
