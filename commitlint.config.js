@@ -8,17 +8,19 @@ module.exports = {
       [
         "feat",
         "fix",
-        "docs",
-        "style",
-        "refactor",
         "perf",
+        "docs",
+        "refactor",
+        "style",
+        "chore",
+        "ci",
+        "build",
         "test",
         "revert",
-        "build",
-        "chore"
+        "---"
       ]
     ],
-    // subject 大小写不做校验
-    "subject-case": [0]
+    // 要求提交消息主题(subject)使用句首大写形式
+    "subject-case": [2, "always", "sentence-case"]
   }
 }
