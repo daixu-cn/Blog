@@ -385,7 +385,7 @@ function deleteHandler(type: number, comment, id: string) {
 
   .total {
     font-size: 1.1em;
-    font-weight: bold;
+    font-weight: 600;
     margin-bottom: 30px;
   }
   > #MdEditor {

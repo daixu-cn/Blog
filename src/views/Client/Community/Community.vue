@@ -77,7 +77,7 @@ import Comment from "@/components/Comment/Comment.vue"
       h1 {
         display: inline-block;
         font-size: 1.1em;
-        font-weight: bold;
+        font-weight: 600;
         margin-bottom: 10px;
         position: relative;
         z-index: 2;

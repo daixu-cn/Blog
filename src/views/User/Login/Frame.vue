@@ -95,7 +95,7 @@ onMounted(() => {
       text-align: center;
       font-size: 32px;
       color: var(--login-color-primary);
-      font-weight: bold;
+      font-weight: 700;
       user-select: none;
       letter-spacing: 0.5em;
       text-indent: 0.5em;
@@ -124,7 +124,7 @@ onMounted(() => {
           margin-top: 0;
         }
         &::placeholder {
-          font-weight: bold;
+          font-weight: 700;
           color: #acb7c9;
         }
         &:focus {
@@ -150,7 +150,7 @@ onMounted(() => {
       line-height: 45px;
       color: #fff;
       user-select: none;
-      font-weight: bold;
+      font-weight: 700;
       text-align: center;
       cursor: pointer;
       border-radius: 20px;

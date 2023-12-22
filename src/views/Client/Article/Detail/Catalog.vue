@@ -102,6 +102,7 @@ function goToAnchor(text: string) {
         cursor: pointer;
         transition: all $duration;
         color: var(--el-text-color-regular);
+        font-weight: 600;
         @include text-ellipsis;
         &::before {
           content: "";

@@ -52,7 +52,7 @@ onDeactivated(stop)
   height: 100%;
   .currentOption {
     height: 100%;
-    font-weight: bold;
+    font-weight: 700;
     text-align: center;
     color: $color-primary;
     cursor: pointer;

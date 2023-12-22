@@ -32,9 +32,6 @@
               </li>
               <li>
                 {{ info?.createdAt }}
-                <span v-show="info?.createdAt !== info?.updatedAt">
-                  - {{ info?.updatedAt }}
-                </span>
               </li>
             </ul>
             <h6 class="description">{{ info?.description }}</h6>
@@ -182,9 +179,12 @@ onBeforeUnmount(() => {
     }
     .title {
       font-size: 1.4em;
-      font-weight: bold;
+      font-weight: 700;
       margin: 0 auto 20px auto;
       text-align: center;
+      color: $font-color;
+      letter-spacing: 0.1em;
+      text-indent: 0.1em;
       @include text-ellipsis;
     }
     .article-info {

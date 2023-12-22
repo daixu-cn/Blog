@@ -186,7 +186,7 @@ async function send() {
       .role {
         color: $color-primary;
         margin-right: 10px;
-        font-weight: bold;
+        font-weight: 700;
         font-size: 18px;
         margin-bottom: $space;
       }

@@ -366,7 +366,7 @@ function deleteReply(replyId) {
     h3 {
       font-size: 1.35rem;
       margin-bottom: 1em;
-      font-weight: bold;
+      font-weight: 700;
     }
     .el-table {
       border: 0 !important;
