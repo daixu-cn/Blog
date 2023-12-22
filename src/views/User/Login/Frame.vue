@@ -1,6 +1,7 @@
 <template>
   <div id="LoginFrame">
     <Snowflake>
+      <Icon class="icon-logo" size="70px" @click="router.replace('/')" />
       <router-view v-slot="{ Component }">
         <transition name="login-route-animation" mode="out-in">
           <keep-alive>
@@ -13,14 +14,40 @@
 </template>
 
 <script lang="ts" setup>
+import { onMounted } from "vue"
 import Snowflake from "@/components/Snowflake.vue"
+import { useRouter } from "vue-router"
+import tinycolor from "tinycolor2"
+
+const router = useRouter()
+
+onMounted(() => {
+  const html = document.querySelector<HTMLElement>("html")
+  if (html) {
+    const style = getComputedStyle(html, null)
+    const color = tinycolor(
+      style.getPropertyValue("--el-color-primary")
+    ).setAlpha(0.5)
+
+    html.style.setProperty("--login-color-primary", color.toRgbString())
+    html.style.setProperty(
+      "--login-color-primary-2",
+      color.setAlpha(0.2).toRgbString()
+    )
+    html.style.setProperty(
+      "--login-color-primary-3",
+      color.setAlpha(0.3).toRgbString()
+    )
+    html.style.setProperty(
+      "--login-color-primary-5",
+      color.setAlpha(0.5).toRgbString()
+    )
+  }
+})
 </script>
 
 <style lang="scss">
 #LoginFrame {
-  $color-primary: rgba(#45d6bb, 0.5);
-  $color-box-shadow: rgba($color-primary, 0.2);
-
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -43,6 +70,18 @@ import Snowflake from "@/components/Snowflake.vue"
     transition: all 0.5s;
   }
 
+  .icon-logo {
+    position: absolute;
+    top: calc($space - 10px);
+    left: $space;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s;
+    &:hover {
+      color: $color-primary;
+    }
+  }
+
   .module {
     width: 350px;
     box-sizing: border-box;
@@ -50,13 +89,13 @@ import Snowflake from "@/components/Snowflake.vue"
     border-radius: 40px;
     background-color: aliceblue;
     border: 5px solid #fff;
-    box-shadow: $color-box-shadow 0px 30px 30px -20px;
+    box-shadow: var(--login-color-primary-2) 0px 30px 30px -20px;
 
     .title {
       text-align: center;
       font-size: 32px;
-      color: $color-primary;
-      font-weight: 900;
+      color: var(--login-color-primary);
+      font-weight: bold;
       user-select: none;
       letter-spacing: 0.5em;
       text-indent: 0.5em;
@@ -69,13 +108,13 @@ import Snowflake from "@/components/Snowflake.vue"
       flex-direction: column;
       align-items: center;
       input {
-        caret-color: $color-primary;
+        caret-color: var(--login-color-primary);
         width: 100%;
         padding: 15px 20px;
         box-sizing: border-box;
         border: 0;
         outline: none;
-        box-shadow: $color-box-shadow 0px 10px 10px -5px;
+        box-shadow: var(--login-color-primary-2) 0px 10px 10px -5px;
         border-inline: 2px solid transparent;
         margin-top: 20px;
         background-color: #fff;
@@ -93,7 +132,7 @@ import Snowflake from "@/components/Snowflake.vue"
         }
         @keyframes input-animation {
           50% {
-            box-shadow: rgba($color-primary, 0.5) 0px 23px 10px -20px;
+            box-shadow: var(--login-color-primary-5) 0px 23px 10px -20px;
           }
         }
       }
@@ -113,15 +152,14 @@ import Snowflake from "@/components/Snowflake.vue"
       border: 0;
       background: linear-gradient(
         to right,
-        rgba($color-primary, 0.3),
+        var(--login-color-primary-3),
         rgba(#a6c1ee, 0.7),
-        rgba($color-primary, 0.3)
+        var(--login-color-primary-3)
       );
       background-size: 200%;
-      box-shadow: $color-box-shadow 0px 23px 10px -20px;
-      &:hover {
-        animation: action-animation 3s infinite;
-      }
+      box-shadow: var(--login-color-primary-5) 0px 23px 10px -20px;
+      animation: action-animation 3s infinite;
+
       &:active {
         border-color: transparent;
       }
@@ -161,7 +199,7 @@ import Snowflake from "@/components/Snowflake.vue"
       font-size: 13px;
       margin-bottom: 30px;
       span {
-        color: $color-primary;
+        color: var(--login-color-primary);
         cursor: pointer;
       }
       p {

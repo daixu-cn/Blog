@@ -84,7 +84,7 @@ async function login() {
       transition: all 0.3s;
       cursor: pointer;
       &:hover {
-        color: rgba(#45d6bb, 0.5);
+        color: var(--login-color-primary-5);
       }
     }
   }
