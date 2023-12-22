@@ -130,6 +130,11 @@ onMounted(() => {
         &:focus {
           animation: input-animation 2s infinite;
         }
+        &:-webkit-autofill {
+          transition: background-color 50000s ease-in-out 0s;
+          -webkit-text-fill-color: $font-color-secondary;
+        }
+
         @keyframes input-animation {
           50% {
             box-shadow: var(--login-color-primary-5) 0px 23px 10px -20px;
