@@ -7,7 +7,7 @@
 import { ElMessage } from "element-plus"
 
 // 延迟刷新时间,单位：秒
-const DURATION = 5000
+const DURATION = 3000
 
 export default async function checker() {
   if (import.meta.env.MODE === "development") {
@@ -27,9 +27,9 @@ export default async function checker() {
 
   if (latest && current !== latest) {
     clearInterval(timer)
-    window.location.reload()
+
     ElMessage({
-      message: `检测到新版本，${DURATION / 1000}秒后自动更新！`,
+      message: `检测到新版本，${DURATION / 1000}秒后将自动更新！`,
       type: "warning",
       duration: DURATION,
       onClose: () => {
@@ -39,4 +39,5 @@ export default async function checker() {
   }
 }
 
+checker()
 const timer = setInterval(checker, 1000 * 10)
