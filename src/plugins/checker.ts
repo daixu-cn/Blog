@@ -1,5 +1,5 @@
 /**
- * @Description: 检测到文件变化后，刷新浏览器
+ * @Description: 检测网站更新，通知刷新页面
  * @Author: daixu
  * @Date: 2023-12-20 13:33:04
  */
@@ -7,10 +7,14 @@
 import { ElMessage } from "element-plus"
 
 // 延迟刷新时间,单位：秒
-const DURATION = 3000
+const DURATION = 5000
 
-// Hash值校验
-export default async function refresh() {
+export default async function checker() {
+  if (import.meta.env.MODE === "development") {
+    clearInterval(timer)
+    return
+  }
+
   const selectors = `head script[type="module"][src^="/static/js/"]`
   const response = await fetch(`/?timestamp=${Date.now()}`)
   const content = await response.text()
@@ -35,4 +39,4 @@ export default async function refresh() {
   }
 }
 
-const timer = setInterval(refresh, 2000)
+const timer = setInterval(checker, 1000 * 10)
