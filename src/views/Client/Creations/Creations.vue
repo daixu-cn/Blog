@@ -65,17 +65,6 @@ const list: Creation[] = [
     ],
     img: getAssets("creations/lemon.png"),
     link: "/creations/lemon"
-  },
-  {
-    title: "Google Gemini",
-    synopsis: "谷歌最新发布的多模态人工智能模型",
-    descriptions: [
-      "多模态：文音图视通吃",
-      `推理：复杂问题轻松搞定`,
-      `实用：各种应用都能用`
-    ],
-    img: getAssets("creations/Gemini.png"),
-    link: "/creations/chat-ai"
   }
 ]
 </script>
