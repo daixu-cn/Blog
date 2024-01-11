@@ -9,6 +9,8 @@ import { ElMessage } from "element-plus"
 // 延迟刷新时间,单位：秒
 const DURATION = 3000
 
+const timer = setInterval(checker, 1000 * 10)
+
 export default async function checker() {
   if (import.meta.env.MODE === "development") {
     clearInterval(timer)
@@ -40,4 +42,3 @@ export default async function checker() {
 }
 
 checker()
-const timer = setInterval(checker, 1000 * 10)
