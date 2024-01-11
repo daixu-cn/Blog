@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /system
+Sitemap: https://api.daixu.cn/site/sitemap.xml
