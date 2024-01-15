@@ -17,8 +17,8 @@
           @on-load="getList"
         >
           <Waterfall id="Lemon-container" :list="list" v-bind="waterfallProps">
-            <template #item="{ item, index }">
-              <div class="card" @click="handleAsset(item, index)">
+            <template #item="{ item }">
+              <div class="card" @click="handleAsset(item, item.index)">
                 <div v-if="item.mediaType === 'IMAGE'" class="asset-img">
                   <LazyImg :url="item.path" />
                   <div class="summary">
@@ -103,6 +103,7 @@ const skeleton = ref(true)
 const loading = ref(false)
 const page = ref(1)
 const total = ref(0)
+let index = 0
 
 function handleAsset(row, index: number) {
   if (row.mediaType === "IMAGE") {
@@ -125,6 +126,7 @@ async function getList() {
       list.push(
         ...res.data.list.map(item => {
           return {
+            index: item.mediaType === "IMAGE" ? index++ : undefined,
             ...item,
             createdAt: dayjs(item.createdAt).format("L")
           }
