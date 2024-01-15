@@ -18,6 +18,7 @@ import Plyr from "plyr"
 import Hls from "hls.js"
 import { ElMessage } from "element-plus"
 import { nanoid } from "nanoid"
+import usePlayer from "@/store/player"
 
 const emits = defineEmits(["play"])
 const props = defineProps({
@@ -35,6 +36,7 @@ const props = defineProps({
   }
 })
 
+const { setPlayer } = usePlayer()
 const id = computed(() => {
   return `player-${nanoid()}`
 })
@@ -61,6 +63,7 @@ watch(
       if (!player.value) {
         player.value = new Plyr(video, options)
         player.value.on("play", event => {
+          setPlayer(event.detail.plyr)
           emits("play", event.detail.plyr)
         })
       }
