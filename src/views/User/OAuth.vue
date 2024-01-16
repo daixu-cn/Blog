@@ -22,8 +22,13 @@ async function login(url, params) {
     if (res.data.newUser) {
       ElNotification({
         title: "注册成功",
-        message:
-          "您的邮箱未进行绑定，如有需要可前往账户中心进行绑定，绑定之后可以接收文章发布推送、评论回复通知等信息。",
+        dangerouslyUseHTMLString: true,
+        message: `
+          <span>
+            检测到您的邮箱尚未绑定。请前往 <a href="/account" target="_blank" style="text-decoration: none;color: var(--el-color-primary)">账户中心</a> 完成绑定操作。
+            <br />
+            <span style="color: var(--el-text-color-placeholder);">邮箱绑定后，您将能够收到文章发布推送、评论/回复通知等相关信息。</span>
+          </sapn>`,
         type: "success",
         duration: 0
       })
