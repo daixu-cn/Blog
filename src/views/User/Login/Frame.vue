@@ -182,18 +182,25 @@ onMounted(() => {
       margin-top: 20px;
       .code {
         width: 55%;
+        transition: all $duration;
+        &:has(+ .disabled) {
+          width: 100%;
+        }
       }
+
       .action-small {
         width: calc(45% - $space);
         height: 45px;
         line-height: 45px;
         letter-spacing: 0;
         margin: 0;
+        transition: all $duration;
       }
       .disabled {
-        background: #f5f7fa;
-        border-color: transparent;
-        color: #c0c4cc;
+        width: 0;
+        height: 0;
+        padding: 0;
+        font-size: 0;
         cursor: not-allowed;
       }
     }

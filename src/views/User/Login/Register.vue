@@ -6,6 +6,7 @@
       <input v-model="form.email" type="text" placeholder="邮箱" />
       <div class="code-container">
         <input
+          ref="code"
           v-model="form.sms"
           class="code"
           type="text"
@@ -46,6 +47,7 @@ import useUserStore from "@/store/user"
 
 const router = useRouter()
 const userStore = useUserStore()
+const code = ref<InstanceType<typeof HTMLInputElement>>()
 const disabled = ref(false)
 const codeLoading = ref(false)
 const loading = ref(false)
@@ -82,6 +84,7 @@ async function getCode() {
       ElMessage.success("验证码发送成功")
       let timers = 59
       disabled.value = true
+      code.value?.focus()
       captcha.value = `重新获取(${timers}s)`
       timer = setInterval(() => {
         if (timers <= 0) {
