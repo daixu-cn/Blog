@@ -1,6 +1,6 @@
 <template>
-  <svg id="Icon" :class="[props.class, identifier]">
-    <use :xlink:href="`#${props.class}`" :fill="props.color" />
+  <svg id="Icon" :class="[props.class, icon, identifier]" @click="onClick">
+    <use :xlink:href="`#${icon}`" :fill="props.color" />
   </svg>
 </template>
 
@@ -8,10 +8,18 @@
 import { onMounted, computed } from "vue"
 import { nanoid } from "nanoid"
 
+const emits = defineEmits(["click"])
+
 const identifier = computed(() => {
   return `Icon-${nanoid()}`
 })
+const icon = computed(() => {
+  return props.loading ? "icon-loading" : props.class
+})
 const props = defineProps({
+  loading: {
+    type: Boolean
+  },
   class: {
     type: String,
     require: true
@@ -73,6 +81,14 @@ onMounted(() => {
     }
   }
 })
+
+function onClick() {
+  if (props.loading) {
+    return
+  }
+
+  emits("click")
+}
 </script>
 
 <style lang="scss">
@@ -80,6 +96,24 @@ onMounted(() => {
   width: v-bind("props.size");
   height: v-bind("props.size");
   fill: v-bind("props.color");
+
+  &.icon-loading {
+    animation: rotate 2s linear infinite;
+    use {
+      fill: $color-primary;
+    }
+
+    @keyframes rotate {
+      0% {
+        transform: rotate(0deg);
+        cursor: not-allowed;
+      }
+      100% {
+        transform: rotate(360deg);
+        cursor: not-allowed;
+      }
+    }
+  }
 }
 
 svg symbol[id^="icon-"] path {
