@@ -15,6 +15,7 @@
         <FullScreen />
         <Theme />
         <Mode />
+        <Checker v-if="userStore.info?.role === 0" />
         <User />
       </div>
     </div>
@@ -26,6 +27,7 @@
 <script lang="ts" setup>
 import { ref } from "vue"
 import { useRouter } from "vue-router"
+import useUserStore from "@/store/user"
 import NavMobile from "./NavMobile.vue"
 import Menu from "./Menu.vue"
 import Search from "./Search.vue"
@@ -33,8 +35,10 @@ import SearchModal from "./SearchModal.vue"
 import FullScreen from "./FullScreen.vue"
 import Theme from "./Theme.vue"
 import Mode from "./Mode.vue"
+import Checker from "./Checker.vue"
 import User from "./User.vue"
 
+const userStore = useUserStore()
 const isSearch = ref(false)
 const NavMobileRef = ref()
 const router = useRouter()
