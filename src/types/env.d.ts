@@ -1,5 +1,6 @@
 interface ImportMetaEnv {
   readonly VITE_APP_BASE_API: string
+  readonly VITE_APP_WEB_SOCKET_API: string
   readonly VITE_APP_ASSET_PREFIX: string
   readonly VITE_APP_DEFAULE_THEME: string
   readonly VITE_APP_OAUTH_REDIRECT: string
