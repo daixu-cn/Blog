@@ -5,7 +5,7 @@
         <div class="logo" @click="goToPage('Frame')">
           <Icon class="icon-logo" />
         </div>
-        <Menu />
+        <Menu v-if="!route.fullPath.startsWith('/system')" />
       </div>
       <div class="mobileMenu">
         <Icon class="icon-menu-list" @click="NavMobileRef.drawer = true"></Icon>
@@ -26,7 +26,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue"
-import { useRouter } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 import useUserStore from "@/store/user"
 import NavMobile from "./NavMobile.vue"
 import Menu from "./Menu.vue"
@@ -41,6 +41,7 @@ import User from "./User.vue"
 const userStore = useUserStore()
 const isSearch = ref(false)
 const NavMobileRef = ref()
+const route = useRoute()
 const router = useRouter()
 
 function goToPage(name: string) {
@@ -72,7 +73,7 @@ function searchClose() {
     opacity: 0;
   }
   .container {
-    @include media-width;
+    @include media-width();
     height: 100%;
     margin: 0 auto;
     display: flex;
@@ -160,8 +161,10 @@ function searchClose() {
         #User {
           display: none;
         }
-        #Mode {
-          margin-right: 0;
+        .dropdown-container {
+          &:nth-last-child(2) {
+            margin-right: 0;
+          }
         }
       }
     }

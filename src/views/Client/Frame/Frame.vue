@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import Header from "@/views/Client/Frame/Header/Header.vue"
+import Header from "@/components/Layout/Header/Header.vue"
 </script>
 
 <style lang="scss">

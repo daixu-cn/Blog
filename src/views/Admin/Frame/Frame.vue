@@ -1,6 +1,7 @@
 <template>
   <div id="SystemFrame">
     <Header />
+
     <div class="SystemFrame-container">
       <Menu />
       <el-scrollbar wrap-class="SystemFrame-page">
@@ -15,12 +16,19 @@
 </template>
 
 <script lang="ts" setup>
-import Header from "@/views/Admin/Frame/Header/Header.vue"
+import Header from "@/components/Layout/Header/Header.vue"
 import Menu from "./Menu/Menu.vue"
 </script>
 
 <style lang="scss">
 #SystemFrame {
+  #Header {
+    .container {
+      padding: 0 20px;
+      box-sizing: border-box;
+      @include media-width(100%, 100%, 100%);
+    }
+  }
   .SystemFrame-container {
     display: flex;
     height: calc(100vh - 60px);
@@ -52,6 +60,9 @@ import Menu from "./Menu/Menu.vue"
                   display: none;
                 }
               }
+            }
+            .el-select {
+              width: 190px;
             }
           }
           .table {

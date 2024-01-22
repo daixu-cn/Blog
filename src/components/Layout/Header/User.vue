@@ -54,7 +54,7 @@ function loginOut() {
 #User {
   .userName {
     display: inline-block;
-    width: 70px;
+    max-width: 70px;
     font-size: $font-size;
     cursor: pointer;
     transition: all $duration;
