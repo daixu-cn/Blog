@@ -85,13 +85,18 @@
 }
 
 // 主宽度适配
-@mixin media-width() {
-  width: 80%;
-  max-width: 1600px;
+@mixin media-width(
+  $max-width: 1600px,
+  $width: 80%,
+  $width-1500: 1200px,
+  $width-1250: 100%
+) {
+  width: $width;
+  max-width: $max-width;
   @media screen and (max-width: 1500px) {
-    width: 1200px;
+    width: $width-1500;
   }
   @media screen and (max-width: 1250px) {
-    width: 100%;
+    width: $width-1250;
   }
 }
