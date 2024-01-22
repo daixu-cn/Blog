@@ -1,5 +1,13 @@
 {
   "trailingComma": "none",
   "arrowParens": "avoid",
-  "semi": false
+  "semi": false,
+  "overrides": [
+    {
+      "files": "*.html",
+      "options": {
+        "printWidth": 180
+      }
+    }
+  ]
 }
