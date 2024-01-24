@@ -16,9 +16,6 @@ const userStore = useUserStore()
 async function login(url, params) {
   const res = await http.post(url, params)
   if (res.code === 0) {
-    userStore.setUser(res.data.user)
-    userStore.setToken(res.data.token)
-
     if (res.data.newUser) {
       ElNotification({
         title: "注册成功",
@@ -35,6 +32,9 @@ async function login(url, params) {
     } else {
       ElMessage.success(userStore.token ? "绑定成功" : "登录成功")
     }
+
+    userStore.setUser(res.data.user)
+    userStore.setToken(res.data.token)
   }
   router.replace(sessionStorage.getItem("redirect") ?? "/")
   sessionStorage.removeItem("redirect")
