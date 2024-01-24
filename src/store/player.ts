@@ -14,6 +14,10 @@ export default defineStore("player", {
     setPlayer(player: Plyr) {
       this.player?.pause()
       this.player = player
+    },
+    removePlayer() {
+      this.player?.destroy()
+      this.player = null
     }
   }
 })
