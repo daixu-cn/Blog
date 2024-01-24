@@ -27,6 +27,12 @@
           <el-radio :label="1">私有</el-radio>
         </el-radio-group>
       </el-form-item>
+      <el-form-item v-if="articleId === '0'" label="邮件推送" required>
+        <el-radio-group v-model="article.isSendEmail">
+          <el-radio :label="1">推送</el-radio>
+          <el-radio :label="0">不推送</el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item label="文章类别" prop="category">
         <el-select v-model="article.category" placeholder="请选择文章类别">
           <el-option
@@ -99,6 +105,7 @@ import type { FormInstance, FormRules } from "element-plus"
 import { categories } from "@/global/select"
 import http from "@/server"
 import MdEditor from "@/components/MdEditor.vue"
+import has from "lodash/has"
 import Video from "./Video.vue"
 import Poster from "./Poster.vue"
 
@@ -126,7 +133,8 @@ const article = reactive({
   video: "",
   content: "",
   disableComment: 0,
-  isPrivate: 0
+  isPrivate: 0,
+  isSendEmail: 1
 })
 const rules = reactive<FormRules>({
   title: [{ required: true, message: "文章标题不能为空", trigger: "blur" }],
@@ -176,8 +184,10 @@ async function getArticleInfo() {
       disableViewsIncrement: true
     })
     if (res.code === 0) {
-      for (const key in article) {
-        article[key] = res.data[key]
+      for (const key in res.data) {
+        if (has(article, key)) {
+          article[key] = res.data[key]
+        }
       }
       article.disableComment = res.data.disableComment ? 1 : 0
       article.isPrivate = res.data.isPrivate ? 1 : 0
