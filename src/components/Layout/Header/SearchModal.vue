@@ -1,10 +1,10 @@
 <template>
-  <div id="SearchModal" :class="{ enter: isSearch }" @click="maskClick">
+  <div id="SearchModal" :class="{ enter: show }" @click="maskClick">
     <div class="input">
       <i-ep-search class="searchIcon" />
       <el-input
         ref="input"
-        v-model="keyword"
+        v-model.trim="keyword"
         placeholder="文章标题"
         @input="getList"
       />
@@ -12,9 +12,7 @@
     </div>
     <div class="result">
       <ul>
-        <p>
-          {{ !keyword ? "热门文章" : "搜索结果" }}
-        </p>
+        <h6>{{ !keyword ? "热门文章" : "搜索结果" }}</h6>
         <el-skeleton :loading="loading" animated :count="6">
           <template #template>
             <li class="search-item">
@@ -23,25 +21,12 @@
           </template>
           <template #default>
             <el-scrollbar height="210px">
-              <ul v-if="!keyword" class="searchList">
+              <ul class="search-list">
                 <li
-                  v-for="item of hotList"
+                  v-for="item of list"
                   :key="item.articleId"
                   class="search-item"
-                  @click="goToPage(item.articleId)"
-                >
-                  <p>
-                    <span class="title">{{ item.title }}</span
-                    ><span class="category">@{{ item.category }}</span>
-                  </p>
-                </li>
-              </ul>
-              <ul v-if="keyword && searchList.length" class="searchList">
-                <li
-                  v-for="item of searchList"
-                  :key="item.articleId"
-                  class="search-item"
-                  @click="goToPage(item.articleId)"
+                  @click="goToPage(item)"
                 >
                   <p>
                     <span class="title">{{ item.title }}</span
@@ -50,8 +35,8 @@
                 </li>
               </ul>
               <el-empty
-                v-if="keyword && !searchList.length && !loading"
-                description="未搜索到相关文章"
+                v-if="!list.length && !loading"
+                description="未找到相关文章～"
               />
             </el-scrollbar>
           </template>
@@ -62,110 +47,78 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watchEffect } from "vue"
+import { ref, watchEffect } from "vue"
 import { useRouter } from "vue-router"
 import http from "@/server"
 import { categories } from "@/global/select"
+import useUserStore from "@/store/user"
+import dayjs from "dayjs"
 
+const userStore = useUserStore()
 const router = useRouter()
-const props = defineProps({
-  show: {
-    type: Boolean,
-    default: false
-  }
-})
-const emit = defineEmits(["close"])
+
+const show = defineModel<boolean>({ required: true })
 const keyword = ref("")
 const loading = ref(false)
-const hotList = ref<any[]>([])
-const searchList = ref<any[]>([])
-const isSearch = ref(false)
+const list = ref<any[]>([])
 const input = ref<HTMLInputElement>()
 
-onMounted(() => {
-  const SearchModalEL = document.querySelector("#SearchModal") as HTMLElement
-
-  SearchModalEL.addEventListener(
-    "transitionend",
-    event => {
-      if (event.target === SearchModalEL && !isSearch.value) {
-        emit("close")
-      }
-    },
-    false
-  )
-})
 watchEffect(() => {
-  if (props.show) {
-    keyword.value = ""
-    searchList.value = []
-    isSearch.value = true
+  if (show.value) {
     input.value?.focus()
+    document.body.style.setProperty("overflow", "hidden")
+  } else {
+    document.body.style.removeProperty("overflow")
   }
 })
-
-function close() {
-  isSearch.value = false
-}
 
 function maskClick(event: Event) {
   const target = event.target as HTMLElement
   if (target.getAttribute("id") === "SearchModal") {
-    close()
+    show.value = false
   }
 }
-
-async function getHotList() {
-  const res = await http.post("/article/list", {
-    page: 1,
-    pageSize: 10,
-    orderBy: "views"
-  })
-
-  if (res.code === 0) {
-    hotList.value = res.data.list.map(item => {
-      return {
-        ...item,
-        category: categories.find(category => category.value === item.category)
-          ?.label
-      }
-    })
-  } else {
-    hotList.value = []
-  }
-}
-getHotList()
 
 async function getList() {
   try {
     loading.value = true
-    const res = await http.get("/article/title", {
-      keyword: keyword.value
+    const res = await http.post("/article/list", {
+      keyword: keyword.value,
+      page: 1,
+      pageSize: keyword.value ? 999 : 10,
+      orderBy: "views"
     })
 
     if (res.code === 0) {
-      searchList.value = res.data.map(item => {
-        return {
-          ...item,
-          category: categories.find(
-            category => category.value === item.category
-          )?.label
-        }
-      })
+      for (const item of res.data.list) {
+        item.unlockAt = dayjs(item.unlockAt).format("L LTS")
+        item.category = categories.find(
+          category => category.value === item.category
+        )?.label
+      }
+
+      list.value = res.data.list
     } else {
-      searchList.value = []
+      list.value = []
     }
   } finally {
     loading.value = false
   }
 }
+getList()
 
-function goToPage(articleId: string) {
-  close()
-  router.push({
-    name: "ArticleDetail",
-    params: { articleId }
-  })
+function goToPage(article) {
+  if (article.isPrivate && userStore.info?.role !== 0) {
+    ElMessage.warning("私有文章，您没有访问权限～")
+  } else if (dayjs().isBefore(article.unlockAt) && userStore.info?.role !== 0) {
+    ElMessage.warning(`该文章将在 ${article.unlockAt} 解锁`)
+  } else {
+    show.value = false
+    router.push({
+      name: "ArticleDetail",
+      params: { articleId: article.articleId }
+    })
+  }
 }
 </script>
 
@@ -238,12 +191,13 @@ function goToPage(articleId: string) {
     border-bottom-right-radius: 15px;
     ul {
       width: 100%;
-      & > p {
+      h6 {
         padding-left: 48px;
         color: $font-color;
         opacity: 0.5;
-        font-size: 12px;
+        font-size: 14px;
         margin-bottom: 15px;
+        font-weight: unset;
       }
       .el-empty {
         padding: 0;
