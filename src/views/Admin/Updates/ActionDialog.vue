@@ -5,7 +5,7 @@
     :title="updateId ? '编辑更新' : '新建更新'"
     @close="reset"
   >
-    <ul v-auto-animate class="updates-list">
+    <TransitionGroup tag="ul" name="fade" class="updates-list">
       <li v-for="(_, index) of list" :key="index">
         <el-input
           v-model="list[index]"
@@ -15,7 +15,8 @@
           @input="lastListChange(index)"
         />
       </li>
-    </ul>
+    </TransitionGroup>
+
     <template #footer>
       <span class="dialog-footer">
         <el-button type="primary" :loading="loading" @click="confirm">
@@ -106,6 +107,17 @@ defineExpose({
           margin-bottom: 0;
         }
       }
+    }
+
+    .fade-enter-active,
+    .fade-leave-active {
+      transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+    }
+
+    .fade-enter-from,
+    .fade-leave-to {
+      opacity: 0;
+      transform: translateX(30px);
     }
   }
   .dialog-footer {
