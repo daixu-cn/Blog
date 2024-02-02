@@ -41,6 +41,7 @@
     "element-plus": "^2.5.3",
     "hls.js": "^1.5.2",
     "lodash": "^4.17.21",
+    "lottie-web": "^5.12.2",
     "md-editor-v3": "^4.11.0",
     "nanoid": "^5.0.4",
     "nprogress": "^0.2.0",

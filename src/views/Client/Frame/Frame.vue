@@ -1,5 +1,6 @@
 <template>
   <div id="Frame">
+    <Decoration />
     <Header />
 
     <el-scrollbar wrap-class="Frame-main" noresize>
@@ -18,6 +19,7 @@
 
 <script lang="ts" setup>
 import Header from "@/components/Layout/Header/Header.vue"
+import Decoration from "@/components/Layout/Decoration.vue"
 </script>
 
 <style lang="scss">

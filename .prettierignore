@@ -4,5 +4,6 @@
 **/*.sh
 
 /public/*
+src/assets/lottie/*
 
 src/global/iconfont.ts
