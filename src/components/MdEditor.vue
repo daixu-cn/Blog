@@ -41,10 +41,11 @@ import {
 import type { ExposeParam } from "md-editor-v3"
 import { nanoid } from "nanoid"
 import useThemeStore from "@/store/theme"
-import resumeUpload from "@/utils/resumeUpload"
 import "md-editor-v3/lib/style.css"
 import ImageViewer from "@/components/ImageViewer.vue"
 import TargetBlankExtension from "@/plugins/MdEditor/TargetBlankExtension"
+import http from "@/server"
+import { ElMessage } from "element-plus"
 
 const emits = defineEmits(["onGetCatalog", "onChange", "onSave", "onLoading"])
 const props = defineProps({
@@ -134,27 +135,32 @@ watchEffect(() => {
 async function onUploadImg(files: File[], callback) {
   emits("onLoading", true)
   loading.value = true
+  const result: string[] = []
 
-  try {
-    const res = await Promise.all(
-      files.map(file => {
-        return new Promise(resolve => {
-          resumeUpload(file, {
-            url: "/upload/file",
-            methods: "put",
-            onSuccess(image) {
-              resolve(image)
-            }
-          })
-        })
-      })
-    )
+  for await (const file of files) {
+    try {
+      if (!file.type.includes("image")) {
+        throw new Error(`${file.name} 不是图片类型`)
+      }
+      if (file.size > 1024 * 1024) {
+        throw new Error(`${file.name} 大小不能超过1M`)
+      }
 
-    callback(res.map(image => image))
-  } finally {
-    loading.value = false
-    emits("onLoading", false)
+      const formData = new FormData()
+      formData.append("file", file)
+
+      const res = await http.put("/upload/image", formData)
+      if (res.code === 0) {
+        result.push(res.data)
+      }
+    } catch (error: any) {
+      ElMessage.error(error?.message)
+    }
   }
+
+  callback(result)
+  loading.value = false
+  emits("onLoading", false)
 }
 
 onMounted(() => {
