@@ -154,6 +154,10 @@ defineExpose({
     .el-input__wrapper {
       box-shadow: none;
       border-bottom: 1px solid $border-color;
+      .el-input__inner::-webkit-inner-spin-button,
+      .el-input__inner::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+      }
     }
     .el-form-item__error {
       padding-left: 11px;
