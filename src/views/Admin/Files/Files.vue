@@ -178,7 +178,7 @@ async function getDirectorys() {
     directories.value = directorysFormat(res.data)
   }
 }
-async function getList(page = 1) {
+async function getList(page = table.page) {
   try {
     loading.value = true
     const res = await http.post("/file/list", {

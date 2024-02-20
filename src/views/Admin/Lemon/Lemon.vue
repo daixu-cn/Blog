@@ -191,7 +191,7 @@ function play(row) {
   player.show = true
 }
 
-async function getList(page = 1) {
+async function getList(page = table.page) {
   try {
     loading.value = true
     const res = await http.post("/lemon/list", {

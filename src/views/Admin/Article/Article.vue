@@ -227,7 +227,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from "vue"
+import { ref, reactive, onActivated } from "vue"
 import { ElMessageBox, ElMessage } from "element-plus"
 import type { FormInstance } from "element-plus"
 import dayjs from "dayjs"
@@ -253,7 +253,7 @@ const table = reactive({
   total: 0
 })
 
-async function getList(page = 1) {
+async function getList(page = table.page) {
   try {
     loading.value = true
     const res = await http.post("/article/list", {
@@ -283,7 +283,7 @@ async function getList(page = 1) {
     loading.value = false
   }
 }
-getList()
+onActivated(getList)
 
 async function statusChange(field: string, row) {
   row.loading = true

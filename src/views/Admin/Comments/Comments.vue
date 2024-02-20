@@ -269,7 +269,7 @@ async function getReply(page = 1) {
   reply.loading = false
 }
 
-async function getList(page = 1) {
+async function getList(page = table.page) {
   try {
     loading.value = true
     const res = await http.post("/comment/list", {
