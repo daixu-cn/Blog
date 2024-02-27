@@ -216,7 +216,7 @@ function jumpTo(row) {
 
     getList(1)
   } else {
-    window.open(row.url)
+    window.open(`${row.url}?token=${localStorage.getItem("token")}`)
   }
 }
 function back() {
