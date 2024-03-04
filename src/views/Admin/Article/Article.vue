@@ -204,11 +204,7 @@
             >
               编辑
             </el-button>
-            <el-button
-              link
-              type="primary"
-              @click="deleteAction(scope.row.articleId)"
-            >
+            <el-button link type="primary" @click="deleteAction(scope.row)">
               删除
             </el-button>
           </template>
@@ -319,8 +315,8 @@ function goToActionMD(articleId) {
     params: { articleId }
   })
 }
-function deleteAction(articleId) {
-  ElMessageBox.confirm("此操作将永久删除该文章，是否继续?", "提示", {
+function deleteAction({ title, articleId }) {
+  ElMessageBox.confirm(`此操作将永久删除《${title}》，是否继续?`, "提示", {
     type: "warning",
     confirmButtonText: "确认",
     cancelButtonText: "取消",
