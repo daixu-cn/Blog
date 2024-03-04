@@ -97,7 +97,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="SystemArticleMD">
 import { ref, reactive, onUnmounted, watchEffect } from "vue"
 import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router"
 import { ElMessage, ElMessageBox } from "element-plus"

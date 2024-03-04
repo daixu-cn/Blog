@@ -7,7 +7,7 @@
       <el-scrollbar wrap-class="SystemFrame-page">
         <router-view v-slot="{ Component }">
           <transition name="route" mode="out-in">
-            <keep-alive>
+            <keep-alive :exclude="['SystemArticleMD']">
               <component :is="Component" />
             </keep-alive>
           </transition>
