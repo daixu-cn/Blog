@@ -58,7 +58,6 @@
     "vite": "^5.0.12",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5",
-    "vue-waterfall-plugin-next": "^2.3.1",
     "web-animations-js": "^2.3.2"
   },
   "devDependencies": {

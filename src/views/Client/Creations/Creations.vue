@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-import { getAssets, calculateAge } from "@/utils/util"
+import { getAssets } from "@/utils/util"
 import { Creation } from "./types"
 
 const list: Creation[] = [
@@ -53,18 +53,14 @@ const list: Creation[] = [
     synopsis: "摆脱困难选择症，随机为您做出选择",
     descriptions: ["不再选择，心情更美好！"],
     img: getAssets("creations/final-choice.png"),
-    link: "/creations/final-choice"
+    link: "https://daixu-cn.github.io/Choice/"
   },
   {
     title: "柠檬时光机",
     synopsis: "吾家柠檬初长成，活泼可爱惹人疼",
-    descriptions: [
-      "布偶猫咪-柠檬",
-      `年龄:${calculateAge("2023-06-21")}`,
-      `驱虫:12-07(${calculateAge("2023-12-07")})`
-    ],
+    descriptions: ["布偶猫咪-柠檬"],
     img: getAssets("creations/lemon.png"),
-    link: "/creations/lemon"
+    link: "https://daixu-cn.github.io/Lemon/"
   }
 ]
 </script>

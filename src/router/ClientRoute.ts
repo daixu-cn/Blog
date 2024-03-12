@@ -1,5 +1,4 @@
 import { RouteRecordRaw } from "vue-router"
-import ExternalRoutes from "./ExternalRoutes"
 
 // 客户端路由
 const ClientRoute: RouteRecordRaw = {
@@ -61,8 +60,7 @@ const ClientRoute: RouteRecordRaw = {
         role: 1,
         title: "账户中心"
       }
-    },
-    ExternalRoutes
+    }
   ]
 }
 
