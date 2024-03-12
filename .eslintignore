@@ -1,5 +1,6 @@
 # .eslintignore
 node_modules
 dist
+public
 
 src/global/iconfont.ts

@@ -24,11 +24,11 @@ module.exports = {
   settings: {
     "import/resolver": {
       node: {
-        extensions: [".js", ".jsx", ".ts", ".tsx"]
+        extensions: [".js", ".jsx", ".ts", ".tsx", ".mjs"]
       },
       alias: {
         map: [["@", "./src"]],
-        extensions: [".ts", ".js", ".jsx", ".json"]
+        extensions: [".ts", ".js", ".jsx", ".json", ".mjs"]
       }
     }
   },
