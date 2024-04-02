@@ -41,28 +41,21 @@ export default defineConfig({
       "@": resolve(__dirname, "src")
     }
   },
+  esbuild: {
+    drop:
+      process.env.NODE_ENV === "production"
+        ? ["console", "debugger"]
+        : undefined
+  },
   build: {
-    minify: "terser",
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
-      }
-    },
     rollupOptions: {
       output: {
-        // 静态资源分类打包
-        chunkFileNames: "static/js/[hash].js",
-        entryFileNames: "static/js/[hash].js",
-        assetFileNames: "static/[ext]/[hash].[ext]",
+        chunkFileNames: "js/[hash].js",
+        entryFileNames: "js/[hash].js",
+        assetFileNames: "assets/[ext]/[hash].[ext]",
         manualChunks(id) {
-          // 静态资源分拆打包
           if (id.includes("node_modules")) {
-            return id
-              .toString()
-              .split("node_modules/")[1]
-              .split("/")[0]
-              .toString()
+            return "vendor"
           }
         }
       }
