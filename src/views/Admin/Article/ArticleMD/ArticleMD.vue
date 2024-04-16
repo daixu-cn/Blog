@@ -17,20 +17,20 @@
     >
       <el-form-item label="是否评论" prop="disableComment">
         <el-radio-group v-model="article.disableComment">
-          <el-radio :label="0">允许评论</el-radio>
-          <el-radio :label="1">禁止评论</el-radio>
+          <el-radio :value="0">允许评论</el-radio>
+          <el-radio :value="1">禁止评论</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="是否私有" prop="isPrivate">
         <el-radio-group v-model="article.isPrivate">
-          <el-radio :label="0">公开</el-radio>
-          <el-radio :label="1">私有</el-radio>
+          <el-radio :value="0">公开</el-radio>
+          <el-radio :value="1">私有</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item v-if="articleId === '0'" label="邮件推送" required>
         <el-radio-group v-model="article.isSendEmail">
-          <el-radio :label="1">推送</el-radio>
-          <el-radio :label="0">不推送</el-radio>
+          <el-radio :value="1">推送</el-radio>
+          <el-radio :value="0">不推送</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="文章类别" prop="category">
@@ -65,18 +65,24 @@
         />
       </el-form-item>
       <el-form-item label="预览图片" prop="poster">
-        <Poster
-          :poster-url="article.poster"
+        <MediaUpload
+          :preview-url="article.poster"
           @on-success="posterUploadSuccess"
+          @on-remove="posterUploadSuccess"
           @on-loading="loading => (control.posterLoading = loading)"
-        />
+        >
+          <el-button text bg>上传图片</el-button>
+        </MediaUpload>
       </el-form-item>
       <el-form-item label="视频文件" prop="video">
-        <Video
-          :video-url="article.video"
+        <MediaUpload
+          :preview-url="article.video"
           @on-success="videoUploadSuccess"
+          @on-remove="videoUploadSuccess"
           @on-loading="loading => (control.videoLoading = loading)"
-        />
+        >
+          <el-button text bg>上传视频</el-button>
+        </MediaUpload>
       </el-form-item>
       <el-form-item label-width="0">
         <MdEditor
@@ -105,9 +111,8 @@ import type { FormInstance, FormRules } from "element-plus"
 import { categories } from "@/global/select"
 import http from "@/server"
 import MdEditor from "@/components/MdEditor.vue"
+import MediaUpload from "@/components/MediaUpload.vue"
 import has from "lodash/has"
-import Video from "./Video.vue"
-import Poster from "./Poster.vue"
 
 const route = useRoute()
 const router = useRouter()
