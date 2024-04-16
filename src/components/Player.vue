@@ -19,6 +19,7 @@ import Hls from "hls.js"
 import { ElMessage } from "element-plus"
 import { nanoid } from "nanoid"
 import usePlayer from "@/store/player"
+import http from "@/server"
 
 const emits = defineEmits(["play"])
 const props = defineProps({
@@ -63,18 +64,12 @@ const options = reactive<Plyr.Options>({
 async function getVideoType(url: string): Promise<string> {
   return new Promise<string>(async (resolve, reject) => {
     try {
-      const response = await fetch(url, { method: "HEAD" })
+      const res = await http.get("/file/video/type", { video: url })
 
-      if (response.ok) {
-        const type = response.headers.get("Content-Type")
-
-        if (type) {
-          resolve(type)
-        } else {
-          reject(response)
-        }
+      if (res.code === 0) {
+        resolve(res.data)
       } else {
-        reject(response)
+        reject()
       }
     } catch (error) {
       reject(error)
