@@ -207,7 +207,7 @@ function jumpTo(row) {
     formSearch.directory.push(row.name)
     getList(1)
   } else {
-    window.open(`${row.url}?token=${localStorage.getItem("token")}`)
+    window.open(`${row.url}`)
   }
 }
 function back() {
