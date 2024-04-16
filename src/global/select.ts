@@ -17,15 +17,3 @@ export const categories = [
     value: "JOURNAL"
   }
 ]
-
-// 柠檬文件分类
-export const lemonMediaType = [
-  {
-    label: "IMAGE",
-    value: "IMAGE"
-  },
-  {
-    label: "VIDEO",
-    value: "VIDEO"
-  }
-]

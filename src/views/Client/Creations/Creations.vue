@@ -54,13 +54,6 @@ const list: Creation[] = [
     descriptions: ["不再选择，心情更美好！"],
     img: getAssets("creations/final-choice.png"),
     link: "https://daixu-cn.github.io/Choice/"
-  },
-  {
-    title: "柠檬时光机",
-    synopsis: "吾家柠檬初长成，活泼可爱惹人疼",
-    descriptions: ["布偶猫咪-柠檬"],
-    img: getAssets("creations/lemon.png"),
-    link: "https://daixu-cn.github.io/Lemon/"
   }
 ]
 </script>
