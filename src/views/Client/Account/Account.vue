@@ -5,7 +5,7 @@
         <label class="avatar-label"> 头像: </label>
         <el-upload
           v-loading="uploadLoading"
-          :action="`${BASE_API}/upload/file`"
+          :action="`${BASE_API}/upload/image/user`"
           method="put"
           :headers="{ Authorization: `Bearer ${userStore.token}` }"
           :before-upload="beforeUpload"
@@ -105,8 +105,8 @@ const beforeUpload: UploadProps["beforeUpload"] = rawFile => {
     ElMessage.error("图片格式异常")
     return false
   }
-  if (rawFile.size / 1024 / 1024 > 2) {
-    ElMessage.error("图片格式不能超过2MB!")
+  if (rawFile.size / 1024 / 1024 > 1) {
+    ElMessage.error("图片格式不能超过1MB!")
     return false
   }
   uploadLoading.value = true
@@ -157,6 +157,7 @@ function emailServiceChange(value) {
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+      padding-right: 11px;
 
       &:last-child {
         margin-bottom: 0;
