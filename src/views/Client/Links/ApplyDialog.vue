@@ -20,12 +20,12 @@
       <li>
         <label>图标</label>
         <span class="colon">:</span>
-        {{ `${ASSET_PREFIX}/image/favicon.png` }}
+        {{ `${ASSET_PREFIX}/favicon.png` }}
       </li>
       <li>
         <label>头像</label>
         <span class="colon">:</span>
-        {{ `${ASSET_PREFIX}/image/avatar.png` }}
+        {{ `${ASSET_PREFIX}/avatar.png` }}
       </li>
       <li>
         <label>描述</label>

@@ -64,24 +64,18 @@
             >
           </template>
         </el-table-column>
+        <el-table-column prop="size" label="文件大小" width="120px" />
         <el-table-column
-          prop="size"
-          label="文件大小"
-          sortable
-          width="120px"
-          :formatter="sizeFormatter"
-        />
-        <el-table-column
-          prop="ctimeMs"
+          prop="lastModified"
           label="更新时间"
           align="center"
           width="200px"
-          sortable
           show-overflow-tooltip
         />
         <el-table-column label="操作" align="center" width="130">
           <template #header>
-            <FileUpload
+            <MediaUpload
+              :params="{ path: formSearch.directory }"
               @on-success="refuresh"
               @on-loading="_loading => (uploadLogin = _loading)"
             >
@@ -92,17 +86,20 @@
                 :loading="uploadLogin"
                 >上传文件</el-button
               >
-            </FileUpload>
+            </MediaUpload>
           </template>
           <template #default="scope">
             <div v-if="!scope.row.directory" class="table-operator">
-              <FileUpload
-                :replace-file="scope.row.path"
+              <MediaUpload
+                :params="{
+                  path: formSearch.directory,
+                  replace: scope.row.path ?? ''
+                }"
                 @on-success="refuresh"
                 @on-loading="_loading => (loading = _loading)"
               >
                 <el-button link type="primary"> 替换 </el-button>
-              </FileUpload>
+              </MediaUpload>
 
               <el-button
                 link
@@ -137,8 +134,8 @@ import { Plus } from "@element-plus/icons-vue"
 import dayjs from "dayjs"
 import byteSize from "byte-size"
 import http from "@/server"
+import MediaUpload from "@/components/MediaUpload.vue"
 import { Directories } from "./Files"
-import FileUpload from "./FileUpload.vue"
 
 const formRef = ref<FormInstance>()
 const loading = ref(false)
@@ -158,15 +155,11 @@ const table = reactive({
 function directorysFormat(directoryList: Directories[]) {
   return directoryList.map(item => {
     return {
-      value: `/${item.name}`,
+      value: `${item.name}/`,
       label: item.name,
       children: directorysFormat(item.subDirectories)
     }
   })
-}
-function sizeFormatter(row) {
-  const size = byteSize(row.size)
-  return `${size.value}${size.unit}`
 }
 
 async function getDirectorys() {
@@ -193,10 +186,12 @@ async function getList(page = table.page) {
           ? "icon-folder"
           : `icon-${item.name.split(".").pop().toUpperCase()}`
         item.name = item.directory ? `${item.name}/` : item.name
-        item.ctimeMs = dayjs(item.ctimeMs).format("L LTS")
+        item.lastModified = item.lastModified
+          ? dayjs(item.lastModified).format("L LTS")
+          : "-"
 
-        const size = byteSize(item.size)
-        item.sizeFormat = `${size.value}${size.unit}`
+        const { value, unit } = byteSize(item.size)
+        item.size = item.size ? `${value}${unit}` : "-"
       }
       table.list = res.data.list
       table.total = res.data.total
@@ -209,11 +204,7 @@ async function getList(page = table.page) {
 
 function jumpTo(row) {
   if (row.directory) {
-    formSearch.directory = row.path
-      .split("/")
-      .slice(1)
-      .map((name: string) => `/${name}`)
-
+    formSearch.directory.push(row.name)
     getList(1)
   } else {
     window.open(`${row.url}?token=${localStorage.getItem("token")}`)

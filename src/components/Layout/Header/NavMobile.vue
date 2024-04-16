@@ -15,7 +15,7 @@
         />
         <div class="user-info">
           <el-image
-            :src="`${ASSET_PREFIX}/image/avatar.png`"
+            :src="`${ASSET_PREFIX}/avatar.png`"
             fit="cover"
             class="avatar"
           />
