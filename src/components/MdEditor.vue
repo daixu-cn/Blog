@@ -149,7 +149,7 @@ async function onUploadImg(files: File[], callback) {
       const formData = new FormData()
       formData.append("file", file)
 
-      const res = await http.put("/upload/image", formData)
+      const res = await http.put("/upload/image/comment", formData)
       if (res.code === 0) {
         result.push(res.data)
       }
