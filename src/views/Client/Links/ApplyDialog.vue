@@ -15,17 +15,17 @@
       <li>
         <label>地址</label>
         <span class="colon">:</span>
-        https://daixu.cn
+        {{ DOMAIN }}
       </li>
       <li>
         <label>图标</label>
         <span class="colon">:</span>
-        {{ `${ASSET_PREFIX}/favicon.png` }}
+        {{ `${DOMAIN}/favicon.ico` }}
       </li>
       <li>
         <label>头像</label>
         <span class="colon">:</span>
-        {{ `${ASSET_PREFIX}/avatar.png` }}
+        {{ `${DOMAIN}/avatar.png` }}
       </li>
       <li>
         <label>描述</label>
@@ -75,7 +75,7 @@ import { ref, reactive } from "vue"
 import { ElMessage } from "element-plus"
 import type { FormInstance, FormRules } from "element-plus"
 import http from "@/server"
-import { ASSET_PREFIX } from "@/global/env"
+import { DOMAIN } from "@/global/env"
 
 const show = ref(false)
 const loading = ref(false)

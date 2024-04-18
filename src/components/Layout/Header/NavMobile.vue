@@ -14,11 +14,7 @@
           class="mobile-bg"
         />
         <div class="user-info">
-          <el-image
-            :src="`${ASSET_PREFIX}/avatar.png`"
-            fit="cover"
-            class="avatar"
-          />
+          <el-image :src="`${DOMAIN}/avatar.png`" fit="cover" class="avatar" />
           <div class="signature">
             <p>daixu</p>
             <p>挣钱娶媳妇儿</p>
@@ -57,7 +53,7 @@ import { useRoute, useRouter } from "vue-router"
 import menus, { adminMenus } from "@/global/menus"
 import useUserStore from "@/store/user"
 import { getAssets } from "@/utils/util"
-import { ASSET_PREFIX } from "@/global/env"
+import { DOMAIN } from "@/global/env"
 import User from "./User.vue"
 
 const route = useRoute()
