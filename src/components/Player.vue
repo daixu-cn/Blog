@@ -58,13 +58,13 @@ const options = reactive<Plyr.Options>({
 
 /**
  * @description 获取视频类型
- * @param {string} url 视频地址
+ * @param {string} path 视频地址
  * @return {string} 视频类型
  */
-async function getVideoType(url: string): Promise<string> {
+async function getVideoType(path: string): Promise<string> {
   return new Promise<string>(async (resolve, reject) => {
     try {
-      const res = await http.get("/file/video/type", { video: url })
+      const res = await http.get("/file/type", { path })
 
       if (res.code === 0) {
         resolve(res.data)
