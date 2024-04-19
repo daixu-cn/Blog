@@ -19,7 +19,6 @@ import Hls from "hls.js"
 import { ElMessage } from "element-plus"
 import { nanoid } from "nanoid"
 import usePlayer from "@/store/player"
-import http from "@/server"
 
 const emits = defineEmits(["play"])
 const props = defineProps({
@@ -56,41 +55,6 @@ const options = reactive<Plyr.Options>({
   ...props.plyrProps
 })
 
-/**
- * @description 获取视频类型
- * @param {string} path 视频地址
- * @return {string} 视频类型
- */
-async function getVideoType(path: string): Promise<string> {
-  return new Promise<string>(async (resolve, reject) => {
-    try {
-      const res = await http.get("/file/type", { path })
-
-      if (res.code === 0) {
-        resolve(res.data)
-      } else {
-        reject()
-      }
-    } catch (error) {
-      reject(error)
-    }
-  })
-}
-
-function setupDefault(type: string) {
-  if (player.value) {
-    player.value.source = {
-      type: "video",
-      sources: [
-        {
-          src: props.src,
-          type
-        }
-      ]
-    }
-  }
-}
-
 function setupHls(video: HTMLMediaElement) {
   if (Hls.isSupported()) {
     const hls = new Hls()
@@ -112,18 +76,13 @@ watch(
 
         if (!player.value) {
           player.value = new Plyr(video, options)
-          player.value.on("play", event => {
+          player.value.once("play", event => {
             setPlayer(event.detail.plyr)
             emits("play", event.detail.plyr)
           })
         }
 
-        const type = await getVideoType(props.src)
-        if (type.startsWith("video/")) {
-          setupDefault(type)
-        } else {
-          setupHls(video)
-        }
+        setupHls(video)
       } catch (error) {
         ElMessage.error("视频加载失败")
       }
