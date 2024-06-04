@@ -114,8 +114,6 @@ async function save() {
       form.isEditable = false
 
       emits("save", res.data)
-    } else {
-      ElMessage.error(res.msg)
     }
   } finally {
     form.loading = false
