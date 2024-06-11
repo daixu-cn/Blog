@@ -6,6 +6,7 @@
       :class="className"
       :model-value="props.text"
       :no-img-zoom-in="true"
+      :auto-fold-threshold="50"
       @onGetCatalog="onGetCatalog"
     />
     <MdEditor
