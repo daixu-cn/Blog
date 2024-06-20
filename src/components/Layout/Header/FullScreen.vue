@@ -15,7 +15,7 @@ import screenfull from "screenfull"
 
 const isFullscreen = ref(screenfull.isFullscreen)
 
-screenfull.onchange(() => {
+screenfull.onchange?.(() => {
   isFullscreen.value = screenfull.isFullscreen
 })
 </script>
