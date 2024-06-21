@@ -32,6 +32,9 @@ html {
         }
       }
     }
+    .el-dialog__body {
+      padding-top: var(--el-dialog-padding-primary);
+    }
     .el-dialog__footer {
       display: flex;
       justify-content: center;
