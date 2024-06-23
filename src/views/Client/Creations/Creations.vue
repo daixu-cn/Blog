@@ -61,6 +61,13 @@ const list: Creation[] = [
     descriptions: ["我的可爱小柠檬！"],
     img: getAssets("creations/lemon.png"),
     link: "https://photos.app.goo.gl/VxBFkMFJUEr4H4Pz6/"
+  },
+  {
+    title: "Learn English",
+    synopsis: "English notes, may contain errors, for reference only",
+    descriptions: ["英语学习记录，内容仅供参考，可能存在错误，请勿作为标准"],
+    img: getAssets("creations/english.png"),
+    link: "https://english.daixu.cn/"
   }
 ]
 </script>
