@@ -194,10 +194,8 @@ function goToDetail(article) {
   } else if (article.isLock && userStore.info?.role !== 0) {
     ElMessage.warning(`该文章将在 ${article.unlockAt} 解锁`)
   } else {
-    router.push({
-      name: "ArticleDetail",
-      params: { articleId: article.articleId }
-    })
+    const { href } = router.resolve({ path: `/article/${article.articleId}` })
+    window.open(href, "_blank")
   }
 }
 </script>
