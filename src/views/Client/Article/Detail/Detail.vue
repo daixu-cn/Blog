@@ -162,7 +162,6 @@ onBeforeUnmount(() => {
   }
   .article-view {
     width: calc(100% - 320px);
-    margin-top: 20px;
     position: relative;
     z-index: 2;
     .el-skeleton {
@@ -180,7 +179,7 @@ onBeforeUnmount(() => {
     .title {
       font-size: 1.4em;
       font-weight: 700;
-      margin: 0 auto 20px auto;
+      padding: 20px 0;
       text-align: center;
       color: $font-color;
       letter-spacing: 0.1em;
