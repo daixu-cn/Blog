@@ -1,3 +1,6 @@
+@use "@/assets/style/scss/_variables" as *;
+@use "@/assets/style/scss/_mixins" as *;
+
 html {
   body {
     &.el-popup-parent--hidden {

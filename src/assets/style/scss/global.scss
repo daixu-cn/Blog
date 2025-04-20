@@ -1,10 +1,11 @@
-@import "@/assets/style/scss/reset";
-@import "@/assets/style/fonts/index.scss";
-@import "@/assets/style/scss/nprogress";
-@import "@/assets/style/scss/elementPlus.scss";
-@import "element-plus/theme-chalk/index.css";
-@import "element-plus/theme-chalk/dark/css-vars.css";
-@import "plyr/dist/plyr.css";
+@use "@/assets/style/scss/_variables" as *;
+@use "@/assets/style/scss/reset" as *;
+@use "@/assets/style/fonts/index.scss" as *;
+@use "@/assets/style/scss/nprogress" as *;
+@use "@/assets/style/scss/elementPlus.scss" as *;
+@use "element-plus/theme-chalk/index.css" as *;
+@use "element-plus/theme-chalk/dark/css-vars.css" as *;
+@use "plyr/dist/plyr.css" as *;
 
 html {
   width: 100vw;

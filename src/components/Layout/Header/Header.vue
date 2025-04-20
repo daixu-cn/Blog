@@ -67,11 +67,12 @@ function goToPage(name: string) {
     opacity: 0;
   }
   .container {
-    @include media-width();
     height: 100%;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
+    @include media-width();
+
     #Icon {
       font-size: 20px;
       transition: all $duration;

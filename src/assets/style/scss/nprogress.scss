@@ -1,3 +1,5 @@
+@use "@/assets/style/scss/_variables" as *;
+
 /* Make clicks pass-through */
 #nprogress {
   pointer-events: none;

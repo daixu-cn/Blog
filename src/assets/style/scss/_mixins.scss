@@ -1,3 +1,5 @@
+@use "@/assets/style/scss/_variables" as *;
+
 // 单行超出隐藏
 @mixin text-ellipsis($type: ellipsis) {
   white-space: nowrap;

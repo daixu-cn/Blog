@@ -7,7 +7,8 @@ import dayjs from "dayjs"
  * @return {string}
  */
 export const getAssets = (fileName: string, folder = "image") => {
-  return new URL(`../assets/${folder}/${fileName}`, import.meta.url).href
+  const path = `../assets/${folder}/${fileName}`
+  return new URL(path, import.meta.url).href
 }
 
 /**

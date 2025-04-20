@@ -23,11 +23,11 @@ import Header from "@/components/Layout/Header/Header.vue"
 <style lang="scss">
 #Frame {
   .Frame-main {
-    @include media-width;
     padding-top: 20px;
     box-sizing: border-box;
     margin: 0 auto;
     position: relative;
+    @include media-width;
   }
   @media screen and (max-width: 1250px) {
     .Frame-main {

@@ -22,7 +22,7 @@
           <li>
             <label>联系邮箱</label>
             <span class="colon">:</span>
-            daixu.cn@outlook.com
+            wywangt@outlook.com
           </li>
         </ul>
       </div>

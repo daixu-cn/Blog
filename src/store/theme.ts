@@ -90,7 +90,7 @@ export default defineStore("theme", {
           const isTheme = themes.find(item => item.theme === theme)
 
           const THEME: ThemeType = isTheme
-            ? theme ?? this.current
+            ? (theme ?? this.current)
             : this.current
 
           const module = await import(
