@@ -1,6 +1,6 @@
 <template>
   <Teleport to="#app">
-    <div id="Artile-Catalog">
+    <div id="Article-Catalog">
       <div class="catalog">
         <h1>目录</h1>
         <el-skeleton :loading="loading" animated>
@@ -53,16 +53,16 @@ function goToAnchor(text: string) {
 </script>
 
 <style lang="scss">
-#Artile-Catalog {
-  @include media-width;
+#Article-Catalog {
   position: fixed;
   top: 80px;
   left: 50%;
   transform: translateX(-50%);
-
   z-index: 1;
   display: flex;
   justify-content: flex-end;
+  @include media-width;
+
   .catalog {
     width: 300px;
     border-radius: $border-radius;
@@ -156,7 +156,7 @@ function goToAnchor(text: string) {
   }
 }
 @media screen and (max-width: 1300px) {
-  #Artile-Catalog {
+  #Article-Catalog {
     display: none;
   }
 }
