@@ -1,8 +1,6 @@
-# 自动化远程部署
 name: Automated remote deployment
 
 on:
-  # 仅在推送到默认分支时运行。
   push:
     branches: ["main"]
 
@@ -12,14 +10,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set up Node
+
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
-      - name: Install dependencies
-        run: npm install
+          node-version: 22.16.0
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies with pnpm
+        run: pnpm install
+
       - name: Build
         run: npm run build
+
       - name: Deploy to Staging server
         uses: easingthemes/ssh-deploy@main
         with:
